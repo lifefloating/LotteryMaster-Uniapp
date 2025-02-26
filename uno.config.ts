@@ -31,7 +31,7 @@ if (isMp) {
 export default defineConfig({
   presets: [
     ...presets,
-    // 支持图标，需要搭配图标库，eg: @iconify-json/carbon, 使用 `<button class="i-carbon-sun dark:i-carbon-moon" />`
+    // 图标最后选的 flat-color-icons
     presetIcons({
       scale: 1.2,
       warn: true,

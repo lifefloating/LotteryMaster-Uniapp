@@ -59,20 +59,20 @@ export default defineUniPages({
     list: [
       {
         pagePath: 'pages/index/index',
-        iconPath: 'static/icons/predict.png',
-        selectedIconPath: 'static/icons/predict-active.png',
+        iconPath: 'static/icons/tabbar_predict.png',
+        selectedIconPath: 'static/icons/tabbar_predict.png',
         text: '预测',
       },
       {
         pagePath: 'pages/trends/index',
-        iconPath: 'static/icons/trends.png',
-        selectedIconPath: 'static/icons/trends-active.png',
+        iconPath: 'static/icons/tabbar_trends.png',
+        selectedIconPath: 'static/icons/tabbar_trends.png',
         text: '走势',
       },
       {
         pagePath: 'pages/my/index',
-        iconPath: 'static/icons/my.png',
-        selectedIconPath: 'static/icons/my-active.png',
+        iconPath: 'static/icons/tabbar_my.png',
+        selectedIconPath: 'static/icons/tabbar_my.png',
         text: '我的',
       },
     ],

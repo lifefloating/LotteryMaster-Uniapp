@@ -6,7 +6,7 @@
       @click="handleTabChange('home')"
     >
       <view class="nav-icon">
-        <view class="i-carbon-lightning" :class="{ active: activeTab === 'home' }" />
+        <view class="i-flat-color-icons-idea" :class="{ active: activeTab === 'home' }" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'home' }">预测</text>
     </view>
@@ -17,14 +17,20 @@
       @click="handleTabChange('trends')"
     >
       <view class="nav-icon">
-        <view class="i-carbon-analytics" :class="{ active: activeTab === 'trends' }" />
+        <view
+          class="i-flat-color-icons-positive-dynamic"
+          :class="{ active: activeTab === 'trends' }"
+        />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'trends' }">走势</text>
     </view>
 
     <view class="nav-item" :class="{ active: activeTab === 'my' }" @click="handleTabChange('my')">
       <view class="nav-icon">
-        <view class="i-carbon-user-avatar" :class="{ active: activeTab === 'my' }" />
+        <view
+          class="i-flat-color-icons-data-configuration"
+          :class="{ active: activeTab === 'my' }"
+        />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'my' }">我的</text>
     </view>
@@ -96,11 +102,6 @@ const handleTabChange = (tab: string) => {
       view {
         width: 100%;
         height: 100%;
-        color: #666666;
-
-        &.active {
-          color: #3b82f6;
-        }
       }
     }
 
@@ -120,10 +121,6 @@ const handleTabChange = (tab: string) => {
       .nav-icon {
         view {
           color: #d1d5db;
-
-          &.active {
-            color: #60a5fa;
-          }
         }
       }
 

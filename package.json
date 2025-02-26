@@ -108,7 +108,6 @@
     "@dcloudio/vite-plugin-uni": "3.0.0-4020920240930001",
     "@esbuild/darwin-arm64": "0.20.2",
     "@esbuild/darwin-x64": "0.20.2",
-    "@iconify-json/carbon": "^1.2.4",
     "@rollup/rollup-darwin-x64": "^4.28.0",
     "@types/node": "^20.17.9",
     "@types/wechat-miniprogram": "^3.4.8",
