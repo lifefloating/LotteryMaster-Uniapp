@@ -156,5 +156,10 @@ export default ({ command, mode }) => {
         },
       },
     },
+    vue: {
+      compilerOptions: {
+        isCustomElement: (tag) => tag.startsWith('wd-'),
+      },
+    },
   })
 }

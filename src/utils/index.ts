@@ -1,5 +1,10 @@
-import { pages, subPackages, tabBar } from '@/pages.json'
+import { pages, subPackages } from '@/pages.json'
 import { isMpWeixin } from './platform'
+
+// Define a default tabBar object since it's not exported from pages.json
+const tabBar = {
+  list: [],
+}
 
 const getLastPage = () => {
   // getCurrentPages() 至少有1个元素，所以不再额外判断
@@ -14,7 +19,7 @@ export const getIsTabbar = () => {
   if (!tabBar) {
     return false
   }
-  if (!tabBar.list.length) {
+  if (!tabBar.list || !tabBar.list.length) {
     // 通常有 tabBar 的话，list 不能有空，且至少有2个元素，这里其实不用处理
     return false
   }

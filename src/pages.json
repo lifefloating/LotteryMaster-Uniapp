@@ -1,49 +1,10 @@
 {
-  "globalStyle": {
-    "navigationStyle": "default",
-    "navigationBarTitleText": "LotteryMaster",
-    "navigationBarBackgroundColor": "#f8f8f8",
-    "navigationBarTextStyle": "black",
-    "backgroundColor": "#FFFFFF"
-  },
-  "easycom": {
-    "autoscan": true,
-    "custom": {
-      "^wd-(.*)": "wot-design-uni/components/wd-$1/wd-$1.vue",
-      "^(?!z-paging-refresh|z-paging-load-more)z-paging(.*)": "z-paging/components/z-paging$1/z-paging$1.vue"
-    }
-  },
-  "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#018d71",
-    "backgroundColor": "#F8F8F8",
-    "borderStyle": "black",
-    "height": "50px",
-    "fontSize": "10px",
-    "iconWidth": "24px",
-    "spacing": "3px",
-    "list": [
-      {
-        "iconPath": "static/tabbar/home.png",
-        "selectedIconPath": "static/tabbar/homeHL.png",
-        "pagePath": "pages/index/index",
-        "text": "首页"
-      },
-      {
-        "iconPath": "static/tabbar/example.png",
-        "selectedIconPath": "static/tabbar/exampleHL.png",
-        "pagePath": "pages/about/about",
-        "text": "关于"
-      }
-    ]
-  },
   "pages": [
     {
       "path": "pages/index/index",
       "type": "home",
       "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "首页"
+        "navigationBarTitleText": "彩票大师"
       }
     },
     {
@@ -52,7 +13,67 @@
       "style": {
         "navigationBarTitleText": "关于"
       }
+    },
+    {
+      "path": "pages/my/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/trends/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "走势分析"
+      }
+    },
+    {
+      "path": "pages-sub/history/index",
+      "style": {
+        "navigationBarTitleText": "历史记录"
+      },
+      "type": "page"
     }
   ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "彩票大师",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F5F7FA"
+  },
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue",
+      "^wd-(.*)": "wot-design-uni/components/wd-$1/wd-$1.vue"
+    }
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#3B82F6",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/icons/predict.png",
+        "selectedIconPath": "static/icons/predict-active.png",
+        "text": "预测"
+      },
+      {
+        "pagePath": "pages/trends/index",
+        "iconPath": "static/icons/trends.png",
+        "selectedIconPath": "static/icons/trends-active.png",
+        "text": "走势"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "iconPath": "static/icons/my.png",
+        "selectedIconPath": "static/icons/my-active.png",
+        "text": "我的"
+      }
+    ]
+  },
   "subPackages": []
 }

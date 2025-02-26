@@ -58,5 +58,10 @@
   "explorer.fileNesting.patterns": {
     "package.json": "pnpm-lock.yaml,pnpm-workspace.yaml,LICENSE,.gitattributes,.gitignore,.gitpod.yml,CNAME,.npmrc,.browserslistrc",
     ".eslintrc.cjs": ".eslintignore,.prettierignore,.stylelintignore,.commitlintrc.*,.prettierrc.*,.stylelintrc.*,.eslintrc-auto-import.json,.editorconfig,.commitlint.cjs"
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#38244F",
+    "titleBar.activeBackground": "#4E336F",
+    "titleBar.activeForeground": "#FBF9FC"
   }
 }
