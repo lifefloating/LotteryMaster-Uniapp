@@ -178,9 +178,9 @@ const handleTabChange = (tab: string) => {
       flex-direction: column;
 
       .info-label {
+        margin-bottom: 4px;
         font-size: 14px;
         color: #666666;
-        margin-bottom: 4px;
       }
 
       .info-value {
@@ -192,8 +192,8 @@ const handleTabChange = (tab: string) => {
   }
 
   .prediction-numbers-container {
-    margin: 0 16px 16px;
     padding: 16px;
+    margin: 0 16px 16px;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -218,10 +218,10 @@ const handleTabChange = (tab: string) => {
   }
 
   .prediction-sets-container {
-    margin: 0 16px;
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
+    margin: 0 16px;
 
     .prediction-sets-title {
       display: flex;

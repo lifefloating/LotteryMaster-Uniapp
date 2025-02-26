@@ -64,14 +64,14 @@ const handleSwitch = (type: string) => {
   .lottery-switch-wrapper {
     display: flex;
     height: 48px;
-    border-radius: 8px;
     overflow: hidden;
     background-color: #ffffff;
+    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
     .lottery-switch-item {
-      flex: 1;
       display: flex;
+      flex: 1;
       align-items: center;
       justify-content: center;
       transition: all 0.3s ease;
@@ -92,8 +92,8 @@ const handleSwitch = (type: string) => {
         }
 
         .lottery-switch-text {
-          color: #ffffff;
           font-weight: bold;
+          color: #ffffff;
         }
       }
     }

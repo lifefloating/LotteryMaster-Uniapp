@@ -40,13 +40,13 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
 
 <style lang="scss" scoped>
 .number-ball {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 40px;
+  height: 40px;
   margin: 0 4px;
+  border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
 
@@ -58,9 +58,9 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
     background-color: #3b82f6;
 
     .number-text {
-      color: #ffffff;
-      font-weight: bold;
       font-size: 16px;
+      font-weight: bold;
+      color: #ffffff;
     }
   }
 
@@ -68,9 +68,9 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
     background-color: #f3f4f6;
 
     .number-text {
-      color: #333333;
-      font-weight: bold;
       font-size: 16px;
+      font-weight: bold;
+      color: #333333;
     }
   }
 

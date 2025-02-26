@@ -183,30 +183,30 @@ const handleTabChange = (tab: string) => {
   }
 
   .user-info-container {
-    margin: 16px;
+    display: flex;
+    align-items: center;
     padding: 20px;
+    margin: 16px;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    display: flex;
-    align-items: center;
 
     .avatar-container {
       margin-right: 16px;
 
       .avatar {
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        background-color: #3b82f6;
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 64px;
+        height: 64px;
+        background-color: #3b82f6;
+        border-radius: 50%;
 
         .avatar-text {
           font-size: 24px;
-          color: #ffffff;
           font-weight: bold;
+          color: #ffffff;
         }
       }
     }
@@ -215,11 +215,11 @@ const handleTabChange = (tab: string) => {
       flex: 1;
 
       .username {
+        display: block;
+        margin-bottom: 4px;
         font-size: 18px;
         font-weight: 500;
         color: #333333;
-        margin-bottom: 4px;
-        display: block;
       }
 
       .user-desc {
@@ -234,9 +234,9 @@ const handleTabChange = (tab: string) => {
 
     .settings-group {
       margin-bottom: 24px;
+      overflow: hidden;
       background-color: #ffffff;
       border-radius: 12px;
-      overflow: hidden;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
       .settings-title {
@@ -266,9 +266,9 @@ const handleTabChange = (tab: string) => {
           align-items: center;
 
           .iconfont {
+            margin-right: 12px;
             font-size: 20px;
             color: #666666;
-            margin-right: 12px;
           }
 
           .item-text {

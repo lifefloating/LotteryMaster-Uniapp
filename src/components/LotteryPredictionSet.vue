@@ -85,19 +85,19 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
     margin-bottom: 12px;
 
     .set-number {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background-color: #3b82f6;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 24px;
+      height: 24px;
       margin-right: 8px;
+      background-color: #3b82f6;
+      border-radius: 50%;
 
       .set-number-text {
-        color: #ffffff;
         font-size: 14px;
         font-weight: bold;
+        color: #ffffff;
       }
     }
 

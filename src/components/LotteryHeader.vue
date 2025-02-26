@@ -62,19 +62,19 @@ const handleHistory = () => {
 
   .left-section,
   .right-section {
-    width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 40px;
   }
 
   .back-button,
   .history-button {
-    width: 32px;
-    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
 
     .iconfont {

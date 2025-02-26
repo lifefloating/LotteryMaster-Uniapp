@@ -69,14 +69,14 @@ const handleTabChange = (tab: string) => {
 <style lang="scss" scoped>
 .bottom-nav-container {
   position: fixed;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  height: 64px;
+  z-index: 100;
   display: flex;
+  height: 64px;
   background-color: #ffffff;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-  z-index: 100;
 
   &.dark-theme {
     background-color: #1f2937;
@@ -84,20 +84,20 @@ const handleTabChange = (tab: string) => {
   }
 
   .nav-item {
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 8px 0;
 
     .nav-icon {
-      margin-bottom: 4px;
-      height: 24px;
-      width: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 4px;
 
       view {
         width: 100%;
@@ -110,8 +110,8 @@ const handleTabChange = (tab: string) => {
       color: #666666;
 
       &.active {
-        color: #3b82f6;
         font-weight: 500;
+        color: #3b82f6;
       }
     }
   }

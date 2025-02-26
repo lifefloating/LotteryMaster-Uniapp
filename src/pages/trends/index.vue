@@ -206,13 +206,13 @@ const handleTabChange = (tab: string) => {
       display: flex;
 
       .time-option {
-        flex: 1;
-        height: 40px;
         display: flex;
+        flex: 1;
         align-items: center;
         justify-content: center;
-        background-color: #ffffff;
+        height: 40px;
         margin: 0 4px;
+        background-color: #ffffff;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
@@ -233,8 +233,8 @@ const handleTabChange = (tab: string) => {
           background-color: #3b82f6;
 
           .option-text {
-            color: #ffffff;
             font-weight: 500;
+            color: #ffffff;
           }
         }
       }
@@ -243,8 +243,8 @@ const handleTabChange = (tab: string) => {
 
   .trends-chart-container,
   .hot-cold-analysis-container {
-    margin: 0 16px 16px;
     padding: 16px;
+    margin: 0 16px 16px;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -262,10 +262,10 @@ const handleTabChange = (tab: string) => {
 
     .chart-content {
       .chart-placeholder {
-        height: 200px;
         display: flex;
         align-items: center;
         justify-content: center;
+        height: 200px;
         background-color: #f5f7fa;
         border-radius: 8px;
 
