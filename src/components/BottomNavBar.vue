@@ -6,9 +6,9 @@
       @click="handleTabChange('home')"
     >
       <view class="nav-icon">
-        <text class="iconfont icon-home" :class="{ active: activeTab === 'home' }">&#xe6b8;</text>
+        <view class="i-carbon-lightning" :class="{ active: activeTab === 'home' }" />
       </view>
-      <text class="nav-text" :class="{ active: activeTab === 'home' }">首页</text>
+      <text class="nav-text" :class="{ active: activeTab === 'home' }">预测</text>
     </view>
 
     <view
@@ -17,29 +17,29 @@
       @click="handleTabChange('trends')"
     >
       <view class="nav-icon">
-        <text class="iconfont icon-trends" :class="{ active: activeTab === 'trends' }">
-          &#xe6c4;
-        </text>
+        <view class="i-carbon-analytics" :class="{ active: activeTab === 'trends' }" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'trends' }">走势</text>
     </view>
 
     <view class="nav-item" :class="{ active: activeTab === 'my' }" @click="handleTabChange('my')">
       <view class="nav-icon">
-        <text class="iconfont icon-my" :class="{ active: activeTab === 'my' }">&#xe6bb;</text>
+        <view class="i-carbon-user-avatar" :class="{ active: activeTab === 'my' }" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'my' }">我的</text>
     </view>
   </view>
 </template>
 
+<script lang="ts">
+export default {
+  name: 'BottomNavBar',
+}
+</script>
+
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useThemeStore } from '@/store/theme'
-
-defineOptions({
-  name: 'BottomNavBar',
-})
 
 const props = defineProps({
   activeTab: {
@@ -87,9 +87,15 @@ const handleTabChange = (tab: string) => {
 
     .nav-icon {
       margin-bottom: 4px;
+      height: 24px;
+      width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      .iconfont {
-        font-size: 24px;
+      view {
+        width: 100%;
+        height: 100%;
         color: #666666;
 
         &.active {
@@ -112,7 +118,7 @@ const handleTabChange = (tab: string) => {
   &.dark-theme {
     .nav-item {
       .nav-icon {
-        .iconfont {
+        view {
           color: #d1d5db;
 
           &.active {

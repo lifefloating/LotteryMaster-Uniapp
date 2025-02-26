@@ -21,8 +21,8 @@
 </template>
 
 <script lang="ts" setup>
-import RequestComp from './components/request.vue'
-import UploadComp from './components/upload.vue'
+import * as RequestComp from './components/request.vue'
+import * as UploadComp from './components/upload.vue'
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()

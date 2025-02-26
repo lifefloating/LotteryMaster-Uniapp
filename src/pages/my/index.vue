@@ -117,9 +117,11 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, ref, defineAsyncComponent } from 'vue'
 import { useThemeStore } from '@/store/theme'
-import * as LotteryHeader from '@/components/LotteryHeader.vue'
-import * as BottomNavBar from '@/components/BottomNavBar.vue'
+
+const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
+const BottomNavBar = defineAsyncComponent(() => import('@/components/BottomNavBar.vue'))
 
 defineOptions({
   name: 'MyPage',

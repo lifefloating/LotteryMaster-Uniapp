@@ -112,12 +112,14 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, ref, defineAsyncComponent } from 'vue'
 import { useThemeStore } from '@/store/theme'
 import { useLotteryStore } from '@/store/lottery'
-import * as LotteryHeader from '@/components/LotteryHeader.vue'
-import * as LotteryTypeSwitch from '@/components/LotteryTypeSwitch.vue'
-import * as LotteryNumberBall from '@/components/LotteryNumberBall.vue'
-import * as BottomNavBar from '@/components/BottomNavBar.vue'
+
+const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
+const LotteryTypeSwitch = defineAsyncComponent(() => import('@/components/LotteryTypeSwitch.vue'))
+const LotteryNumberBall = defineAsyncComponent(() => import('@/components/LotteryNumberBall.vue'))
+const BottomNavBar = defineAsyncComponent(() => import('@/components/BottomNavBar.vue'))
 
 defineOptions({
   name: 'TrendsPage',

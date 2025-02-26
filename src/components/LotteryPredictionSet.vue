@@ -34,9 +34,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed, PropType, defineAsyncComponent } from 'vue'
 import { useThemeStore } from '@/store/theme'
-import * as LotteryNumberBall from '@/components/LotteryNumberBall.vue'
+
+const LotteryNumberBall = defineAsyncComponent(() => import('@/components/LotteryNumberBall.vue'))
 
 defineOptions({
   name: 'LotteryPredictionSet',

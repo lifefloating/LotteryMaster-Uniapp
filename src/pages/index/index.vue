@@ -93,15 +93,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useThemeStore } from '@/store/theme'
 import { useLotteryStore } from '@/store/lottery'
-import * as LotteryHeader from '@/components/LotteryHeader.vue'
-import * as LotteryTypeSwitch from '@/components/LotteryTypeSwitch.vue'
-import * as LotteryNumberBall from '@/components/LotteryNumberBall.vue'
-import * as LotteryPredictionSet from '@/components/LotteryPredictionSet.vue'
-import * as BottomNavBar from '@/components/BottomNavBar.vue'
+
+const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
+const LotteryTypeSwitch = defineAsyncComponent(() => import('@/components/LotteryTypeSwitch.vue'))
+const LotteryNumberBall = defineAsyncComponent(() => import('@/components/LotteryNumberBall.vue'))
+const LotteryPredictionSet = defineAsyncComponent(
+  () => import('@/components/LotteryPredictionSet.vue'),
+)
+const BottomNavBar = defineAsyncComponent(() => import('@/components/BottomNavBar.vue'))
 
 defineOptions({
   name: 'PredictionPage',
