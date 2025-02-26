@@ -20,6 +20,20 @@
 - UnoCss 原子化 CSS
 - Wot Design Uni UI 组件库
 
+## 功能预览
+
+### 预测功能
+
+![预测功能](examples/imgs/predict_example.jpg)
+
+### 走势分析
+
+![走势分析](examples/imgs/trends_example.jpg)
+
+### 个人中心
+
+![个人中心](examples/imgs/my_example.jpg)
+
 ## 项目结构
 
 ```
