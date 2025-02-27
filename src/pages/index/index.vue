@@ -39,44 +39,15 @@
     </view>
 
     <!-- 预测号码展示区 -->
-    <view class="prediction-numbers-container">
-      <view class="prediction-title">
-        <text class="title-text">预测号码</text>
-        <view class="report-button" @click="showReport = true">
-          <wd-icon name="data-analysis" size="14px" color="#FFFFFF" />
-          <text class="report-button-text">查看分析报告</text>
-        </view>
-      </view>
-
-      <view class="prediction-numbers">
-        <view class="number-balls-container">
-          <lottery-number-ball
-            v-for="(num, index) in topPrediction.primaryNumbers"
-            :key="'primary-' + index"
-            :number="num"
-            type="primary"
-            :lottery-type="lotteryStore.currentLotteryType"
-          />
-
-          <lottery-number-ball
-            v-for="(num, index) in topPrediction.specialNumbers"
-            :key="'special-' + index"
-            :number="num"
-            type="special"
-            :lottery-type="lotteryStore.currentLotteryType"
-          />
-        </view>
+    <view class="prediction-title-container">
+      <view class="report-button" @click="showReport = true">
+        <wd-icon name="data-analysis" size="14px" color="#FFFFFF" />
+        <text class="report-button-text">查看分析报告</text>
       </view>
     </view>
 
     <!-- 多组预测号码列表 -->
     <view class="prediction-sets-container">
-      <view class="prediction-sets-title">
-        <text class="title-text">组号</text>
-        <text class="title-text">预测号码</text>
-        <text class="title-text">特殊号</text>
-      </view>
-
       <scroll-view class="prediction-sets-scroll" scroll-y>
         <view class="prediction-sets-list">
           <lottery-prediction-set
@@ -103,7 +74,7 @@
 import { computed, defineAsyncComponent, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useThemeStore } from '@/store/theme'
-import { useLotteryStore } from '@/store/lottery'
+import { useLotteryStore, type LotteryType } from '@/store/lottery'
 
 const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
 const LotteryTypeSwitch = defineAsyncComponent(() => import('@/components/LotteryTypeSwitch.vue'))
@@ -151,7 +122,7 @@ const handleHistory = () => {
 }
 
 // 处理彩票类型切换
-const handleLotteryTypeSwitch = (type: string) => {
+const handleLotteryTypeSwitch = (type: LotteryType) => {
   lotteryStore.setLotteryType(type)
   lotteryStore.fetchLotteryData()
 }
@@ -202,58 +173,31 @@ const handleTabChange = (tab: string) => {
     }
   }
 
-  .prediction-numbers-container {
+  .prediction-title-container {
+    display: flex;
+    justify-content: flex-end;
     padding: 16px;
-    margin: 0 16px 16px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin: 0 16px;
 
-    .prediction-title {
+    .report-button {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+      transition: all 0.3s ease;
 
-      .title-text {
-        font-size: 16px;
+      &:active {
+        transform: scale(0.98);
+        box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
+      }
+
+      .report-button-text {
+        margin: 0 4px;
+        font-size: 14px;
         font-weight: 500;
-        color: #333333;
-      }
-
-      .report-button {
-        display: flex;
-        align-items: center;
-        padding: 6px 12px;
-        background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
-        border-radius: 20px;
-        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-        transition: all 0.3s ease;
-
-        &:active {
-          transform: scale(0.98);
-          box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
-        }
-
-        .report-button-text {
-          margin: 0 4px;
-          font-size: 13px;
-          font-weight: 500;
-          color: #ffffff;
-        }
-
-        .report-button-hint {
-          font-size: 10px;
-          color: rgba(255, 255, 255, 0.9);
-        }
-      }
-    }
-
-    .prediction-numbers {
-      .number-balls-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        color: #ffffff;
       }
     }
   }
@@ -263,30 +207,23 @@ const handleTabChange = (tab: string) => {
     flex: 1;
     flex-direction: column;
     margin: 0 16px;
-
-    .prediction-sets-title {
-      display: flex;
-      padding: 0 16px 8px;
-
-      .title-text {
-        flex: 1;
-        font-size: 14px;
-        color: #666666;
-
-        &:first-child {
-          flex: 0 0 60px;
-        }
-
-        &:last-child {
-          flex: 0 0 80px;
-          text-align: right;
-        }
-      }
-    }
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 
     .prediction-sets-scroll {
       flex: 1;
-      height: 400px;
+      height: calc(100vh - 300px);
+      min-height: 400px;
+      max-height: 700px;
+      padding: 12px;
+
+      .prediction-sets-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
     }
   }
 
@@ -303,23 +240,9 @@ const handleTabChange = (tab: string) => {
       }
     }
 
-    .prediction-numbers-container {
+    .prediction-sets-container {
       background-color: #1f2937;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-      .prediction-title {
-        .title-text {
-          color: #f9fafb;
-        }
-      }
-    }
-
-    .prediction-sets-container {
-      .prediction-sets-title {
-        .title-text {
-          color: #d1d5db;
-        }
-      }
     }
   }
 }

@@ -1,16 +1,8 @@
 <template>
   <view class="prediction-set-container" :class="{ 'dark-theme': isDarkMode }">
-    <view class="set-header">
-      <view class="set-number">
-        <text class="set-number-text">{{ setNumber }}</text>
-      </view>
-      <view class="set-title">
-        <text class="set-title-text">预测号码</text>
-      </view>
-    </view>
-
     <view class="numbers-container">
       <view class="primary-numbers">
+        <view class="zone-label">前区</view>
         <lottery-number-ball
           v-for="(num, index) in primaryNumbers"
           :key="index"
@@ -21,6 +13,7 @@
       </view>
 
       <view class="special-numbers">
+        <view class="zone-label">后区</view>
         <lottery-number-ball
           v-for="(num, index) in specialNumbers"
           :key="index"
@@ -44,21 +37,17 @@ defineOptions({
 })
 
 const props = defineProps({
-  setNumber: {
-    type: [Number, String],
+  lotteryType: {
+    type: String,
     required: true,
   },
   primaryNumbers: {
-    type: Array as PropType<(number | string)[]>,
+    type: Array as PropType<(string | number)[]>,
     required: true,
   },
   specialNumbers: {
-    type: Array as PropType<(number | string)[]>,
+    type: Array as PropType<(string | number)[]>,
     required: true,
-  },
-  lotteryType: {
-    type: String,
-    default: 'ssq', // 'ssq' or 'dlt'
   },
 })
 
@@ -68,7 +57,8 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
 
 <style lang="scss" scoped>
 .prediction-set-container {
-  padding: 16px;
+  position: relative;
+  padding: 12px;
   margin-bottom: 12px;
   background-color: #ffffff;
   border-radius: 12px;
@@ -79,59 +69,65 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
-  .set-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-
-    .set-number {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      margin-right: 8px;
-      background-color: #3b82f6;
-      border-radius: 50%;
-
-      .set-number-text {
-        font-size: 14px;
-        font-weight: bold;
-        color: #ffffff;
-      }
-    }
-
-    .set-title {
-      .set-title-text {
-        font-size: 16px;
-        font-weight: 500;
-        color: #333333;
-      }
-    }
-  }
-
   .numbers-container {
     display: flex;
     flex-direction: column;
+    gap: 12px;
 
     .primary-numbers,
     .special-numbers {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      margin-bottom: 8px;
+      flex-wrap: nowrap;
+      align-items: center;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 8px 4px;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .zone-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #666666;
+        margin-right: 8px;
+        padding-left: 4px;
+        flex-shrink: 0;
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: -4px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 2px;
+          height: 12px;
+          background-color: #3b82f6;
+          border-radius: 1px;
+        }
+      }
+
+      :deep(.lottery-number-ball) {
+        flex-shrink: 0;
+        margin: 0 4px;
+      }
+    }
+
+    .special-numbers {
+      .zone-label::after {
+        background-color: #ef4444;
+      }
     }
   }
 
   &.dark-theme {
-    .set-header {
-      .set-number {
-        background-color: #60a5fa;
-      }
-
-      .set-title {
-        .set-title-text {
-          color: #f9fafb;
+    .numbers-container {
+      .primary-numbers,
+      .special-numbers {
+        .zone-label {
+          color: #d1d5db;
         }
       }
     }
