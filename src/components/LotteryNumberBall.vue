@@ -55,7 +55,6 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
   &:active {
     transform: scale(0.95);
   }
-
   /* 双色球：前6位蓝色，后1位红色 */
   &.ssq-primary-ball {
     background-color: #3498db; /* 蓝色 */
@@ -76,7 +75,6 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
       color: #ffffff;
     }
   }
-
   /* 大乐透：前5位蓝色，后2位红色 */
   &.dlt-primary-ball {
     background-color: #3498db; /* 蓝色 */

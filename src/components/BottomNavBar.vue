@@ -31,15 +31,15 @@
   </view>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'BottomNavBar',
-}
-</script>
+<script lang="ts"></script>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useThemeStore } from '@/store/theme'
+
+defineOptions({
+  name: 'BottomNavBar',
+})
 
 const props = defineProps({
   activeTab: {

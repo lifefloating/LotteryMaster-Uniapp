@@ -53,21 +53,13 @@
     "build:quickapp-webview": "uni build -p quickapp-webview",
     "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
-    "prepare": "git init && husky install",
     "type-check": "vue-tsc --noEmit",
     "cz": "czg",
-    "openapi-ts-request": "openapi-ts"
-  },
-  "lint-staged": {
-    "**/*.{html,vue,ts,cjs,json,md}": [
-      "prettier --write"
-    ],
-    "**/*.{vue,js,ts,jsx,tsx}": [
-      "eslint --cache --fix"
-    ],
-    "**/*.{vue,css,scss,html}": [
-      "stylelint --fix"
-    ]
+    "openapi-ts-request": "openapi-ts",
+    "lint": "eslint --ext .js,.ts,.vue src",
+    "lint:fix": "eslint --ext .js,.ts,.vue src --fix",
+    "lint:style": "stylelint \"**/*.{vue,css,scss,html}\"",
+    "lint:style:fix": "stylelint \"**/*.{vue,css,scss,html}\" --fix"
   },
   "resolutions": {
     "bin-wrapper": "npm:bin-wrapper-china"

@@ -80,7 +80,7 @@ const formattedReport = computed(() => {
   content = content.replace(/<p><h4/g, '<h4').replace(/<\/h4><\/p>/g, '</h4>')
 
   // 关闭章节容器
-  let sections = content.split('<div class="report-section">')
+  const sections = content.split('<div class="report-section">')
   for (let i = 1; i < sections.length; i++) {
     if (i < sections.length - 1) {
       sections[i] = sections[i].replace(
@@ -131,22 +131,22 @@ onMounted(() => {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f8fafc;
   z-index: 999;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
+  background-color: #f8fafc;
 }
 
 .report-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 16px;
-  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
   color: white;
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -159,36 +159,36 @@ onMounted(() => {
 
 .report-content {
   flex: 1;
-  overflow-y: auto;
   padding: 0;
+  overflow-y: auto;
 }
 
 .loading,
 .error {
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   gap: 16px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .report-body {
-  line-height: 1.6;
   padding-bottom: 32px;
+  line-height: 1.6;
 }
 
 .report-section {
   margin: 0 0 16px;
+  overflow: hidden;
   background-color: white;
   border-radius: 8px;
-  overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .section-header {
-  background-color: #f1f5f9;
   padding: 12px 16px;
+  background-color: #f1f5f9;
   border-bottom: 1px solid #e2e8f0;
 }
 
@@ -204,25 +204,25 @@ onMounted(() => {
 }
 
 .subsection-title {
+  padding-left: 8px;
   margin: 16px 0 12px;
   font-size: 15px;
   font-weight: 500;
   color: #3b82f6;
   border-left: 3px solid #3b82f6;
-  padding-left: 8px;
 }
 
 .list-item {
   display: flex;
-  margin-bottom: 8px;
   padding-left: 8px;
+  margin-bottom: 8px;
 }
 
 .list-number,
 .list-bullet {
   flex: 0 0 20px;
-  color: #3b82f6;
   font-weight: 600;
+  color: #3b82f6;
 }
 
 .list-content {
@@ -230,13 +230,13 @@ onMounted(() => {
 }
 
 .ordered-list {
-  margin: 8px 0;
   padding: 0;
+  margin: 8px 0;
 }
 
 .unordered-list {
-  margin: 8px 0;
   padding: 0;
+  margin: 8px 0;
 }
 
 p {

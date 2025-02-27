@@ -39,11 +39,30 @@ module.exports = {
         ignoreUnits: ['rpx'],
       },
     ],
-    // 处理小程序page标签不认识的问题
+    // 处理小程序page标签和uni-app特有标签不认识的问题
     'selector-type-no-unknown': [
       true,
       {
-        ignoreTypes: ['page'],
+        ignoreTypes: [
+          'page',
+          'uni-app',
+          'uni-page',
+          'uni-page-wrapper',
+          'uni-page-body',
+          'uni-page-head',
+          'uni-button',
+          'uni-image',
+          'uni-input',
+          'uni-scroll-view',
+          'uni-swiper',
+          'uni-switch',
+          'uni-text',
+          'uni-view',
+          'uni-toast',
+          'uni-tabbar',
+          'uni-resize-sensor',
+          'uni-cover-view',
+        ],
       },
     ],
     'comment-empty-line-before': 'never', // never|always|always-multi-line|never-multi-line
@@ -54,5 +73,9 @@ module.exports = {
     'scss/comment-no-empty': null,
     'selector-class-pattern': null,
     'font-family-no-missing-generic-family-keyword': null,
+    // 关闭选择器顺序规则，避免与 wot-design-uni 组件库冲突
+    'no-descending-specificity': null,
+    // 关闭 SCSS 操作符换行规则
+    'scss/operator-no-newline-after': null,
   },
 }

@@ -211,8 +211,8 @@ const handleTabChange = (tab: string) => {
 
     .prediction-title {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       margin-bottom: 16px;
 
       .title-text {
@@ -229,9 +229,9 @@ const handleTabChange = (tab: string) => {
         border-radius: 4px;
 
         .report-button-text {
+          margin-right: 4px;
           font-size: 12px;
           color: #3b82f6;
-          margin-right: 4px;
         }
       }
     }
