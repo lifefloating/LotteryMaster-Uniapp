@@ -30,6 +30,10 @@
 
 ![走势分析](examples/imgs/trends_example.jpg)
 
+### 分析报告
+
+![分析报告](examples/imgs/report_example.png)
+
 ### 个人中心
 
 ![个人中心](examples/imgs/my_example.jpg)

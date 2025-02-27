@@ -109,24 +109,52 @@ export const useLotteryStore = defineStore('lottery', {
         const scrapeEndpoint =
           this.currentLotteryType === 'ssq' ? '/api/scrape/ssq' : '/api/scrape/dlt'
 
-        await uni.request({
-          url: scrapeEndpoint,
-          method: 'GET',
-        })
+        console.log('Calling scrape endpoint:', scrapeEndpoint)
+
+        try {
+          // 使用Promise方式，但避开类型检查问题
+          const scrapeRes = (await new Promise((resolve) => {
+            uni.request({
+              url: scrapeEndpoint,
+              method: 'GET',
+              success: resolve,
+              fail: resolve,
+            })
+          })) as any
+          console.log('Scrape API response:', scrapeRes.statusCode)
+        } catch (scrapeErr) {
+          console.error('Error calling scrape API:', scrapeErr)
+          // 继续执行，不中断流程
+        }
 
         // Then call the prediction API
         const analyzeEndpoint =
           this.currentLotteryType === 'ssq' ? '/api/analyze/ssq' : '/api/analyze/dlt'
 
-        const response = await uni.request({
-          url: analyzeEndpoint,
-          method: 'GET',
-          timeout: 120000, // 120秒超时
-        })
+        console.log('Calling analyze endpoint:', analyzeEndpoint)
 
-        // Update the store with the response data
-        // This is a mock implementation, in a real app you would use the actual response data
-        // this.lotteryData[this.currentLotteryType] = response.data
+        try {
+          // 使用Promise方式，但避开类型检查问题
+          const analyzeRes = (await new Promise((resolve, reject) => {
+            uni.request({
+              url: analyzeEndpoint,
+              method: 'GET',
+              timeout: 120000, // 120秒超时
+              success: resolve,
+              fail: reject,
+            })
+          })) as any
+
+          if (analyzeRes.statusCode !== 200) {
+            console.error('Analyze API returned non-200 status:', analyzeRes.statusCode)
+            this.error = `获取数据失败，服务器返回状态码 ${analyzeRes.statusCode}`
+          } else {
+            console.log('Analyze API response successful')
+          }
+        } catch (analyzeErr) {
+          console.error('Error calling analyze API:', analyzeErr)
+          this.error = '获取数据失败，请稍后重试'
+        }
 
         this.isLoading = false
       } catch (error) {

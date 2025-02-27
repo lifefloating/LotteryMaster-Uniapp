@@ -43,8 +43,9 @@
       <view class="prediction-title">
         <text class="title-text">预测号码</text>
         <view class="report-button" @click="showReport = true">
+          <wd-icon name="data-analysis" size="14px" color="#FFFFFF" />
           <text class="report-button-text">查看分析报告</text>
-          <wd-icon name="arrow-right" size="14px" />
+          <text class="report-button-hint">(基于近2000期数据)</text>
         </view>
       </view>
 
@@ -224,14 +225,27 @@ const handleTabChange = (tab: string) => {
       .report-button {
         display: flex;
         align-items: center;
-        padding: 4px 8px;
-        background-color: #ebf5ff;
-        border-radius: 4px;
+        padding: 6px 12px;
+        background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+        border-radius: 20px;
+        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+        transition: all 0.3s ease;
+
+        &:active {
+          transform: scale(0.98);
+          box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
+        }
 
         .report-button-text {
-          margin-right: 4px;
-          font-size: 12px;
-          color: #3b82f6;
+          margin: 0 4px;
+          font-size: 13px;
+          font-weight: 500;
+          color: #ffffff;
+        }
+
+        .report-button-hint {
+          font-size: 10px;
+          color: rgba(255, 255, 255, 0.9);
         }
       }
     }

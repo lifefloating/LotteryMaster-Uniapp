@@ -6,6 +6,11 @@
     </div>
 
     <div class="report-content">
+      <div class="report-intro">
+        <wd-icon name="info" color="#3B82F6" size="16px" />
+        <span>本报告基于近2000期历史数据分析生成，仅供参考</span>
+      </div>
+
       <div v-if="loading" class="loading">
         <wd-loading color="#3B82F6" />
         <span>加载中...</span>
@@ -18,7 +23,255 @@
       </div>
 
       <div v-else-if="report" class="report-body">
-        <div v-html="formattedReport"></div>
+        <div v-if="useMdContent" v-html="formattedMarkdown"></div>
+        <div v-else>
+          <!-- 频率分析 -->
+          <div class="report-section">
+            <div class="section-header">
+              <h3 class="section-title">一、数字出现频率分析</h3>
+            </div>
+            <div class="section-content">
+              <h4 class="subsection-title">前区号码</h4>
+              <div class="frequency-table">
+                <div class="table-header">
+                  <div class="table-cell">号码</div>
+                  <div class="table-cell">出现频率</div>
+                </div>
+                <div
+                  v-for="item in reportData.frequencyAnalysis.frontZone"
+                  :key="item.number"
+                  class="table-row"
+                >
+                  <div class="table-cell">{{ item.number }}</div>
+                  <div class="table-cell">{{ item.frequency }}</div>
+                </div>
+              </div>
+
+              <h4 class="subsection-title">后区号码</h4>
+              <div class="frequency-table">
+                <div class="table-header">
+                  <div class="table-cell">号码</div>
+                  <div class="table-cell">出现频率</div>
+                </div>
+                <div
+                  v-for="item in reportData.frequencyAnalysis.backZone"
+                  :key="item.number"
+                  class="table-row"
+                >
+                  <div class="table-cell">{{ item.number }}</div>
+                  <div class="table-cell">{{ item.frequency }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 冷热号码分析 -->
+          <div class="report-section">
+            <div class="section-header">
+              <h3 class="section-title">二、冷热号码分析</h3>
+            </div>
+            <div class="section-content">
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>热门号码</strong>
+                  : {{ reportData.hotColdAnalysis.hotNumbers.join(', ') }}
+                </span>
+              </div>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>冷门号码</strong>
+                  : {{ reportData.hotColdAnalysis.coldNumbers.join(', ') }}
+                </span>
+              </div>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>转热号码</strong>
+                  : {{ reportData.hotColdAnalysis.risingNumbers.join(', ') }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 遗漏号分析 -->
+          <div class="report-section">
+            <div class="section-header">
+              <h3 class="section-title">三、遗漏号分析</h3>
+            </div>
+            <div class="section-content">
+              <h4 class="subsection-title">前区号码</h4>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>最大遗漏号码</strong>
+                  : {{ reportData.missingAnalysis.frontZone.maxMissingNumber }}
+                </span>
+              </div>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>遗漏走势描述</strong>
+                  : {{ reportData.missingAnalysis.frontZone.missingTrend }}
+                </span>
+              </div>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>遗漏值预警提示</strong>
+                  :
+                </span>
+              </div>
+              <div
+                v-for="(warning, index) in reportData.missingAnalysis.frontZone.warnings"
+                :key="index"
+                class="list-item warning-item"
+              >
+                <span class="list-bullet">-</span>
+                <span class="list-content">{{ warning }}</span>
+              </div>
+
+              <h4 class="subsection-title">后区号码</h4>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>当前遗漏状况描述</strong>
+                  : {{ reportData.missingAnalysis.backZone.missingStatus }}
+                </span>
+              </div>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>遗漏值异常提醒</strong>
+                  :
+                </span>
+              </div>
+              <div
+                v-for="(warning, index) in reportData.missingAnalysis.backZone.warnings"
+                :key="index"
+                class="list-item warning-item"
+              >
+                <span class="list-bullet">-</span>
+                <span class="list-content">{{ warning }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 走势特征分析 -->
+          <div class="report-section">
+            <div class="section-header">
+              <h3 class="section-title">四、走势特征分析</h3>
+            </div>
+            <div class="section-content">
+              <h4 class="subsection-title">前区号码</h4>
+              <div
+                v-for="(feature, index) in reportData.trendAnalysis.frontZoneFeatures"
+                :key="index"
+                class="list-item"
+              >
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>走势特征</strong>
+                  : {{ feature }}
+                </span>
+              </div>
+              <div
+                v-for="(point, index) in reportData.trendAnalysis.keyTurningPoints"
+                :key="'point-' + index"
+                class="list-item"
+              >
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>关键走势拐点</strong>
+                  : {{ point }}
+                </span>
+              </div>
+
+              <h4 class="subsection-title">后区号码</h4>
+              <div
+                v-for="(feature, index) in reportData.trendAnalysis.backZoneFeatures"
+                :key="'back-' + index"
+                class="list-item"
+              >
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>走势特征</strong>
+                  : {{ feature }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 奇偶比分析 -->
+          <div class="report-section">
+            <div class="section-header">
+              <h3 class="section-title">五、奇偶比分析</h3>
+            </div>
+            <div class="section-content">
+              <h4 class="subsection-title">前区号码</h4>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>奇偶比描述</strong>
+                  : {{ reportData.oddEvenAnalysis.frontZoneRatio }}
+                </span>
+              </div>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>推荐的奇偶比</strong>
+                  : {{ reportData.oddEvenAnalysis.recommendedRatio }}
+                </span>
+              </div>
+
+              <h4 class="subsection-title">后区号码</h4>
+              <div class="list-item">
+                <span class="list-bullet">•</span>
+                <span class="list-content">
+                  <strong>奇偶比描述</strong>
+                  : {{ reportData.oddEvenAnalysis.backZoneRatio }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 推荐号码组合 -->
+          <div class="report-section">
+            <div class="section-header">
+              <h3 class="section-title">六、推荐号码组合</h3>
+            </div>
+            <div class="section-content">
+              <div
+                v-for="(rec, index) in reportData.recommendations"
+                :key="index"
+                class="list-item"
+              >
+                <span class="list-number">{{ index + 1 }}.</span>
+                <span class="list-content">
+                  前区: {{ rec.frontZone.join(', ') }} | 后区: {{ rec.backZone.join(', ') }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 风险提示 -->
+          <div class="report-section">
+            <div class="section-header">
+              <h3 class="section-title">七、风险提示</h3>
+            </div>
+            <div class="section-content">
+              <div
+                v-for="(warning, index) in reportData.riskWarnings"
+                :key="index"
+                class="list-item"
+              >
+                <span class="list-number">{{ index + 1 }}.</span>
+                <span class="list-content">{{ warning }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -26,8 +279,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useLotteryStore } from '@/store/lottery'
 
-// 不使用 marked 库，改用简单的正则表达式处理 Markdown
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -40,22 +293,46 @@ const emit = defineEmits(['close'])
 const loading = ref(false)
 const error = ref('')
 const report = ref(null)
+const useMdContent = ref(false) // 是否使用markdown内容
+const lotteryStore = useLotteryStore()
 
-// 格式化报告内容，将Markdown转换为HTML
-const formattedReport = computed(() => {
-  if (!report.value) return ''
+// 获取结构化的报告数据
+const reportData = computed(() => {
+  if (!report.value || !report.value.analysis || !report.value.analysis.structured) {
+    return null
+  }
+  return report.value.analysis.structured
+})
 
-  let content = report.value.analysis || ''
+// 格式化Markdown内容
+const formattedMarkdown = computed(() => {
+  if (!report.value || !report.value.analysis || !report.value.analysis.markdown) {
+    return ''
+  }
+
+  let content = report.value.analysis.markdown || ''
 
   // 移除顶部的标题，因为我们已经有了自己的标题
-  content = content.replace(/^## 彩票数据分析报告\n\n/, '')
+  content = content.replace(/^# 彩票数据分析报告\n\n/, '')
 
   // 处理标题
   content = content.replace(
-    /### (.*)/g,
+    /## (.*)/g,
     '<div class="report-section"><div class="section-header"><h3 class="section-title">$1</h3></div><div class="section-content">',
   )
-  content = content.replace(/#### (.*)/g, '<h4 class="subsection-title">$1</h4>')
+  content = content.replace(/### (.*)/g, '<h4 class="subsection-title">$1</h4>')
+
+  // 处理表格
+  content = content.replace(
+    /\| (.*) \| (.*) \|\n\|------\|----------\|/g,
+    '<div class="frequency-table"><div class="table-header"><div class="table-cell">$1</div><div class="table-cell">$2</div></div>',
+  )
+  content = content.replace(
+    /\| (\d+) +\| (\d+) +\|/g,
+    '<div class="table-row"><div class="table-cell">$1</div><div class="table-cell">$2</div></div>',
+  )
+  // 关闭表格
+  content = content.replace(/(<div class="table-row">.*?<\/div>)\n\n/g, '$1</div>\n\n')
 
   // 处理有序列表
   content = content.replace(
@@ -100,23 +377,142 @@ const fetchReport = async () => {
   error.value = ''
 
   try {
-    // 模拟API请求，实际项目中应该调用真实的API
-    // const response = await fetch('/api/analysis-report')
-    // const data = await response.json()
+    // 获取当前彩票类型
+    const lotteryType = lotteryStore.currentLotteryType
+    console.log('Current lottery type:', lotteryType)
 
-    // 使用示例数据
-    setTimeout(() => {
-      report.value = {
-        success: true,
-        analysis:
-          '## 彩票数据分析报告\n\n### 一、数字出现频率分析\n\n#### 前区号码\n1. **最高频号码**\n   - 1 (出现次数：18次)\n   - 3 (出现次数：16次)\n   - 7 (出现次数：15次)\n   - 11 (出现次数：15次)\n   - 2 (出现次数：14次)\n\n2. **最低频号码**\n   - 35 (出现次数：11次)\n   - 29 (出现次数：11次)\n   - 34 (出现次数：10次)\n   - 33 (出现次数：10次)\n   - 32 (出现次数：10次)\n\n#### 后区号码\n1. **最高频号码**\n   - 1 (出现次数：16次)\n   - 10 (出现次数：15次)\n   - 12 (出现次数：15次)\n   - 2 (出现次数：13次)\n   - 7 (出现次数：13次)\n\n2. **最低频号码**\n   - 4 (出现次数：9次)\n   - 5 (出现次数：10次)\n   - 6 (出现次数：11次)\n   - 8 (出现次数：11次)\n   - 9 (出现次数：11次)\n\n### 二、冷热号码分析\n\n#### 最近10期热门号码\n- 前区：1, 3, 7, 11, 2\n- 后区：1, 10, 12, 2, 7\n\n#### 长期未出现的冷门号码\n- 前区：35, 29, 34, 33, 32\n- 后区：4, 5, 6, 8, 9\n\n#### 值得关注的转热号码\n- 前区：1, 3, 7, 11, 2\n- 后区：1, 10, 12, 2, 7\n\n### 三、遗漏号分析\n\n#### 前区遗漏值分析\n1. **当前最大遗漏号码**\n   - 35 (遗漏值：4)\n   - 29 (遗漏值：4)\n   - 34 (遗漏值：4)\n   - 33 (遗漏值：4)\n   - 32 (遗漏值：4)\n\n2. **近期遗漏走势**\n   - 多数号码的遗漏值在1-3之间波动。\n\n3. **遗漏值预警提示**\n   - 35, 29, 34, 33, 32 都已连续遗漏4期，值得关注。\n\n#### 后区遗漏值分析\n1. **当前遗漏状况**\n   - 4 (遗漏值：3)\n   - 5 (遗漏值：3)\n   - 6 (遗漏值：3)\n   - 8 (遗漏值：3)\n   - 9 (遗漏值：3)\n\n2. **遗漏值异常提醒**\n   - 后区号码4, 5, 6, 8, 9 都已连续遗漏3期，需要特别留意。\n\n### 四、走势特征分析\n\n#### 号码走势特点\n1. **前区走势特征**\n   - 多数号码集中在1-11之间，尤其是1, 3, 7, 11等号码频繁出现。\n   - 连号出现较少，斜连号较为常见。\n\n2. **后区走势特征**\n   - 后区号码1, 10, 12, 2, 7出现频率较高。\n   - 连号和斜连号出现较多。\n\n3. **关键走势拐点**\n   - 从最近几期数据来看，1, 3, 7, 11, 2等号码出现频繁，可能是一个拐点。\n\n#### 走势图重要指标\n1. **号码分布特征**\n   - 前区号码多集中在1-11之间，后区号码多集中在1, 10, 12, 2, 7之间。\n   \n2. **连号走势分析**\n   - 连号出现较少，但斜连号较多。\n\n3. **斜连号分析**\n   - 斜连号如1, 2, 3, 7, 11等号码频繁出现。\n\n### 五、中奖注数分析\n\n#### 历史中奖分布\n1. **各奖级中奖注数统计**\n   - 各奖项中奖注数波动较大，但总体呈上升趋势。\n\n2. **中奖注数走势**\n   - 中奖注数在最近几期有所增加。\n\n3. **奖池金额变化**\n   - 奖池金额保持稳定，但中奖注数增加可能会影响奖池金额的变化。\n\n#### 中奖号码特征\n1. **热门中奖组合**\n   - 组合如1, 3, 7, 11, 2等出现频繁。\n\n2. **罕见中奖组合**\n   - 罕见中奖组合较少，但建议关注冷门号码的出现。\n\n### 六、奇偶比分析\n\n#### 前区奇偶比\n1. **近期奇偶分布**\n   - 奇数号码出现频率较高，如1, 3, 7, 9, 11等。\n\n2. **奇偶比例趋势**\n   - 前区奇数号码明显多于偶数号码。\n\n3. **最优奇偶组合**\n   - 建议选择3奇2偶或2奇3偶的组合。\n\n#### 后区奇偶特征\n1. **奇偶出现规律**\n   - 后区号码1, 10, 12, 2, 7中，奇数号码略多。\n\n2. **奇偶搭配建议**\n   - 建议选择1奇1偶的组合。\n\n### 七、号码组合特征\n\n#### 常见的连号组合\n- 1, 2; 2, 3; 7, 11等\n\n#### 前后区号码关联性\n- 前区号码1, 3, 7, 11, 2与后区号码1, 10, 12, 2, 7有较高的关联性。\n\n#### 特殊组合模式\n- 1, 3, 7, 11, 2 + 1, 10, 12, 2, 7\n\n### 八、下期参考建议\n\n#### 推荐号码组合\n1. **组合1**\n   - 前区：1, 3, 7, 11, 2\n   - 后区：1, 10, 12\n\n2. **组合2**\n   - 前区：1, 3, 7, 11, 2\n   - 后区：2, 7\n\n3. **组合3**\n   - 前区：1, 3, 7, 11, 2\n   - 后区：1, 12\n\n#### 参考投注策略\n- 重点关注高频率出现的号码。\n- 尝试选择一些冷门号码，以增加中奖机会。\n- 选择3奇2偶或2奇3偶的组合。\n\n#### 重点关注号码\n- 前区：1, 3, 7, 11, 2\n- 后区：1, 10, 12, 2, 7\n\n### 九、风险提示\n\n#### 预测准确度评估\n- 由于彩票的随机性和不可预测性，本报告仅作为参考，不保证一定中奖。\n\n#### 投注建议\n- 投注时应根据自身经济情况合理安排资金，切勿过度投入。\n\n#### 理性购彩提醒\n- 购买彩票应以娱乐为主，理性消费，不要沉迷其中。',
+    // 构建API端点
+    const baseUrl = import.meta.env.VITE_SERVER_BASEURL || ''
+    const analyzeEndpoint = `${baseUrl}/api/analyze/${lotteryType}`
+
+    console.log('Fetching analysis report from:', analyzeEndpoint)
+
+    // 调用真实的API
+    try {
+      const res = await new Promise((resolve, reject) => {
+        uni.request({
+          url: analyzeEndpoint,
+          method: 'GET',
+          timeout: 120000, // 120秒超时
+          success: resolve,
+          fail: reject,
+        })
+      })
+
+      console.log('API response status:', res.statusCode)
+      console.log('API response data:', JSON.stringify(res.data))
+
+      if (res.statusCode !== 200) {
+        error.value = `获取报告失败: 服务器返回状态码 ${res.statusCode}`
+        useMockData()
+        return
       }
+
+      if (!res.data || !res.data.success) {
+        error.value = `获取报告失败: ${res.data?.message || '服务器返回数据格式不正确'}`
+        useMockData()
+        return
+      }
+
+      // 检查返回的数据结构
+      if (!res.data.analysis || !res.data.analysis.structured) {
+        console.error('API response missing structured data:', res.data)
+        error.value = '获取报告失败: 服务器返回数据缺少结构化内容'
+        useMockData()
+        return
+      }
+
+      // 更新报告数据
+      report.value = res.data
+      console.log('Report data updated successfully')
       loading.value = false
-    }, 1000)
+    } catch (err) {
+      console.error('API request error:', err)
+      error.value = `获取报告失败: ${err.message || '未知错误'}`
+      // 使用模拟数据
+      useMockData()
+    }
   } catch (err) {
-    error.value = '获取报告失败，请稍后重试'
-    loading.value = false
+    console.error('Error fetching analysis report:', err)
+    error.value = `获取报告失败: ${err.message || '未知错误'}`
+    // 使用模拟数据
+    useMockData()
   }
+}
+
+// 使用模拟数据
+const useMockData = () => {
+  console.log('Using mock data')
+  // 使用示例数据
+  report.value = {
+    success: true,
+    analysis: {
+      structured: {
+        frequencyAnalysis: {
+          frontZone: [
+            { number: 21, frequency: 10 },
+            { number: 1, frequency: 9 },
+            { number: 10, frequency: 9 },
+            { number: 11, frequency: 8 },
+            { number: 12, frequency: 8 },
+          ],
+          backZone: [
+            { number: 10, frequency: 12 },
+            { number: 12, frequency: 11 },
+            { number: 1, frequency: 10 },
+          ],
+        },
+        hotColdAnalysis: {
+          hotNumbers: [21, 1, 10, 11, 12],
+          coldNumbers: [35],
+          risingNumbers: [3, 7, 8, 9],
+        },
+        missingAnalysis: {
+          frontZone: {
+            maxMissingNumber: 35,
+            missingTrend: '号码35已经连续多期未出现，需密切关注。',
+            warnings: ['遗漏值较高，注意补号机会。'],
+          },
+          backZone: {
+            missingStatus: '后区号码3连续多期未出现，值得关注。',
+            warnings: ['遗漏值异常，需关注补号机会。'],
+          },
+        },
+        trendAnalysis: {
+          frontZoneFeatures: ['前区号码以小数居多，大数较少。'],
+          backZoneFeatures: ['后区号码集中在中等大小范围。'],
+          keyTurningPoints: ['号码35出现次数显著减少，可能进入冷态。'],
+        },
+        oddEvenAnalysis: {
+          frontZoneRatio: '前区号码奇偶比为2:3。',
+          backZoneRatio: '后区号码奇偶比为1:1。',
+          recommendedRatio: '推荐奇偶比为2:3',
+        },
+        recommendations: [
+          {
+            frontZone: [1, 2, 10, 11, 12],
+            backZone: [10, 12],
+          },
+          {
+            frontZone: [1, 7, 10, 11, 12],
+            backZone: [1, 10],
+          },
+          {
+            frontZone: [1, 3, 10, 11, 12],
+            backZone: [10, 12],
+          },
+        ],
+        riskWarnings: [
+          '彩票有风险，投注需谨慎，理性购彩。',
+          '本分析仅供参考，不作为购彩依据。',
+          '历史走势不代表未来趋势。',
+        ],
+      },
+      markdown:
+        '# 彩票数据分析报告\n\n## 一、数字出现频率分析\n### 前区号码\n| 号码 | 出现频率 |\n|------|----------|\n| 21   | 10       |\n| 1    | 9        |\n| 10   | 9        |\n| 11   | 8        |\n| 12   | 8        |\n\n### 后区号码\n| 号码 | 出现频率 |\n|------|----------|\n| 10   | 12       |\n| 12   | 11       |\n| 1   | 10       |\n\n## 二、冷热号码分析\n- **热门号码**: 21, 1, 10, 11, 12\n- **冷门号码**: 35\n- **转热号码**: 3, 7, 8, 9\n\n## 三、遗漏号分析\n### 前区号码\n- **最大遗漏号码**: 35\n- **遗漏走势描述**: 号码35已经连续多期未出现，需密切关注。\n- **遗漏值预警提示**:\n  - 遗漏值较高，注意补号机会。\n\n### 后区号码\n- **当前遗漏状况描述**: 后区号码3连续多期未出现，值得关注。\n- **遗漏值异常提醒**:\n  - 遗漏值异常，需关注补号机会。\n\n## 四、走势特征分析\n### 前区号码\n- **走势特征**: 前区号码以小数居多，大数较少。\n- **关键走势拐点**: 号码35出现次数显著减少，可能进入冷态。\n\n### 后区号码\n- **走势特征**: 后区号码集中在中等大小范围。\n\n## 五、奇偶比分析\n### 前区号码\n- **奇偶比描述**: 前区号码奇偶比为2:3。\n- **推荐的奇偶比**: 推荐奇偶比为2:3\n\n### 后区号码\n- **奇偶比描述**: 后区号码奇偶比为1:1。\n\n## 六、推荐号码组合\n1. 前区: 1, 2, 10, 11, 12 | 后区: 10, 12\n2. 前区: 1, 7, 10, 11, 12 | 后区: 1, 10\n3. 前区: 1, 3, 10, 11, 12 | 后区: 10, 12\n\n## 七、风险提示\n1. 彩票有风险，投注需谨慎，理性购彩。\n2. 本分析仅供参考，不作为购彩依据。\n3. 历史走势不代表未来趋势。',
+    },
+  }
+  loading.value = false
 }
 
 onMounted(() => {
@@ -161,6 +557,21 @@ onMounted(() => {
   flex: 1;
   padding: 0;
   overflow-y: auto;
+}
+
+.report-intro {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.report-intro span {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #3b82f6;
 }
 
 .loading,
@@ -218,6 +629,10 @@ onMounted(() => {
   margin-bottom: 8px;
 }
 
+.warning-item {
+  padding-left: 24px;
+}
+
 .list-number,
 .list-bullet {
   flex: 0 0 20px;
@@ -229,14 +644,29 @@ onMounted(() => {
   flex: 1;
 }
 
-.ordered-list {
-  padding: 0;
-  margin: 8px 0;
+.frequency-table {
+  width: 100%;
+  margin: 12px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
 }
 
-.unordered-list {
-  padding: 0;
-  margin: 8px 0;
+.table-header {
+  display: flex;
+  background-color: #f1f5f9;
+  font-weight: 600;
+}
+
+.table-row {
+  display: flex;
+  border-top: 1px solid #e2e8f0;
+}
+
+.table-cell {
+  flex: 1;
+  padding: 8px 12px;
+  text-align: center;
 }
 
 p {
