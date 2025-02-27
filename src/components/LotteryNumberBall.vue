@@ -2,8 +2,10 @@
   <view
     class="number-ball"
     :class="{
-      'primary-ball': type === 'primary',
-      'special-ball': type === 'special',
+      'ssq-primary-ball': lotteryType === 'ssq' && type === 'primary',
+      'ssq-special-ball': lotteryType === 'ssq' && type === 'special',
+      'dlt-primary-ball': lotteryType === 'dlt' && type === 'primary',
+      'dlt-special-ball': lotteryType === 'dlt' && type === 'special',
       'dark-theme': isDarkMode,
     }"
   >
@@ -54,8 +56,9 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
     transform: scale(0.95);
   }
 
-  &.primary-ball {
-    background-color: #3b82f6;
+  /* 双色球：前6位蓝色，后1位红色 */
+  &.ssq-primary-ball {
+    background-color: #3498db; /* 蓝色 */
 
     .number-text {
       font-size: 16px;
@@ -64,27 +67,52 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
     }
   }
 
-  &.special-ball {
-    background-color: #f3f4f6;
+  &.ssq-special-ball {
+    background-color: #e74c3c; /* 红色 */
 
     .number-text {
       font-size: 16px;
       font-weight: bold;
-      color: #333333;
+      color: #ffffff;
+    }
+  }
+
+  /* 大乐透：前5位蓝色，后2位红色 */
+  &.dlt-primary-ball {
+    background-color: #3498db; /* 蓝色 */
+
+    .number-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+  }
+
+  &.dlt-special-ball {
+    background-color: #e74c3c; /* 红色 */
+
+    .number-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: #ffffff;
     }
   }
 
   &.dark-theme {
-    &.primary-ball {
-      background-color: #60a5fa;
+    &.ssq-primary-ball {
+      background-color: #2980b9; /* 深蓝色 */
     }
 
-    &.special-ball {
-      background-color: #374151;
+    &.ssq-special-ball {
+      background-color: #c0392b; /* 深红色 */
+    }
 
-      .number-text {
-        color: #f9fafb;
-      }
+    &.dlt-primary-ball {
+      background-color: #2980b9; /* 深蓝色 */
+    }
+
+    &.dlt-special-ball {
+      background-color: #c0392b; /* 深红色 */
     }
   }
 }
