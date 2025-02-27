@@ -40,7 +40,9 @@
                 :key="item.number"
                 class="table-row"
               >
-                <div class="table-cell">{{ item.number }}</div>
+                <div class="table-cell">
+                  <span class="ball front-ball">{{ item.number }}</span>
+                </div>
                 <div class="table-cell">{{ item.frequency }}</div>
               </div>
             </div>
@@ -56,7 +58,9 @@
                 :key="item.number"
                 class="table-row"
               >
-                <div class="table-cell">{{ item.number }}</div>
+                <div class="table-cell">
+                  <span class="ball back-ball">{{ item.number }}</span>
+                </div>
                 <div class="table-cell">{{ item.frequency }}</div>
               </div>
             </div>
@@ -69,25 +73,91 @@
             <h3 class="section-title">二、冷热号码分析</h3>
           </div>
           <div class="section-content">
+            <h4 class="subsection-title">前区号码</h4>
             <div class="list-item">
               <span class="list-bullet">•</span>
               <span class="list-content">
                 <strong>热门号码</strong>
-                : {{ reportData.hotColdAnalysis.hotNumbers.join(', ') }}
+                :
+                <span
+                  v-for="num in reportData.hotColdAnalysis.frontZone.hotNumbers"
+                  :key="num"
+                  class="ball front-ball"
+                >
+                  {{ num }}
+                </span>
               </span>
             </div>
             <div class="list-item">
               <span class="list-bullet">•</span>
               <span class="list-content">
                 <strong>冷门号码</strong>
-                : {{ reportData.hotColdAnalysis.coldNumbers.join(', ') }}
+                :
+                <span
+                  v-for="num in reportData.hotColdAnalysis.frontZone.coldNumbers"
+                  :key="num"
+                  class="ball front-ball"
+                >
+                  {{ num }}
+                </span>
               </span>
             </div>
             <div class="list-item">
               <span class="list-bullet">•</span>
               <span class="list-content">
                 <strong>转热号码</strong>
-                : {{ reportData.hotColdAnalysis.risingNumbers.join(', ') }}
+                :
+                <span
+                  v-for="num in reportData.hotColdAnalysis.frontZone.risingNumbers"
+                  :key="num"
+                  class="ball front-ball"
+                >
+                  {{ num }}
+                </span>
+              </span>
+            </div>
+
+            <h4 class="subsection-title">后区号码</h4>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>热门号码</strong>
+                :
+                <span
+                  v-for="num in reportData.hotColdAnalysis.backZone.hotNumbers"
+                  :key="num"
+                  class="ball back-ball"
+                >
+                  {{ num }}
+                </span>
+              </span>
+            </div>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>冷门号码</strong>
+                :
+                <span
+                  v-for="num in reportData.hotColdAnalysis.backZone.coldNumbers"
+                  :key="num"
+                  class="ball back-ball"
+                >
+                  {{ num }}
+                </span>
+              </span>
+            </div>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>转热号码</strong>
+                :
+                <span
+                  v-for="num in reportData.hotColdAnalysis.backZone.risingNumbers"
+                  :key="num"
+                  class="ball back-ball"
+                >
+                  {{ num }}
+                </span>
               </span>
             </div>
           </div>
@@ -104,7 +174,10 @@
               <span class="list-bullet">•</span>
               <span class="list-content">
                 <strong>最大遗漏号码</strong>
-                : {{ reportData.missingAnalysis.frontZone.maxMissingNumber }}
+                :
+                <span class="ball front-ball">
+                  {{ reportData.missingAnalysis.frontZone.maxMissingNumber }}
+                </span>
               </span>
             </div>
             <div class="list-item">
@@ -243,7 +316,12 @@
             <div v-for="(rec, index) in reportData.recommendations" :key="index" class="list-item">
               <span class="list-number">{{ index + 1 }}.</span>
               <span class="list-content">
-                前区: {{ rec.frontZone.join(', ') }} | 后区: {{ rec.backZone.join(', ') }}
+                前区:
+                <span v-for="num in rec.frontZone" :key="num" class="ball front-ball">
+                  {{ num }}
+                </span>
+                | 后区:
+                <span v-for="num in rec.backZone" :key="num" class="ball back-ball">{{ num }}</span>
               </span>
             </div>
           </div>
@@ -411,8 +489,8 @@ onMounted(() => {
   justify-content: space-between;
   padding: 16px;
   color: white;
-  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.1);
 }
 
 .report-header h2 {
@@ -432,15 +510,15 @@ onMounted(() => {
   display: flex;
   align-items: center;
   padding: 16px;
-  background-color: #f1f5f9;
-  border-bottom: 1px solid #e2e8f0;
+  background-color: #f0fdf4;
+  border-bottom: 1px solid #dcfce7;
 }
 
 .report-intro span {
   margin-left: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #3b82f6;
+  color: #059669;
 }
 
 .loading,
@@ -536,6 +614,29 @@ onMounted(() => {
   flex: 1;
   padding: 8px 12px;
   text-align: center;
+}
+
+.ball {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  margin: 0 2px;
+}
+
+.front-ball {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.back-ball {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
 }
 
 p {

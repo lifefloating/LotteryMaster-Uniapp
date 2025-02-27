@@ -18,9 +18,16 @@ export const MOCK_ANALYSIS_REPORT = {
         ],
       },
       hotColdAnalysis: {
-        hotNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        coldNumbers: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
-        risingNumbers: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+        frontZone: {
+          hotNumbers: [1, 2, 3, 4, 5],
+          coldNumbers: [21, 22, 23, 24, 25],
+          risingNumbers: [11, 12, 13, 14, 15],
+        },
+        backZone: {
+          hotNumbers: [1, 2],
+          coldNumbers: [10, 11, 12],
+          risingNumbers: [5, 6],
+        },
       },
       missingAnalysis: {
         frontZone: {
