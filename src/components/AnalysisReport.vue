@@ -23,252 +23,241 @@
       </div>
 
       <div v-else-if="report" class="report-body">
-        <div v-if="useMdContent" v-html="formattedMarkdown"></div>
-        <div v-else>
-          <!-- 频率分析 -->
-          <div class="report-section">
-            <div class="section-header">
-              <h3 class="section-title">一、数字出现频率分析</h3>
-            </div>
-            <div class="section-content">
-              <h4 class="subsection-title">前区号码</h4>
-              <div class="frequency-table">
-                <div class="table-header">
-                  <div class="table-cell">号码</div>
-                  <div class="table-cell">出现频率</div>
-                </div>
-                <div
-                  v-for="item in reportData.frequencyAnalysis.frontZone"
-                  :key="item.number"
-                  class="table-row"
-                >
-                  <div class="table-cell">{{ item.number }}</div>
-                  <div class="table-cell">{{ item.frequency }}</div>
-                </div>
+        <!-- 频率分析 -->
+        <div class="report-section">
+          <div class="section-header">
+            <h3 class="section-title">一、数字出现频率分析</h3>
+          </div>
+          <div class="section-content">
+            <h4 class="subsection-title">前区号码</h4>
+            <div class="frequency-table">
+              <div class="table-header">
+                <div class="table-cell">号码</div>
+                <div class="table-cell">出现频率</div>
               </div>
+              <div
+                v-for="item in reportData.frequencyAnalysis.frontZone"
+                :key="item.number"
+                class="table-row"
+              >
+                <div class="table-cell">{{ item.number }}</div>
+                <div class="table-cell">{{ item.frequency }}</div>
+              </div>
+            </div>
 
-              <h4 class="subsection-title">后区号码</h4>
-              <div class="frequency-table">
-                <div class="table-header">
-                  <div class="table-cell">号码</div>
-                  <div class="table-cell">出现频率</div>
-                </div>
-                <div
-                  v-for="item in reportData.frequencyAnalysis.backZone"
-                  :key="item.number"
-                  class="table-row"
-                >
-                  <div class="table-cell">{{ item.number }}</div>
-                  <div class="table-cell">{{ item.frequency }}</div>
-                </div>
+            <h4 class="subsection-title">后区号码</h4>
+            <div class="frequency-table">
+              <div class="table-header">
+                <div class="table-cell">号码</div>
+                <div class="table-cell">出现频率</div>
+              </div>
+              <div
+                v-for="item in reportData.frequencyAnalysis.backZone"
+                :key="item.number"
+                class="table-row"
+              >
+                <div class="table-cell">{{ item.number }}</div>
+                <div class="table-cell">{{ item.frequency }}</div>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- 冷热号码分析 -->
-          <div class="report-section">
-            <div class="section-header">
-              <h3 class="section-title">二、冷热号码分析</h3>
+        <!-- 冷热号码分析 -->
+        <div class="report-section">
+          <div class="section-header">
+            <h3 class="section-title">二、冷热号码分析</h3>
+          </div>
+          <div class="section-content">
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>热门号码</strong>
+                : {{ reportData.hotColdAnalysis.hotNumbers.join(', ') }}
+              </span>
             </div>
-            <div class="section-content">
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>热门号码</strong>
-                  : {{ reportData.hotColdAnalysis.hotNumbers.join(', ') }}
-                </span>
-              </div>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>冷门号码</strong>
-                  : {{ reportData.hotColdAnalysis.coldNumbers.join(', ') }}
-                </span>
-              </div>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>转热号码</strong>
-                  : {{ reportData.hotColdAnalysis.risingNumbers.join(', ') }}
-                </span>
-              </div>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>冷门号码</strong>
+                : {{ reportData.hotColdAnalysis.coldNumbers.join(', ') }}
+              </span>
+            </div>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>转热号码</strong>
+                : {{ reportData.hotColdAnalysis.risingNumbers.join(', ') }}
+              </span>
             </div>
           </div>
+        </div>
 
-          <!-- 遗漏号分析 -->
-          <div class="report-section">
-            <div class="section-header">
-              <h3 class="section-title">三、遗漏号分析</h3>
+        <!-- 遗漏号分析 -->
+        <div class="report-section">
+          <div class="section-header">
+            <h3 class="section-title">三、遗漏号分析</h3>
+          </div>
+          <div class="section-content">
+            <h4 class="subsection-title">前区号码</h4>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>最大遗漏号码</strong>
+                : {{ reportData.missingAnalysis.frontZone.maxMissingNumber }}
+              </span>
             </div>
-            <div class="section-content">
-              <h4 class="subsection-title">前区号码</h4>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>最大遗漏号码</strong>
-                  : {{ reportData.missingAnalysis.frontZone.maxMissingNumber }}
-                </span>
-              </div>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>遗漏走势描述</strong>
-                  : {{ reportData.missingAnalysis.frontZone.missingTrend }}
-                </span>
-              </div>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>遗漏值预警提示</strong>
-                  :
-                </span>
-              </div>
-              <div
-                v-for="(warning, index) in reportData.missingAnalysis.frontZone.warnings"
-                :key="index"
-                class="list-item warning-item"
-              >
-                <span class="list-bullet">-</span>
-                <span class="list-content">{{ warning }}</span>
-              </div>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>遗漏走势描述</strong>
+                : {{ reportData.missingAnalysis.frontZone.missingTrend }}
+              </span>
+            </div>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>遗漏值预警提示</strong>
+                :
+              </span>
+            </div>
+            <div
+              v-for="(warning, index) in reportData.missingAnalysis.frontZone.warnings"
+              :key="index"
+              class="list-item warning-item"
+            >
+              <span class="list-bullet">-</span>
+              <span class="list-content">{{ warning }}</span>
+            </div>
 
-              <h4 class="subsection-title">后区号码</h4>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>当前遗漏状况描述</strong>
-                  : {{ reportData.missingAnalysis.backZone.missingStatus }}
-                </span>
-              </div>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>遗漏值异常提醒</strong>
-                  :
-                </span>
-              </div>
-              <div
-                v-for="(warning, index) in reportData.missingAnalysis.backZone.warnings"
-                :key="index"
-                class="list-item warning-item"
-              >
-                <span class="list-bullet">-</span>
-                <span class="list-content">{{ warning }}</span>
-              </div>
+            <h4 class="subsection-title">后区号码</h4>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>当前遗漏状况描述</strong>
+                : {{ reportData.missingAnalysis.backZone.missingStatus }}
+              </span>
+            </div>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>遗漏值异常提醒</strong>
+                :
+              </span>
+            </div>
+            <div
+              v-for="(warning, index) in reportData.missingAnalysis.backZone.warnings"
+              :key="index"
+              class="list-item warning-item"
+            >
+              <span class="list-bullet">-</span>
+              <span class="list-content">{{ warning }}</span>
             </div>
           </div>
+        </div>
 
-          <!-- 走势特征分析 -->
-          <div class="report-section">
-            <div class="section-header">
-              <h3 class="section-title">四、走势特征分析</h3>
+        <!-- 走势特征分析 -->
+        <div class="report-section">
+          <div class="section-header">
+            <h3 class="section-title">四、走势特征分析</h3>
+          </div>
+          <div class="section-content">
+            <h4 class="subsection-title">前区号码</h4>
+            <div
+              v-for="(feature, index) in reportData.trendAnalysis.frontZoneFeatures"
+              :key="index"
+              class="list-item"
+            >
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>走势特征</strong>
+                : {{ feature }}
+              </span>
             </div>
-            <div class="section-content">
-              <h4 class="subsection-title">前区号码</h4>
-              <div
-                v-for="(feature, index) in reportData.trendAnalysis.frontZoneFeatures"
-                :key="index"
-                class="list-item"
-              >
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>走势特征</strong>
-                  : {{ feature }}
-                </span>
-              </div>
-              <div
-                v-for="(point, index) in reportData.trendAnalysis.keyTurningPoints"
-                :key="'point-' + index"
-                class="list-item"
-              >
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>关键走势拐点</strong>
-                  : {{ point }}
-                </span>
-              </div>
+            <div
+              v-for="(point, index) in reportData.trendAnalysis.keyTurningPoints"
+              :key="'point-' + index"
+              class="list-item"
+            >
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>关键走势拐点</strong>
+                : {{ point }}
+              </span>
+            </div>
 
-              <h4 class="subsection-title">后区号码</h4>
-              <div
-                v-for="(feature, index) in reportData.trendAnalysis.backZoneFeatures"
-                :key="'back-' + index"
-                class="list-item"
-              >
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>走势特征</strong>
-                  : {{ feature }}
-                </span>
-              </div>
+            <h4 class="subsection-title">后区号码</h4>
+            <div
+              v-for="(feature, index) in reportData.trendAnalysis.backZoneFeatures"
+              :key="'back-' + index"
+              class="list-item"
+            >
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>走势特征</strong>
+                : {{ feature }}
+              </span>
             </div>
           </div>
+        </div>
 
-          <!-- 奇偶比分析 -->
-          <div class="report-section">
-            <div class="section-header">
-              <h3 class="section-title">五、奇偶比分析</h3>
+        <!-- 奇偶比分析 -->
+        <div class="report-section">
+          <div class="section-header">
+            <h3 class="section-title">五、奇偶比分析</h3>
+          </div>
+          <div class="section-content">
+            <h4 class="subsection-title">前区号码</h4>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>奇偶比描述</strong>
+                : {{ reportData.oddEvenAnalysis.frontZoneRatio }}
+              </span>
             </div>
-            <div class="section-content">
-              <h4 class="subsection-title">前区号码</h4>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>奇偶比描述</strong>
-                  : {{ reportData.oddEvenAnalysis.frontZoneRatio }}
-                </span>
-              </div>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>推荐的奇偶比</strong>
-                  : {{ reportData.oddEvenAnalysis.recommendedRatio }}
-                </span>
-              </div>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>推荐的奇偶比</strong>
+                : {{ reportData.oddEvenAnalysis.recommendedRatio }}
+              </span>
+            </div>
 
-              <h4 class="subsection-title">后区号码</h4>
-              <div class="list-item">
-                <span class="list-bullet">•</span>
-                <span class="list-content">
-                  <strong>奇偶比描述</strong>
-                  : {{ reportData.oddEvenAnalysis.backZoneRatio }}
-                </span>
-              </div>
+            <h4 class="subsection-title">后区号码</h4>
+            <div class="list-item">
+              <span class="list-bullet">•</span>
+              <span class="list-content">
+                <strong>奇偶比描述</strong>
+                : {{ reportData.oddEvenAnalysis.backZoneRatio }}
+              </span>
             </div>
           </div>
+        </div>
 
-          <!-- 推荐号码组合 -->
-          <div class="report-section">
-            <div class="section-header">
-              <h3 class="section-title">六、推荐号码组合</h3>
-            </div>
-            <div class="section-content">
-              <div
-                v-for="(rec, index) in reportData.recommendations"
-                :key="index"
-                class="list-item"
-              >
-                <span class="list-number">{{ index + 1 }}.</span>
-                <span class="list-content">
-                  前区: {{ rec.frontZone.join(', ') }} | 后区: {{ rec.backZone.join(', ') }}
-                </span>
-              </div>
+        <!-- 推荐号码组合 -->
+        <div class="report-section">
+          <div class="section-header">
+            <h3 class="section-title">六、推荐号码组合</h3>
+          </div>
+          <div class="section-content">
+            <div v-for="(rec, index) in reportData.recommendations" :key="index" class="list-item">
+              <span class="list-number">{{ index + 1 }}.</span>
+              <span class="list-content">
+                前区: {{ rec.frontZone.join(', ') }} | 后区: {{ rec.backZone.join(', ') }}
+              </span>
             </div>
           </div>
+        </div>
 
-          <!-- 风险提示 -->
-          <div class="report-section">
-            <div class="section-header">
-              <h3 class="section-title">七、风险提示</h3>
-            </div>
-            <div class="section-content">
-              <div
-                v-for="(warning, index) in reportData.riskWarnings"
-                :key="index"
-                class="list-item"
-              >
-                <span class="list-number">{{ index + 1 }}.</span>
-                <span class="list-content">{{ warning }}</span>
-              </div>
+        <!-- 风险提示 -->
+        <div class="report-section">
+          <div class="section-header">
+            <h3 class="section-title">七、风险提示</h3>
+          </div>
+          <div class="section-content">
+            <div v-for="(warning, index) in reportData.riskWarnings" :key="index" class="list-item">
+              <span class="list-number">{{ index + 1 }}.</span>
+              <span class="list-content">{{ warning }}</span>
             </div>
           </div>
         </div>
@@ -298,77 +287,10 @@ const lotteryStore = useLotteryStore()
 
 // 获取结构化的报告数据
 const reportData = computed(() => {
-  if (!report.value || !report.value.analysis || !report.value.analysis.structured) {
+  if (!report.value?.analysis?.structured) {
     return null
   }
   return report.value.analysis.structured
-})
-
-// 格式化Markdown内容
-const formattedMarkdown = computed(() => {
-  if (!report.value || !report.value.analysis || !report.value.analysis.markdown) {
-    return ''
-  }
-
-  let content = report.value.analysis.markdown || ''
-
-  // 移除顶部的标题，因为我们已经有了自己的标题
-  content = content.replace(/^# 彩票数据分析报告\n\n/, '')
-
-  // 处理标题
-  content = content.replace(
-    /## (.*)/g,
-    '<div class="report-section"><div class="section-header"><h3 class="section-title">$1</h3></div><div class="section-content">',
-  )
-  content = content.replace(/### (.*)/g, '<h4 class="subsection-title">$1</h4>')
-
-  // 处理表格
-  content = content.replace(
-    /\| (.*) \| (.*) \|\n\|------\|----------\|/g,
-    '<div class="frequency-table"><div class="table-header"><div class="table-cell">$1</div><div class="table-cell">$2</div></div>',
-  )
-  content = content.replace(
-    /\| (\d+) +\| (\d+) +\|/g,
-    '<div class="table-row"><div class="table-cell">$1</div><div class="table-cell">$2</div></div>',
-  )
-  // 关闭表格
-  content = content.replace(/(<div class="table-row">.*?<\/div>)\n\n/g, '$1</div>\n\n')
-
-  // 处理有序列表
-  content = content.replace(
-    /(\d+)\. (.*)/g,
-    '<div class="list-item"><span class="list-number">$1.</span><span class="list-content">$2</span></div>',
-  )
-
-  // 处理无序列表
-  content = content.replace(
-    /- (.*)/g,
-    '<div class="list-item"><span class="list-bullet">•</span><span class="list-content">$1</span></div>',
-  )
-
-  // 处理粗体
-  content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-
-  // 处理段落
-  content = content.replace(/\n\n/g, '</p><p>')
-  content = '<p>' + content + '</p>'
-  content = content.replace(/<p><div/g, '<div').replace(/<\/div><\/p>/g, '</div>')
-  content = content.replace(/<p><h3/g, '<h3').replace(/<\/h3><\/p>/g, '</h3>')
-  content = content.replace(/<p><h4/g, '<h4').replace(/<\/h4><\/p>/g, '</h4>')
-
-  // 关闭章节容器
-  const sections = content.split('<div class="report-section">')
-  for (let i = 1; i < sections.length; i++) {
-    if (i < sections.length - 1) {
-      sections[i] = sections[i].replace(
-        /<div class="report-section">/,
-        '</div></div><div class="report-section">',
-      )
-    }
-  }
-  content = sections.join('<div class="report-section">') + '</div></div>'
-
-  return content
 })
 
 // 获取报告数据
@@ -415,7 +337,7 @@ const fetchReport = async () => {
       }
 
       // 检查返回的数据结构
-      if (!res.data.analysis || !res.data.analysis.structured) {
+      if (!res.data.analysis?.structured) {
         console.error('API response missing structured data:', res.data)
         error.value = '获取报告失败: 服务器返回数据缺少结构化内容'
         useMockData()
@@ -443,73 +365,70 @@ const fetchReport = async () => {
 // 使用模拟数据
 const useMockData = () => {
   console.log('Using mock data')
-  // 使用示例数据
   report.value = {
     success: true,
     analysis: {
       structured: {
         frequencyAnalysis: {
           frontZone: [
-            { number: 21, frequency: 10 },
-            { number: 1, frequency: 9 },
-            { number: 10, frequency: 9 },
-            { number: 11, frequency: 8 },
-            { number: 12, frequency: 8 },
+            { number: 1, frequency: 43 },
+            { number: 2, frequency: 40 },
+            { number: 3, frequency: 39 },
+            { number: 4, frequency: 37 },
+            { number: 5, frequency: 37 },
           ],
           backZone: [
-            { number: 10, frequency: 12 },
-            { number: 12, frequency: 11 },
-            { number: 1, frequency: 10 },
+            { number: 1, frequency: 40 },
+            { number: 2, frequency: 35 },
+            { number: 3, frequency: 33 },
           ],
         },
         hotColdAnalysis: {
-          hotNumbers: [21, 1, 10, 11, 12],
-          coldNumbers: [35],
-          risingNumbers: [3, 7, 8, 9],
+          hotNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          coldNumbers: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+          risingNumbers: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
         },
         missingAnalysis: {
           frontZone: {
-            maxMissingNumber: 35,
-            missingTrend: '号码35已经连续多期未出现，需密切关注。',
-            warnings: ['遗漏值较高，注意补号机会。'],
+            maxMissingNumber: 29,
+            missingTrend: '前区号码29已经连续10期没有出现，需重点关注。',
+            warnings: ['号码29已达到最大遗漏值，可能近期会回补。'],
           },
           backZone: {
-            missingStatus: '后区号码3连续多期未出现，值得关注。',
-            warnings: ['遗漏值异常，需关注补号机会。'],
+            missingStatus: '后区号码3已经连续5期没有出现，但其遗漏值仍在正常范围内。',
+            warnings: ['号码3的遗漏值逐渐增加，可能需要留意。'],
           },
         },
         trendAnalysis: {
-          frontZoneFeatures: ['前区号码以小数居多，大数较少。'],
-          backZoneFeatures: ['后区号码集中在中等大小范围。'],
-          keyTurningPoints: ['号码35出现次数显著减少，可能进入冷态。'],
+          frontZoneFeatures: ['前区号码出现以小号为主的趋势', '号码1和2出现频率较高'],
+          backZoneFeatures: ['后区号码1和2出现频率较高'],
+          keyTurningPoints: ['号码29的遗漏值持续增长，可能会在未来几期内回补。'],
         },
         oddEvenAnalysis: {
-          frontZoneRatio: '前区号码奇偶比为2:3。',
-          backZoneRatio: '后区号码奇偶比为1:1。',
-          recommendedRatio: '推荐奇偶比为2:3',
+          frontZoneRatio: '前区号码奇偶比为3:2，较为均衡。',
+          backZoneRatio: '后区号码奇偶比为1:1，较为均衡。',
+          recommendedRatio: '推荐的奇偶比为3:2',
         },
         recommendations: [
           {
-            frontZone: [1, 2, 10, 11, 12],
-            backZone: [10, 12],
+            frontZone: [1, 2, 3, 4, 5],
+            backZone: [1, 2],
           },
           {
-            frontZone: [1, 7, 10, 11, 12],
-            backZone: [1, 10],
+            frontZone: [6, 7, 8, 9, 10],
+            backZone: [3, 4],
           },
           {
-            frontZone: [1, 3, 10, 11, 12],
-            backZone: [10, 12],
+            frontZone: [11, 12, 13, 14, 15],
+            backZone: [5, 6],
           },
         ],
         riskWarnings: [
           '彩票有风险，投注需谨慎，理性购彩。',
-          '本分析仅供参考，不作为购彩依据。',
-          '历史走势不代表未来趋势。',
+          '本分析仅供参考，不作为投资建议。',
+          '注意控制投注金额，避免造成不必要的损失。',
         ],
       },
-      markdown:
-        '# 彩票数据分析报告\n\n## 一、数字出现频率分析\n### 前区号码\n| 号码 | 出现频率 |\n|------|----------|\n| 21   | 10       |\n| 1    | 9        |\n| 10   | 9        |\n| 11   | 8        |\n| 12   | 8        |\n\n### 后区号码\n| 号码 | 出现频率 |\n|------|----------|\n| 10   | 12       |\n| 12   | 11       |\n| 1   | 10       |\n\n## 二、冷热号码分析\n- **热门号码**: 21, 1, 10, 11, 12\n- **冷门号码**: 35\n- **转热号码**: 3, 7, 8, 9\n\n## 三、遗漏号分析\n### 前区号码\n- **最大遗漏号码**: 35\n- **遗漏走势描述**: 号码35已经连续多期未出现，需密切关注。\n- **遗漏值预警提示**:\n  - 遗漏值较高，注意补号机会。\n\n### 后区号码\n- **当前遗漏状况描述**: 后区号码3连续多期未出现，值得关注。\n- **遗漏值异常提醒**:\n  - 遗漏值异常，需关注补号机会。\n\n## 四、走势特征分析\n### 前区号码\n- **走势特征**: 前区号码以小数居多，大数较少。\n- **关键走势拐点**: 号码35出现次数显著减少，可能进入冷态。\n\n### 后区号码\n- **走势特征**: 后区号码集中在中等大小范围。\n\n## 五、奇偶比分析\n### 前区号码\n- **奇偶比描述**: 前区号码奇偶比为2:3。\n- **推荐的奇偶比**: 推荐奇偶比为2:3\n\n### 后区号码\n- **奇偶比描述**: 后区号码奇偶比为1:1。\n\n## 六、推荐号码组合\n1. 前区: 1, 2, 10, 11, 12 | 后区: 10, 12\n2. 前区: 1, 7, 10, 11, 12 | 后区: 1, 10\n3. 前区: 1, 3, 10, 11, 12 | 后区: 10, 12\n\n## 七、风险提示\n1. 彩票有风险，投注需谨慎，理性购彩。\n2. 本分析仅供参考，不作为购彩依据。\n3. 历史走势不代表未来趋势。',
     },
   }
   loading.value = false
