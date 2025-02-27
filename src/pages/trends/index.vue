@@ -13,7 +13,7 @@
     :class="{ 'dark-theme': isDarkMode }"
     :style="{
       paddingTop: safeAreaInsets?.top + 'px',
-      paddingBottom: safeAreaInsets?.bottom + 64 + 'px',
+      paddingBottom: safeAreaInsets?.bottom + 'px',
     }"
   >
     <!-- 顶部导航栏 -->
@@ -105,21 +105,17 @@
         </view>
       </view>
     </view>
-
-    <!-- 底部导航栏 -->
-    <bottom-nav-bar active-tab="trends" @tab-change="handleTabChange" />
   </view>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, defineAsyncComponent } from 'vue'
 import { useThemeStore } from '@/store/theme'
-import { useLotteryStore } from '@/store/lottery'
+import { useLotteryStore, type LotteryType } from '@/store/lottery'
 
 const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
 const LotteryTypeSwitch = defineAsyncComponent(() => import('@/components/LotteryTypeSwitch.vue'))
 const LotteryNumberBall = defineAsyncComponent(() => import('@/components/LotteryNumberBall.vue'))
-const BottomNavBar = defineAsyncComponent(() => import('@/components/BottomNavBar.vue'))
 
 defineOptions({
   name: 'TrendsPage',
@@ -155,7 +151,7 @@ const handleHistory = () => {
 }
 
 // 处理彩票类型切换
-const handleLotteryTypeSwitch = (type: string) => {
+const handleLotteryTypeSwitch = (type: LotteryType) => {
   lotteryStore.setLotteryType(type)
   // 更新走势数据
 }
@@ -164,19 +160,6 @@ const handleLotteryTypeSwitch = (type: string) => {
 const handleTimeRangeChange = (range: string) => {
   timeRange.value = range
   // 更新走势数据
-}
-
-// 处理底部导航切换
-const handleTabChange = (tab: string) => {
-  if (tab === 'home') {
-    uni.navigateTo({
-      url: '/pages/index/index',
-    })
-  } else if (tab === 'my') {
-    uni.navigateTo({
-      url: '/pages/my/index',
-    })
-  }
 }
 </script>
 

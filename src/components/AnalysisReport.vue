@@ -594,15 +594,15 @@ onMounted(() => {
 .frequency-table {
   width: 100%;
   margin: 12px 0;
-  border-radius: 8px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
+  border-radius: 8px;
 }
 
 .table-header {
   display: flex;
-  background-color: #f1f5f9;
   font-weight: 600;
+  background-color: #f1f5f9;
 }
 
 .table-row {
@@ -620,13 +620,13 @@ onMounted(() => {
   display: inline-block;
   width: 24px;
   height: 24px;
-  line-height: 24px;
-  text-align: center;
-  border-radius: 50%;
+  margin: 0 2px;
   font-size: 14px;
   font-weight: 500;
+  line-height: 24px;
   color: white;
-  margin: 0 2px;
+  text-align: center;
+  border-radius: 50%;
 }
 
 .front-ball {

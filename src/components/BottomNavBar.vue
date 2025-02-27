@@ -6,7 +6,14 @@
       @click="handleTabChange('home')"
     >
       <view class="nav-icon">
-        <image src="/static/icons/tabbar_predict.png" mode="aspectFit" />
+        <image
+          :src="
+            isDarkMode
+              ? '/static/icons/tabbar_predict_dark.png'
+              : '/static/icons/tabbar_predict.png'
+          "
+          mode="aspectFit"
+        />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'home' }">预测</text>
     </view>
@@ -17,14 +24,22 @@
       @click="handleTabChange('trends')"
     >
       <view class="nav-icon">
-        <image src="/static/icons/tabbar_trends.png" mode="aspectFit" />
+        <image
+          :src="
+            isDarkMode ? '/static/icons/tabbar_trends_dark.png' : '/static/icons/tabbar_trends.png'
+          "
+          mode="aspectFit"
+        />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'trends' }">走势</text>
     </view>
 
     <view class="nav-item" :class="{ active: activeTab === 'my' }" @click="handleTabChange('my')">
       <view class="nav-icon">
-        <image src="/static/icons/tabbar_my.png" mode="aspectFit" />
+        <image
+          :src="isDarkMode ? '/static/icons/tabbar_my_dark.png' : '/static/icons/tabbar_my.png'"
+          mode="aspectFit"
+        />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'my' }">我的</text>
     </view>
@@ -69,12 +84,24 @@ const handleTabChange = (tab: string) => {
   z-index: 100;
   display: flex;
   height: 64px;
+  padding-bottom: env(safe-area-inset-bottom);
   background-color: #ffffff;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 
   &.dark-theme {
     background-color: #1f2937;
+    border-top: 1px solid #374151;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+
+    .nav-item {
+      .nav-text {
+        color: #9ca3af;
+
+        &.active {
+          color: #60a5fa;
+        }
+      }
+    }
   }
 
   .nav-item {
@@ -106,18 +133,6 @@ const handleTabChange = (tab: string) => {
       &.active {
         font-weight: 500;
         color: #3b82f6;
-      }
-    }
-  }
-
-  &.dark-theme {
-    .nav-item {
-      .nav-text {
-        color: #d1d5db;
-
-        &.active {
-          color: #60a5fa;
-        }
       }
     }
   }

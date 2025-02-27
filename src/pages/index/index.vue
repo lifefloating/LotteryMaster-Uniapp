@@ -14,7 +14,7 @@
     :class="{ 'dark-theme': isDarkMode }"
     :style="{
       paddingTop: safeAreaInsets?.top + 'px',
-      paddingBottom: safeAreaInsets?.bottom + 64 + 'px',
+      paddingBottom: safeAreaInsets?.bottom + 'px',
     }"
   >
     <!-- 顶部导航栏 -->
@@ -62,9 +62,6 @@
       </scroll-view>
     </view>
 
-    <!-- 底部导航栏 -->
-    <bottom-nav-bar active-tab="home" @tab-change="handleTabChange" />
-
     <!-- 分析报告组件 -->
     <analysis-report v-if="showReport" :visible="showReport" @close="showReport = false" />
   </view>
@@ -82,7 +79,6 @@ const LotteryNumberBall = defineAsyncComponent(() => import('@/components/Lotter
 const LotteryPredictionSet = defineAsyncComponent(
   () => import('@/components/LotteryPredictionSet.vue'),
 )
-const BottomNavBar = defineAsyncComponent(() => import('@/components/BottomNavBar.vue'))
 const AnalysisReport = defineAsyncComponent(() => import('@/components/AnalysisReport.vue'))
 
 defineOptions({
@@ -126,19 +122,6 @@ const handleLotteryTypeSwitch = (type: LotteryType) => {
   lotteryStore.setLotteryType(type)
   lotteryStore.fetchLotteryData()
 }
-
-// 处理底部导航切换
-const handleTabChange = (tab: string) => {
-  if (tab === 'trends') {
-    uni.navigateTo({
-      url: '/pages/trends/index',
-    })
-  } else if (tab === 'my') {
-    uni.navigateTo({
-      url: '/pages/my/index',
-    })
-  }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -148,6 +131,21 @@ const handleTabChange = (tab: string) => {
 
   &.dark-theme {
     background-color: #111827;
+
+    .lottery-info-container .lottery-info-item {
+      .info-label {
+        color: #d1d5db;
+      }
+
+      .info-value {
+        color: #f9fafb;
+      }
+    }
+
+    .prediction-sets-container {
+      background-color: #1f2937;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
   }
 
   .lottery-info-container {
@@ -189,8 +187,8 @@ const handleTabChange = (tab: string) => {
       transition: all 0.3s ease;
 
       &:active {
-        transform: scale(0.98);
         box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
+        transform: scale(0.98);
       }
 
       .report-button-text {
@@ -207,10 +205,10 @@ const handleTabChange = (tab: string) => {
     flex: 1;
     flex-direction: column;
     margin: 0 16px;
+    overflow: hidden;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
 
     .prediction-sets-scroll {
       flex: 1;
@@ -224,25 +222,6 @@ const handleTabChange = (tab: string) => {
         flex-direction: column;
         gap: 12px;
       }
-    }
-  }
-
-  &.dark-theme {
-    .lottery-info-container {
-      .lottery-info-item {
-        .info-label {
-          color: #d1d5db;
-        }
-
-        .info-value {
-          color: #f9fafb;
-        }
-      }
-    }
-
-    .prediction-sets-container {
-      background-color: #1f2937;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
   }
 }

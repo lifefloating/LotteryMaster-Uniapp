@@ -10,10 +10,9 @@
 <template>
   <view
     class="my-page"
-    :class="{ 'dark-theme': isDarkMode }"
     :style="{
       paddingTop: safeAreaInsets?.top + 'px',
-      paddingBottom: safeAreaInsets?.bottom + 64 + 'px',
+      paddingBottom: safeAreaInsets?.bottom + 'px',
     }"
   >
     <!-- 顶部导航栏 -->
@@ -37,16 +36,6 @@
       <view class="settings-group">
         <view class="settings-title">
           <text class="title-text">应用设置</text>
-        </view>
-
-        <view class="settings-item">
-          <view class="item-left">
-            <text class="iconfont icon-theme">&#xe6c5;</text>
-            <text class="item-text">深色模式</text>
-          </view>
-          <view class="item-right">
-            <switch :checked="isDarkMode" @change="handleThemeChange" color="#3B82F6" />
-          </view>
         </view>
 
         <view class="settings-item">
@@ -110,18 +99,13 @@
         </view>
       </view>
     </view>
-
-    <!-- 底部导航栏 -->
-    <bottom-nav-bar active-tab="my" @tab-change="handleTabChange" />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, defineAsyncComponent } from 'vue'
-import { useThemeStore } from '@/store/theme'
+import { ref, defineAsyncComponent } from 'vue'
 
 const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
-const BottomNavBar = defineAsyncComponent(() => import('@/components/BottomNavBar.vue'))
 
 defineOptions({
   name: 'MyPage',
@@ -129,10 +113,6 @@ defineOptions({
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
-
-// 获取主题状态
-const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDarkMode)
 
 // 通知开关状态
 const notificationEnabled = ref(false)
@@ -149,27 +129,9 @@ const handleHistory = () => {
   })
 }
 
-// 处理主题切换
-const handleThemeChange = (e: any) => {
-  themeStore.setDarkMode(e.detail.value)
-}
-
 // 处理通知开关
 const handleNotificationChange = (e: any) => {
   notificationEnabled.value = e.detail.value
-}
-
-// 处理底部导航切换
-const handleTabChange = (tab: string) => {
-  if (tab === 'home') {
-    uni.navigateTo({
-      url: '/pages/index/index',
-    })
-  } else if (tab === 'trends') {
-    uni.navigateTo({
-      url: '/pages/trends/index',
-    })
-  }
 }
 </script>
 
@@ -177,10 +139,6 @@ const handleTabChange = (tab: string) => {
 .my-page {
   min-height: 100vh;
   background-color: #f5f7fa;
-
-  &.dark-theme {
-    background-color: #111827;
-  }
 
   .user-info-container {
     display: flex;
@@ -286,68 +244,6 @@ const handleTabChange = (tab: string) => {
           .version-text {
             font-size: 14px;
             color: #999999;
-          }
-        }
-      }
-    }
-  }
-
-  &.dark-theme {
-    .user-info-container {
-      background-color: #1f2937;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-      .avatar-container {
-        .avatar {
-          background-color: #60a5fa;
-        }
-      }
-
-      .user-details {
-        .username {
-          color: #f9fafb;
-        }
-
-        .user-desc {
-          color: #d1d5db;
-        }
-      }
-    }
-
-    .settings-container {
-      .settings-group {
-        background-color: #1f2937;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-        .settings-title {
-          border-bottom: 1px solid #374151;
-
-          .title-text {
-            color: #f9fafb;
-          }
-        }
-
-        .settings-item {
-          border-bottom: 1px solid #374151;
-
-          .item-left {
-            .iconfont {
-              color: #d1d5db;
-            }
-
-            .item-text {
-              color: #f9fafb;
-            }
-          }
-
-          .item-right {
-            .iconfont {
-              color: #9ca3af;
-            }
-
-            .version-text {
-              color: #9ca3af;
-            }
           }
         }
       }

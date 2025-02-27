@@ -79,33 +79,33 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
       display: flex;
       flex-wrap: nowrap;
       align-items: center;
+      padding: 8px 4px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      padding: 8px 4px;
       &::-webkit-scrollbar {
         display: none;
       }
 
       .zone-label {
+        position: relative;
+        flex-shrink: 0;
+        padding-left: 4px;
+        margin-right: 8px;
         font-size: 13px;
         font-weight: 500;
         color: #666666;
-        margin-right: 8px;
-        padding-left: 4px;
-        flex-shrink: 0;
-        position: relative;
 
         &::after {
-          content: '';
           position: absolute;
-          left: -4px;
           top: 50%;
-          transform: translateY(-50%);
+          left: -4px;
           width: 2px;
           height: 12px;
+          content: '';
           background-color: #3b82f6;
           border-radius: 1px;
+          transform: translateY(-50%);
         }
       }
 
