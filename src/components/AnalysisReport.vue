@@ -1,7 +1,7 @@
 <template>
   <div class="analysis-report">
     <div class="report-header">
-      <h2>彩票数据分析报告</h2>
+      <h2>数据分析报告</h2>
       <wd-icon name="close" size="20px" @click="$emit('close')" />
     </div>
 
@@ -27,6 +27,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
+// 不使用 marked 库，改用简单的正则表达式处理 Markdown
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -44,24 +45,51 @@ const report = ref(null)
 const formattedReport = computed(() => {
   if (!report.value) return ''
 
-  // 这里简单处理一下Markdown格式
-  // 实际项目中可以使用专门的Markdown解析库
   let content = report.value.analysis || ''
 
-  // 处理标题
-  content = content.replace(/### (.*)/g, '<h3>$1</h3>')
-  content = content.replace(/#### (.*)/g, '<h4>$1</h4>')
+  // 移除顶部的标题，因为我们已经有了自己的标题
+  content = content.replace(/^## 彩票数据分析报告\n\n/, '')
 
-  // 处理列表
-  content = content.replace(/- (.*)/g, '<li>$1</li>')
-  content = content.replace(/<li>/g, '<ul><li>').replace(/<\/li>/g, '</li></ul>')
-  content = content.replace(/<\/ul><ul>/g, '')
+  // 处理标题
+  content = content.replace(
+    /### (.*)/g,
+    '<div class="report-section"><div class="section-header"><h3 class="section-title">$1</h3></div><div class="section-content">',
+  )
+  content = content.replace(/#### (.*)/g, '<h4 class="subsection-title">$1</h4>')
+
+  // 处理有序列表
+  content = content.replace(
+    /(\d+)\. (.*)/g,
+    '<div class="list-item"><span class="list-number">$1.</span><span class="list-content">$2</span></div>',
+  )
+
+  // 处理无序列表
+  content = content.replace(
+    /- (.*)/g,
+    '<div class="list-item"><span class="list-bullet">•</span><span class="list-content">$1</span></div>',
+  )
 
   // 处理粗体
   content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
 
-  // 处理换行
-  content = content.replace(/\n/g, '<br>')
+  // 处理段落
+  content = content.replace(/\n\n/g, '</p><p>')
+  content = '<p>' + content + '</p>'
+  content = content.replace(/<p><div/g, '<div').replace(/<\/div><\/p>/g, '</div>')
+  content = content.replace(/<p><h3/g, '<h3').replace(/<\/h3><\/p>/g, '</h3>')
+  content = content.replace(/<p><h4/g, '<h4').replace(/<\/h4><\/p>/g, '</h4>')
+
+  // 关闭章节容器
+  let sections = content.split('<div class="report-section">')
+  for (let i = 1; i < sections.length; i++) {
+    if (i < sections.length - 1) {
+      sections[i] = sections[i].replace(
+        /<div class="report-section">/,
+        '</div></div><div class="report-section">',
+      )
+    }
+  }
+  content = sections.join('<div class="report-section">') + '</div></div>'
 
   return content
 })
@@ -105,7 +133,7 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  background-color: #f8fafc;
   z-index: 999;
   display: flex;
   flex-direction: column;
@@ -117,9 +145,9 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  border-bottom: 1px solid #eee;
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
   color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .report-header h2 {
@@ -132,7 +160,7 @@ onMounted(() => {
 .report-content {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+  padding: 0;
 }
 
 .loading,
@@ -147,46 +175,75 @@ onMounted(() => {
 
 .report-body {
   line-height: 1.6;
+  padding-bottom: 32px;
 }
 
-.report-body h3 {
-  margin-top: 24px;
-  margin-bottom: 16px;
-  font-size: 18px;
-  font-weight: 500;
-  color: #3b82f6;
-  border-left: 4px solid #3b82f6;
-  padding-left: 10px;
+.report-section {
+  margin: 0 0 16px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.report-body h4 {
-  margin-top: 16px;
-  margin-bottom: 8px;
+.section-header {
+  background-color: #f1f5f9;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.section-title {
+  margin: 0;
   font-size: 16px;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.section-content {
+  padding: 16px;
+}
+
+.subsection-title {
+  margin: 16px 0 12px;
+  font-size: 15px;
   font-weight: 500;
-  color: #4b5563;
-}
-
-.report-body ul {
-  margin: 8px 0;
-  padding-left: 20px;
-}
-
-.report-body li {
-  margin-bottom: 8px;
-  position: relative;
-}
-
-.report-body li::before {
-  content: '•';
   color: #3b82f6;
-  font-weight: bold;
-  display: inline-block;
-  width: 1em;
-  margin-left: -1em;
+  border-left: 3px solid #3b82f6;
+  padding-left: 8px;
 }
 
-.report-body strong {
+.list-item {
+  display: flex;
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+
+.list-number,
+.list-bullet {
+  flex: 0 0 20px;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.list-content {
+  flex: 1;
+}
+
+.ordered-list {
+  margin: 8px 0;
+  padding: 0;
+}
+
+.unordered-list {
+  margin: 8px 0;
+  padding: 0;
+}
+
+p {
+  margin: 8px 0;
+}
+
+strong {
   font-weight: 500;
   color: #3b82f6;
 }
