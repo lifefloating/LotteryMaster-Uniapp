@@ -6,7 +6,7 @@
       @click="handleTabChange('home')"
     >
       <view class="nav-icon">
-        <view class="i-flat-color-icons-idea" :class="{ active: activeTab === 'home' }" />
+        <image src="/static/icons/tabbar_predict.png" mode="aspectFit" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'home' }">预测</text>
     </view>
@@ -17,20 +17,14 @@
       @click="handleTabChange('trends')"
     >
       <view class="nav-icon">
-        <view
-          class="i-flat-color-icons-positive-dynamic"
-          :class="{ active: activeTab === 'trends' }"
-        />
+        <image src="/static/icons/tabbar_trends.png" mode="aspectFit" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'trends' }">走势</text>
     </view>
 
     <view class="nav-item" :class="{ active: activeTab === 'my' }" @click="handleTabChange('my')">
       <view class="nav-icon">
-        <view
-          class="i-flat-color-icons-data-configuration"
-          :class="{ active: activeTab === 'my' }"
-        />
+        <image src="/static/icons/tabbar_my.png" mode="aspectFit" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'my' }">我的</text>
     </view>
@@ -99,9 +93,9 @@ const handleTabChange = (tab: string) => {
       height: 24px;
       margin-bottom: 4px;
 
-      view {
-        width: 100%;
-        height: 100%;
+      image {
+        width: 24px;
+        height: 24px;
       }
     }
 
@@ -118,12 +112,6 @@ const handleTabChange = (tab: string) => {
 
   &.dark-theme {
     .nav-item {
-      .nav-icon {
-        view {
-          color: #d1d5db;
-        }
-      }
-
       .nav-text {
         color: #d1d5db;
 

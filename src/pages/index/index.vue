@@ -42,6 +42,10 @@
     <view class="prediction-numbers-container">
       <view class="prediction-title">
         <text class="title-text">预测号码</text>
+        <view class="report-button" @click="showReport = true">
+          <text class="report-button-text">查看分析报告</text>
+          <wd-icon name="arrow-right" size="14px" />
+        </view>
       </view>
 
       <view class="prediction-numbers">
@@ -89,11 +93,14 @@
 
     <!-- 底部导航栏 -->
     <bottom-nav-bar active-tab="home" @tab-change="handleTabChange" />
+
+    <!-- 分析报告组件 -->
+    <analysis-report v-if="showReport" :visible="showReport" @close="showReport = false" />
   </view>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useThemeStore } from '@/store/theme'
 import { useLotteryStore } from '@/store/lottery'
@@ -105,6 +112,7 @@ const LotteryPredictionSet = defineAsyncComponent(
   () => import('@/components/LotteryPredictionSet.vue'),
 )
 const BottomNavBar = defineAsyncComponent(() => import('@/components/BottomNavBar.vue'))
+const AnalysisReport = defineAsyncComponent(() => import('@/components/AnalysisReport.vue'))
 
 defineOptions({
   name: 'PredictionPage',
@@ -121,6 +129,9 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
 const lotteryStore = useLotteryStore()
 const lotteryData = computed(() => lotteryStore.getCurrentLotteryData)
 const topPrediction = computed(() => lotteryData.value.predictions[0])
+
+// 控制分析报告显示
+const showReport = ref(false)
 
 // 页面加载时获取数据
 onLoad(() => {
@@ -199,12 +210,29 @@ const handleTabChange = (tab: string) => {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
     .prediction-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 16px;
 
       .title-text {
         font-size: 16px;
         font-weight: 500;
         color: #333333;
+      }
+
+      .report-button {
+        display: flex;
+        align-items: center;
+        padding: 4px 8px;
+        background-color: #ebf5ff;
+        border-radius: 4px;
+
+        .report-button-text {
+          font-size: 12px;
+          color: #3b82f6;
+          margin-right: 4px;
+        }
       }
     }
 
