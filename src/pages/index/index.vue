@@ -45,7 +45,6 @@
         <view class="report-button" @click="showReport = true">
           <wd-icon name="data-analysis" size="14px" color="#FFFFFF" />
           <text class="report-button-text">查看分析报告</text>
-          <text class="report-button-hint">(基于近2000期数据)</text>
         </view>
       </view>
 
