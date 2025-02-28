@@ -50,11 +50,39 @@ export default defineConfig({
     //   commaStyleColorFunction: true,
     // }) as Preset,
   ],
+  // 添加响应式断点配置，与UI设计规范保持一致
+  theme: {
+    breakpoints: {
+      'sm': '320px',   // 移动设备最小宽度
+      'md': '481px',   // 平板设备最小宽度
+      'lg': '769px',   // 桌面设备最小宽度
+    },
+  },
   /**
    * 自定义快捷语句
    * @see https://github.com/unocss/unocss#shortcuts
    */
-  shortcuts: [['center', 'flex justify-center items-center']],
+  shortcuts: [
+    ['center', 'flex justify-center items-center'],
+    // Responsive layout shortcuts
+    ['container', 'w-full mx-auto px-4'],
+    ['row', 'flex flex-wrap -mx-2'],
+    ['col', 'px-2'],
+    // Responsive display shortcuts
+    ['hide-sm', 'sm:hidden'],
+    ['hide-md', 'md:hidden lg:block'],
+    ['hide-lg', 'lg:hidden'],
+    ['show-sm', 'block md:hidden lg:hidden'],
+    ['show-md', 'hidden md:block lg:hidden'],
+    ['show-lg', 'hidden lg:block'],
+    // Safe area utilities
+    ['safe-top', 'pt-safe'],
+    ['safe-bottom', 'pb-safe'],
+    ['safe-inset', 'p-safe'],
+    // Responsive flex utilities
+    ['flex-col-row', 'flex flex-col md:flex-row'],
+    ['flex-row-col', 'flex flex-row md:flex-col'],
+  ],
   transformers: [
     // 启用 @apply 功能
     transformerDirectives(),

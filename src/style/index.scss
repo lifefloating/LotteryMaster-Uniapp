@@ -1,4 +1,46 @@
+// Import responsive utilities
+@import './responsive';
 // @import './iconfont.css';
+
+// Responsive mixins for use throughout the project
+@mixin mobile {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 481px) and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 769px) {
+    @content;
+  }
+}
+
+@mixin tablet-and-up {
+  @media (min-width: 481px) {
+    @content;
+  }
+}
+
+@mixin mobile-and-tablet {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+// Safe area insets mixins
+@mixin safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+@mixin safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
 
 .test {
   // 可以通过 @apply 多个样式封装整体样式
