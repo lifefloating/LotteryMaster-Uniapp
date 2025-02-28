@@ -443,11 +443,6 @@ const fetchReport = async () => {
 
 // 使用模拟数据（仅在开发环境使用）
 const useMockData = () => {
-  if (import.meta.env.MODE !== 'development') {
-    console.warn('Mock data should only be used in development mode')
-    return
-  }
-
   console.log('Using mock data')
   loading.value = true
   error.value = ''
