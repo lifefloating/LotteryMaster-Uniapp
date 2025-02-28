@@ -6,7 +6,7 @@
       @click="handleTabChange('home')"
     >
       <view class="nav-icon">
-        <image :src="'/src/static/tabbar/icons/tabbar_predict.png'" mode="aspectFit" />
+        <image :src="tabbarPredict" mode="aspectFit" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'home' }">预测</text>
     </view>
@@ -17,14 +17,14 @@
       @click="handleTabChange('trends')"
     >
       <view class="nav-icon">
-        <image src="/src/static/tabbar/icons/tabbar_trends.png" mode="aspectFit" />
+        <image :src="tabbarTrends" mode="aspectFit" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'trends' }">走势</text>
     </view>
 
     <view class="nav-item" :class="{ active: activeTab === 'my' }" @click="handleTabChange('my')">
       <view class="nav-icon">
-        <image src="/src/static/tabbar/icons/tabbar_my.png" mode="aspectFit" />
+        <image :src="tabbarMy" mode="aspectFit" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'my' }">我的</text>
     </view>
@@ -32,6 +32,10 @@
 </template>
 
 <script lang="ts" setup>
+import tabbarPredict from '@/static/tabbar/icons/tabbar_predict.png'
+import tabbarTrends from '@/static/tabbar/icons/tabbar_trends.png'
+import tabbarMy from '@/static/tabbar/icons/tabbar_my.png'
+
 defineOptions({
   name: 'BottomNavBar',
 })
