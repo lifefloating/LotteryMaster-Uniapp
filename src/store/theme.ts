@@ -2,15 +2,10 @@ import { defineStore } from 'pinia'
 
 export const useThemeStore = defineStore('theme', {
   state: () => ({
-    isDarkMode: false,
+    // 移除深色模式状态
   }),
   actions: {
-    toggleTheme() {
-      this.isDarkMode = !this.isDarkMode
-    },
-    setDarkMode(value: boolean) {
-      this.isDarkMode = value
-    },
+    // 移除深色模式相关方法
   },
   persist: {
     key: 'theme-storage',

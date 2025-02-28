@@ -6,7 +6,6 @@
       'ssq-special-ball': lotteryType === 'ssq' && type === 'special',
       'dlt-primary-ball': lotteryType === 'dlt' && type === 'primary',
       'dlt-special-ball': lotteryType === 'dlt' && type === 'special',
-      'dark-theme': isDarkMode,
     }"
   >
     <text class="number-text">{{ number }}</text>
@@ -14,9 +13,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useThemeStore } from '@/store/theme'
-
 defineOptions({
   name: 'LotteryNumberBall',
 })
@@ -35,9 +31,6 @@ const props = defineProps({
     default: 'ssq', // 'ssq' or 'dlt'
   },
 })
-
-const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDarkMode)
 </script>
 
 <style lang="scss" scoped>
@@ -93,24 +86,6 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
       font-size: 16px;
       font-weight: bold;
       color: #ffffff;
-    }
-  }
-
-  &.dark-theme {
-    &.ssq-primary-ball {
-      background-color: #2980b9; /* 深蓝色 */
-    }
-
-    &.ssq-special-ball {
-      background-color: #c0392b; /* 深红色 */
-    }
-
-    &.dlt-primary-ball {
-      background-color: #2980b9; /* 深蓝色 */
-    }
-
-    &.dlt-special-ball {
-      background-color: #c0392b; /* 深红色 */
     }
   }
 }

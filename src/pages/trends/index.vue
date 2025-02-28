@@ -10,7 +10,6 @@
 <template>
   <view
     class="trends-page"
-    :class="{ 'dark-theme': isDarkMode }"
     :style="{
       paddingTop: safeAreaInsets?.top + 'px',
       paddingBottom: safeAreaInsets?.bottom + 'px',
@@ -109,8 +108,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, defineAsyncComponent } from 'vue'
-import { useThemeStore } from '@/store/theme'
+import { ref, defineAsyncComponent } from 'vue'
 import { useLotteryStore, type LotteryType } from '@/store/lottery'
 
 const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
@@ -123,10 +121,6 @@ defineOptions({
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
-
-// 获取主题状态
-const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDarkMode)
 
 // 获取彩票数据
 const lotteryStore = useLotteryStore()
@@ -167,10 +161,6 @@ const handleTimeRangeChange = (range: string) => {
 .trends-page {
   min-height: 100vh;
   background-color: #f5f7fa;
-
-  &.dark-theme {
-    background-color: #111827;
-  }
 
   .time-range-container {
     padding: 16px;
@@ -248,21 +238,23 @@ const handleTimeRangeChange = (range: string) => {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 200px;
-        background-color: #f5f7fa;
+        height: 300px;
+        background-color: #f8fafc;
         border-radius: 8px;
 
         .placeholder-text {
           font-size: 14px;
-          color: #666666;
+          color: #94a3b8;
         }
       }
     }
+  }
 
+  .hot-cold-analysis-container {
     .analysis-content {
       .hot-numbers,
       .cold-numbers {
-        margin-bottom: 16px;
+        margin-bottom: 20px;
 
         .section-title {
           margin-bottom: 12px;
@@ -276,69 +268,7 @@ const handleTimeRangeChange = (range: string) => {
         .number-balls-container {
           display: flex;
           flex-wrap: wrap;
-        }
-      }
-    }
-  }
-
-  &.dark-theme {
-    .time-range-container {
-      .time-range-title {
-        .title-text {
-          color: #f9fafb;
-        }
-      }
-
-      .time-range-options {
-        .time-option {
-          background-color: #1f2937;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
-          .option-text {
-            color: #d1d5db;
-          }
-
-          &.active {
-            background-color: #60a5fa;
-
-            .option-text {
-              color: #ffffff;
-            }
-          }
-        }
-      }
-    }
-
-    .trends-chart-container,
-    .hot-cold-analysis-container {
-      background-color: #1f2937;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-      .chart-title,
-      .analysis-title {
-        .title-text {
-          color: #f9fafb;
-        }
-      }
-
-      .chart-content {
-        .chart-placeholder {
-          background-color: #111827;
-
-          .placeholder-text {
-            color: #d1d5db;
-          }
-        }
-      }
-
-      .analysis-content {
-        .hot-numbers,
-        .cold-numbers {
-          .section-title {
-            .section-title-text {
-              color: #d1d5db;
-            }
-          }
+          gap: 8px;
         }
       }
     }

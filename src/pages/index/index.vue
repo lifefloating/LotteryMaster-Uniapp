@@ -11,7 +11,6 @@
 <template>
   <view
     class="prediction-page"
-    :class="{ 'dark-theme': isDarkMode }"
     :style="{
       paddingTop: safeAreaInsets?.top + 'px',
       paddingBottom: safeAreaInsets?.bottom + 'px',
@@ -70,7 +69,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { useThemeStore } from '@/store/theme'
 import { useLotteryStore, type LotteryType } from '@/store/lottery'
 
 const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
@@ -87,10 +85,6 @@ defineOptions({
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
-
-// 获取主题状态
-const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDarkMode)
 
 // 获取彩票数据
 const lotteryStore = useLotteryStore()
@@ -128,25 +122,6 @@ const handleLotteryTypeSwitch = (type: LotteryType) => {
 .prediction-page {
   min-height: 100vh;
   background-color: #f5f7fa;
-
-  &.dark-theme {
-    background-color: #111827;
-
-    .lottery-info-container .lottery-info-item {
-      .info-label {
-        color: #d1d5db;
-      }
-
-      .info-value {
-        color: #f9fafb;
-      }
-    }
-
-    .prediction-sets-container {
-      background-color: #1f2937;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    }
-  }
 
   .lottery-info-container {
     display: flex;

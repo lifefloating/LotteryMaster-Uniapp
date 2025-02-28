@@ -1,8 +1,5 @@
 <template>
-  <view
-    class="header-container flex items-center justify-between px-4 py-3"
-    :class="{ 'dark-header': isDarkMode }"
-  >
+  <view class="header-container flex items-center justify-between px-4 py-3">
     <view class="left-section">
       <view class="back-button" @click="handleBack">
         <text class="iconfont icon-back">&#xe6db;</text>
@@ -20,9 +17,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useThemeStore } from '@/store/theme'
-
 defineOptions({
   name: 'LotteryHeader',
 })
@@ -35,9 +29,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['back', 'history'])
-
-const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDarkMode)
 
 const handleBack = () => {
   emit('back')
@@ -54,11 +45,6 @@ const handleHistory = () => {
   height: 56px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-
-  &.dark-header {
-    background-color: #1f2937;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
 
   .left-section,
   .right-section {
@@ -91,21 +77,6 @@ const handleHistory = () => {
       font-size: 18px;
       font-weight: bold;
       color: #333333;
-    }
-  }
-
-  &.dark-header {
-    .back-button,
-    .history-button {
-      .iconfont {
-        color: #f9fafb;
-      }
-    }
-
-    .title-section {
-      .title-text {
-        color: #f9fafb;
-      }
     }
   }
 }

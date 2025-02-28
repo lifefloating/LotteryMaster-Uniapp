@@ -1,5 +1,5 @@
 <template>
-  <view class="prediction-set-container" :class="{ 'dark-theme': isDarkMode }">
+  <view class="prediction-set-container">
     <view class="numbers-container">
       <view class="primary-numbers">
         <view class="zone-label">前区</view>
@@ -27,8 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType, defineAsyncComponent } from 'vue'
-import { useThemeStore } from '@/store/theme'
+import { PropType, defineAsyncComponent } from 'vue'
 
 const LotteryNumberBall = defineAsyncComponent(() => import('@/components/LotteryNumberBall.vue'))
 
@@ -50,9 +49,6 @@ const props = defineProps({
     required: true,
   },
 })
-
-const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDarkMode)
 </script>
 
 <style lang="scss" scoped>
@@ -63,11 +59,6 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-  &.dark-theme {
-    background-color: #1f2937;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
 
   .numbers-container {
     display: flex;
@@ -118,17 +109,6 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
     .special-numbers {
       .zone-label::after {
         background-color: #ef4444;
-      }
-    }
-  }
-
-  &.dark-theme {
-    .numbers-container {
-      .primary-numbers,
-      .special-numbers {
-        .zone-label {
-          color: #d1d5db;
-        }
       }
     }
   }

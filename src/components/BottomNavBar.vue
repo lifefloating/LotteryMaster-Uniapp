@@ -1,5 +1,5 @@
 <template>
-  <view class="bottom-nav-container" :class="{ 'dark-theme': isDarkMode }">
+  <view class="bottom-nav-container">
     <view
       class="nav-item"
       :class="{ active: activeTab === 'home' }"
@@ -17,40 +17,21 @@
       @click="handleTabChange('trends')"
     >
       <view class="nav-icon">
-        <image
-          :src="
-            isDarkMode
-              ? '/src/static/tabbar/icons/tabbar_trends_dark.png'
-              : '/src/static/tabbar/icons/tabbar_trends.png'
-          "
-          mode="aspectFit"
-        />
+        <image src="/src/static/tabbar/icons/tabbar_trends.png" mode="aspectFit" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'trends' }">走势</text>
     </view>
 
     <view class="nav-item" :class="{ active: activeTab === 'my' }" @click="handleTabChange('my')">
       <view class="nav-icon">
-        <image
-          :src="
-            isDarkMode
-              ? '/src/static/tabbar/icons/tabbar_my_dark.png'
-              : '/src/static/tabbar/icons/tabbar_my.png'
-          "
-          mode="aspectFit"
-        />
+        <image src="/src/static/tabbar/icons/tabbar_my.png" mode="aspectFit" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'my' }">我的</text>
     </view>
   </view>
 </template>
 
-<script lang="ts"></script>
-
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useThemeStore } from '@/store/theme'
-
 defineOptions({
   name: 'BottomNavBar',
 })
@@ -63,9 +44,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['tab-change'])
-
-const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDarkMode)
 
 const handleTabChange = (tab: string) => {
   if (tab !== props.activeTab) {
@@ -86,22 +64,6 @@ const handleTabChange = (tab: string) => {
   padding-bottom: env(safe-area-inset-bottom);
   background-color: #ffffff;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-
-  &.dark-theme {
-    background-color: #1f2937;
-    border-top: 1px solid #374151;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-
-    .nav-item {
-      .nav-text {
-        color: #9ca3af;
-
-        &.active {
-          color: #60a5fa;
-        }
-      }
-    }
-  }
 
   .nav-item {
     display: flex;
