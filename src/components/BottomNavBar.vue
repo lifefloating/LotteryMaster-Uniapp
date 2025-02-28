@@ -6,14 +6,7 @@
       @click="handleTabChange('home')"
     >
       <view class="nav-icon">
-        <image
-          :src="
-            isDarkMode
-              ? '/static/icons/tabbar_predict_dark.png'
-              : '/static/icons/tabbar_predict.png'
-          "
-          mode="aspectFit"
-        />
+        <image :src="'/src/static/tabbar/icons/tabbar_predict.png'" mode="aspectFit" />
       </view>
       <text class="nav-text" :class="{ active: activeTab === 'home' }">预测</text>
     </view>
@@ -26,7 +19,9 @@
       <view class="nav-icon">
         <image
           :src="
-            isDarkMode ? '/static/icons/tabbar_trends_dark.png' : '/static/icons/tabbar_trends.png'
+            isDarkMode
+              ? '/src/static/tabbar/icons/tabbar_trends_dark.png'
+              : '/src/static/tabbar/icons/tabbar_trends.png'
           "
           mode="aspectFit"
         />
@@ -37,7 +32,11 @@
     <view class="nav-item" :class="{ active: activeTab === 'my' }" @click="handleTabChange('my')">
       <view class="nav-icon">
         <image
-          :src="isDarkMode ? '/static/icons/tabbar_my_dark.png' : '/static/icons/tabbar_my.png'"
+          :src="
+            isDarkMode
+              ? '/src/static/tabbar/icons/tabbar_my_dark.png'
+              : '/src/static/tabbar/icons/tabbar_my.png'
+          "
           mode="aspectFit"
         />
       </view>
