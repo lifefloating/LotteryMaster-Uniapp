@@ -1,17 +1,9 @@
 import { useQuery } from '@tanstack/vue-query'
-import { getFrequencyData, getTrendData } from './chart'
+import { getFrequencyData, getTrendData, type TrendChartData, type FrequencyChartData, type ApiResponse } from './chart'
 import { computed, unref, type Ref, watch } from 'vue'
 import type { UseQueryReturnType } from '@tanstack/vue-query'
 
-export interface ChartData {
-  numbers: number[]
-  frequencies: number[]
-}
-
-export interface ApiResponse {
-  success: boolean
-  data: ChartData
-}
+export type { TrendChartData, FrequencyChartData, ApiResponse } from './chart'
 
 /**
  * 使用走势图数据查询
@@ -54,7 +46,7 @@ export function useTrendDataQuery(
     query.refetch()
   }, { immediate: true })
 
-  return query as UseQueryReturnType<ApiResponse, Error>
+  return query as UseQueryReturnType<ApiResponse<TrendChartData>, Error>
 }
 
 /**
@@ -95,5 +87,5 @@ export function useFrequencyDataQuery(
     query.refetch()
   }, { immediate: true })
 
-  return query as UseQueryReturnType<ApiResponse, Error>
+  return query as UseQueryReturnType<ApiResponse<FrequencyChartData>, Error>
 } 

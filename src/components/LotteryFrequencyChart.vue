@@ -29,6 +29,15 @@ const props = defineProps<{
   periodCount: number
 }>()
 
+// 模拟数据，用于开发测试
+const mockData = {
+  success: true,
+  data: {
+    numbers: Array.from({ length: 33 }, (_, i) => i + 1),
+    frequencies: Array.from({ length: 33 }, () => Math.random().toFixed(2)),
+  },
+}
+
 // 图表数据
 const chartData = ref({
   categories: [],
@@ -101,38 +110,39 @@ watchEffect(() => {
 
     // 使用真实数据或模拟数据
     const queryData = unref(query.data)
-    const data = queryData?.data || mockData.data
+    console.log('Raw API response:', queryData)
 
-    // 确保数据存在且包含必要的属性
-    if (data && Array.isArray(data.numbers) && Array.isArray(data.frequencies)) {
-      // 更新图表数据
-      chartData.value = {
-        categories: data.numbers.map((num) => num.toString()),
-        series: [
-          {
-            name: '出现频率',
-            data: data.frequencies.map((freq) => parseFloat(freq.toString())),
-            color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
-          },
-        ],
-      }
-    } else {
-      console.warn('Invalid data format received in LotteryFrequencyChart, using mock data instead')
-      // 使用模拟数据
-      chartData.value = {
-        categories: mockData.data.numbers.map((num) => num.toString()),
-        series: [
-          {
-            name: '出现频率',
-            data: mockData.data.frequencies.map((freq) => parseFloat(freq.toString())),
-            color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
-          },
-        ],
-      }
+    // 从 API 响应中提取数据
+    const dataset = queryData?.data?.datasets?.[0]?.data || []
+    const data =
+      dataset.length > 0
+        ? {
+            numbers: dataset.map((item) => item.position),
+            frequencies: dataset.map((item) => item.value),
+          }
+        : mockData.data
+
+    console.log('Processed data:', data)
+    console.log('Data validation:', {
+      hasData: !!data,
+      hasNumbers: data && Array.isArray(data.numbers),
+      hasFrequencies: data && Array.isArray(data.frequencies),
+    })
+
+    // 更新图表数据
+    chartData.value = {
+      categories: data.numbers.map((num) => num.toString()),
+      series: [
+        {
+          name: '出现频率',
+          data: data.frequencies.map((freq) => parseFloat(freq.toString())),
+          color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
+        },
+      ],
     }
   } catch (error) {
     console.error('Error updating frequency chart data:', error)
-    // 出错时也使用模拟数据
+    // 出错时使用模拟数据
     chartData.value = {
       categories: mockData.data.numbers.map((num) => num.toString()),
       series: [
@@ -145,15 +155,6 @@ watchEffect(() => {
     }
   }
 })
-
-// 模拟数据，用于开发测试
-const mockData = {
-  success: true,
-  data: {
-    numbers: Array.from({ length: 33 }, (_, i) => i + 1),
-    frequencies: Array.from({ length: 33 }, () => Math.random().toFixed(2)),
-  },
-}
 </script>
 
 <style lang="scss" scoped>

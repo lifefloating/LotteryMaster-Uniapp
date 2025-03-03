@@ -106,38 +106,39 @@ watchEffect(() => {
 
     // 使用真实数据或模拟数据
     const queryData = unref(trendData)
-    const data = queryData?.data || mockData.data
+    console.log('Raw API response:', queryData)
 
-    // 确保数据存在且包含必要的属性
-    if (data && Array.isArray(data.numbers) && Array.isArray(data.frequencies)) {
-      // 更新图表数据
-      chartData.value = {
-        categories: data.numbers.map((num) => num.toString()),
-        series: [
-          {
-            name: '出现次数',
-            data: data.frequencies,
-            color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
-          },
-        ],
-      }
-    } else {
-      console.warn('Invalid data format received in LotteryTrendChart, using mock data instead')
-      // 使用模拟数据
-      chartData.value = {
-        categories: mockData.data.numbers.map((num) => num.toString()),
-        series: [
-          {
-            name: '出现次数',
-            data: mockData.data.frequencies,
-            color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
-          },
-        ],
-      }
+    // 从 API 响应中提取数据
+    const numberStats = queryData?.data?.statistics?.numberStats || []
+    const data =
+      numberStats.length > 0
+        ? {
+            numbers: numberStats.map((stat) => stat.number),
+            frequencies: numberStats.map((stat) => stat.frequency),
+          }
+        : mockData.data
+
+    console.log('Processed data:', data)
+    console.log('Data validation:', {
+      hasData: !!data,
+      hasNumbers: data && Array.isArray(data.numbers),
+      hasFrequencies: data && Array.isArray(data.frequencies),
+    })
+
+    // 更新图表数据
+    chartData.value = {
+      categories: data.numbers.map((num) => num.toString()),
+      series: [
+        {
+          name: '出现次数',
+          data: data.frequencies,
+          color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
+        },
+      ],
     }
   } catch (error) {
     console.error('Error updating trend chart data:', error)
-    // 出错时也使用模拟数据
+    // 出错时使用模拟数据
     chartData.value = {
       categories: mockData.data.numbers.map((num) => num.toString()),
       series: [
