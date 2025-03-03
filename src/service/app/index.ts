@@ -9,3 +9,5 @@ export * from './store';
 export * from './store.vuequery';
 export * from './user';
 export * from './user.vuequery';
+export * from './chart';
+export * from './chart.vuequery';

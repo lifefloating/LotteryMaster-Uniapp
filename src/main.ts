@@ -7,6 +7,7 @@ import 'wot-design-uni/components/wd-toast/index.js'
 import App from './App.vue'
 import { prototypeInterceptor, requestInterceptor, routeInterceptor } from './interceptors'
 import store from './store'
+import QiunDataCharts from './components/QiunDataCharts.vue'
 
 export function createApp() {
   const app = createSSRApp(App)
@@ -15,6 +16,9 @@ export function createApp() {
   app.use(requestInterceptor)
   app.use(prototypeInterceptor)
   app.use(VueQueryPlugin)
+
+  // 注册全局组件
+  app.component('qiun-data-charts', QiunDataCharts)
 
   return {
     app,

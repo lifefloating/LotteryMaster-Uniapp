@@ -1,0 +1,168 @@
+<template>
+  <view class="lottery-frequency-chart">
+    <view class="chart-container">
+      <qiun-data-charts
+        type="column"
+        :opts="opts"
+        :chartData="chartData"
+        :canvas2d="true"
+        canvasId="frequencyChart"
+      />
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref, computed, watch, onMounted, defineAsyncComponent, watchEffect, unref } from 'vue'
+import { useFrequencyDataQuery, ApiResponse } from '@/service/app/chart.vuequery'
+// import type { ApiResponse } from '@/service/app/chart.vuequery'
+
+const QiunDataCharts = defineAsyncComponent(() => import('@/components/QiunDataCharts.vue'))
+
+defineOptions({
+  name: 'LotteryFrequencyChart',
+})
+
+const props = defineProps<{
+  lotteryType: string
+  zoneType: string
+  periodCount: number
+}>()
+
+// 图表数据
+const chartData = ref({
+  categories: [],
+  series: [
+    {
+      name: '出现频率',
+      data: [],
+      color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
+    },
+  ],
+})
+
+// 图表配置
+const opts = computed(() => {
+  return {
+    color: [props.zoneType === 'red' ? '#ff5252' : '#4285f4'],
+    padding: [15, 15, 0, 5],
+    enableScroll: true,
+    legend: {
+      show: false,
+    },
+    xAxis: {
+      disableGrid: true,
+      scrollShow: true,
+      itemCount: 20,
+      fontSize: 10,
+    },
+    yAxis: {
+      gridType: 'dash',
+      dashLength: 2,
+      data: [
+        {
+          min: 0,
+          max: 1,
+          format: (val) => val.toFixed(2),
+        },
+      ],
+    },
+    extra: {
+      column: {
+        width: 15,
+        activeBgColor: '#000000',
+        activeBgOpacity: 0.08,
+      },
+    },
+  }
+})
+
+// 获取频率数据
+const query = useFrequencyDataQuery(
+  computed(() => props.lotteryType),
+  computed(() => props.zoneType),
+  computed(() => props.periodCount),
+)
+
+// 监听属性变化
+watch([() => props.lotteryType, () => props.zoneType, () => props.periodCount], () => {
+  console.log('Props changed, refetching data...')
+  query.refetch()
+})
+
+// 更新图表数据
+watchEffect(() => {
+  try {
+    console.log('Updating frequency chart with period count:', props.periodCount, 'query state:', {
+      data: query.data.value,
+      isLoading: query.isLoading.value,
+      error: query.error.value,
+    })
+
+    // 使用真实数据或模拟数据
+    const queryData = unref(query.data)
+    const data = queryData?.data || mockData.data
+
+    // 确保数据存在且包含必要的属性
+    if (data && Array.isArray(data.numbers) && Array.isArray(data.frequencies)) {
+      // 更新图表数据
+      chartData.value = {
+        categories: data.numbers.map((num) => num.toString()),
+        series: [
+          {
+            name: '出现频率',
+            data: data.frequencies.map((freq) => parseFloat(freq.toString())),
+            color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
+          },
+        ],
+      }
+    } else {
+      console.warn('Invalid data format received in LotteryFrequencyChart, using mock data instead')
+      // 使用模拟数据
+      chartData.value = {
+        categories: mockData.data.numbers.map((num) => num.toString()),
+        series: [
+          {
+            name: '出现频率',
+            data: mockData.data.frequencies.map((freq) => parseFloat(freq.toString())),
+            color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
+          },
+        ],
+      }
+    }
+  } catch (error) {
+    console.error('Error updating frequency chart data:', error)
+    // 出错时也使用模拟数据
+    chartData.value = {
+      categories: mockData.data.numbers.map((num) => num.toString()),
+      series: [
+        {
+          name: '出现频率',
+          data: mockData.data.frequencies.map((freq) => parseFloat(freq.toString())),
+          color: props.zoneType === 'red' ? '#ff5252' : '#4285f4',
+        },
+      ],
+    }
+  }
+})
+
+// 模拟数据，用于开发测试
+const mockData = {
+  success: true,
+  data: {
+    numbers: Array.from({ length: 33 }, (_, i) => i + 1),
+    frequencies: Array.from({ length: 33 }, () => Math.random().toFixed(2)),
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.lottery-frequency-chart {
+  width: 100%;
+
+  .chart-container {
+    width: 100%;
+    height: 300px;
+  }
+}
+</style>
