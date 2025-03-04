@@ -8,7 +8,6 @@
 - 智能预测号码功能
 - 历史走势分析
 - 冷热号分析
-- 深色/浅色主题切换
 - 历史记录查看
 
 ## 技术栈
@@ -117,6 +116,10 @@ pnpm build:app
 ## 贡献指南
 
 欢迎提交 Issue 或 Pull Request 来改进这个项目。
+
+## 致谢
+
+感谢 [unibest](https://github.com/codercup/unibest) 提供的优秀模版，确实很好用！
 
 ## 许可证
 
