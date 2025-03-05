@@ -119,13 +119,6 @@ const handleBack = () => {
   uni.navigateBack()
 }
 
-// 处理历史记录按钮点击
-const handleHistory = () => {
-  uni.navigateTo({
-    url: '/pages-sub/history/index',
-  })
-}
-
 // 处理通知开关
 const handleNotificationChange = (e: any) => {
   notificationEnabled.value = e.detail.value

@@ -27,13 +27,6 @@
       "style": {
         "navigationBarTitleText": "走势分析"
       }
-    },
-    {
-      "path": "pages-sub/history/index",
-      "style": {
-        "navigationBarTitleText": "历史记录"
-      },
-      "type": "page"
     }
   ],
   "globalStyle": {

@@ -26,14 +26,6 @@ export default defineUniPages({
       },
       type: 'page',
     },
-    // 历史记录页面
-    {
-      path: 'pages-sub/history/index',
-      style: {
-        navigationBarTitleText: '历史记录',
-      },
-      type: 'page',
-    },
   ],
   // 全局样式
   globalStyle: {

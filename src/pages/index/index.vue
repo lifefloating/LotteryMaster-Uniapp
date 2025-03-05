@@ -96,19 +96,13 @@ onLoad(() => {
   lotteryStore.fetchLotteryData()
 })
 
-// 处理返回按钮点击
+// 页面行为
+// 返回上一页
 const handleBack = () => {
   uni.navigateBack()
 }
 
-// 处理历史记录按钮点击
-const handleHistory = () => {
-  uni.navigateTo({
-    url: '/pages-sub/history/index',
-  })
-}
-
-// 处理彩票类型切换
+// 彩种类型切换处理
 const handleLotteryTypeSwitch = (type: LotteryType) => {
   lotteryStore.setLotteryType(type)
   lotteryStore.fetchLotteryData()
