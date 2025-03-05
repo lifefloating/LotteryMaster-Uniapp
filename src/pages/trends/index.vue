@@ -16,9 +16,6 @@
       width: '100%',
     }"
   >
-    <!-- 顶部导航栏 -->
-    <lottery-header title="走势分析" @back="handleBack" @history="handleHistory" />
-
     <!-- 彩票类型切换 -->
     <lottery-type-switch
       :active-type="lotteryStore.currentLotteryType"
@@ -121,7 +118,9 @@ import { useLotteryStore, type LotteryType } from '@/store/lottery'
 
 const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
 const LotteryTypeSwitch = defineAsyncComponent(() => import('@/components/LotteryTypeSwitch.vue'))
-const LotteryHeatmapBoard = defineAsyncComponent(() => import('@/components/LotteryHeatmapBoard.vue'))
+const LotteryHeatmapBoard = defineAsyncComponent(
+  () => import('@/components/LotteryHeatmapBoard.vue'),
+)
 const LotteryDataCards = defineAsyncComponent(() => import('@/components/LotteryDataCards.vue'))
 
 defineOptions({
