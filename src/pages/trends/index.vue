@@ -16,9 +16,6 @@
       width: '100%',
     }"
   >
-    <!-- 顶部导航栏 -->
-    <lottery-header title="走势分析" @back="handleBack" @history="handleHistory" />
-
     <!-- 彩票类型切换 -->
     <lottery-type-switch
       :active-type="lotteryStore.currentLotteryType"
@@ -328,7 +325,7 @@ const handleZoneTypeChange = (type: string) => {
       height: 300px;
       overflow: visible;
     }
-    
+
     /* Responsive styles */
     @media screen and (max-width: 480px) {
       .chart-content {
