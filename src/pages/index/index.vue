@@ -16,6 +16,9 @@
       paddingBottom: safeAreaInsets?.bottom + 'px',
     }"
   >
+    <!-- 顶部导航栏 -->
+    <lottery-header title="彩票预测" @back="handleBack" @history="handleHistory" />
+
     <!-- 彩票类型切换 -->
     <lottery-type-switch
       :active-type="lotteryStore.currentLotteryType"

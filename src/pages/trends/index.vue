@@ -16,6 +16,9 @@
       width: '100%',
     }"
   >
+    <!-- 顶部导航栏 -->
+    <lottery-header title="走势分析" @back="handleBack" @history="handleHistory" />
+
     <!-- 彩票类型切换 -->
     <lottery-type-switch
       :active-type="lotteryStore.currentLotteryType"
@@ -85,10 +88,10 @@
     <!-- 走势图表区域 -->
     <view class="trends-chart-container">
       <view class="chart-title">
-        <text class="title-text">号码走势图</text>
+        <text class="title-text">号码数据分析</text>
       </view>
       <view class="chart-content">
-        <lottery-trend-chart
+        <lottery-heatmap-board
           :lottery-type="lotteryStore.currentLotteryType"
           :zone-type="zoneType"
           :period-count="getPeriodCount"
@@ -96,13 +99,13 @@
       </view>
     </view>
 
-    <!-- 频率图表区域 -->
-    <view class="frequency-chart-container">
+    <!-- 数据卡片区域 -->
+    <view class="data-cards-container">
       <view class="chart-title">
-        <text class="title-text">号码出现频率</text>
+        <text class="title-text">统计数据</text>
       </view>
       <view class="chart-content">
-        <lottery-frequency-chart
+        <lottery-data-cards
           :lottery-type="lotteryStore.currentLotteryType"
           :zone-type="zoneType"
           :period-count="getPeriodCount"
@@ -118,10 +121,8 @@ import { useLotteryStore, type LotteryType } from '@/store/lottery'
 
 const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
 const LotteryTypeSwitch = defineAsyncComponent(() => import('@/components/LotteryTypeSwitch.vue'))
-const LotteryTrendChart = defineAsyncComponent(() => import('@/components/LotteryTrendChart.vue'))
-const LotteryFrequencyChart = defineAsyncComponent(
-  () => import('@/components/LotteryFrequencyChart.vue'),
-)
+const LotteryHeatmapBoard = defineAsyncComponent(() => import('@/components/LotteryHeatmapBoard.vue'))
+const LotteryDataCards = defineAsyncComponent(() => import('@/components/LotteryDataCards.vue'))
 
 defineOptions({
   name: 'TrendsPage',
@@ -193,15 +194,14 @@ const handleZoneTypeChange = (type: string) => {
 <style lang="scss" scoped>
 .trends-page {
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: #f5f5f7;
 
-  .time-range-container,
-  .zone-type-container {
-    padding: 16px;
-    width: 100%;
-  }
-
+  /* 时间范围容器样式 */
   .time-range-container {
+    padding: 16px;
+    margin-bottom: 8px;
+    background-color: #ffffff;
+
     .time-range-title {
       margin-bottom: 12px;
 
@@ -214,44 +214,36 @@ const handleZoneTypeChange = (type: string) => {
 
     .time-range-options {
       display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
 
       .time-option {
-        display: flex;
-        flex: 1;
-        align-items: center;
-        justify-content: center;
-        height: 40px;
-        margin: 0 4px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        padding: 6px 12px;
+        border-radius: 20px;
+        background-color: #f0f0f0;
 
-        &:first-child {
-          margin-left: 0;
-        }
+        &.active {
+          background-color: #333333;
 
-        &:last-child {
-          margin-right: 0;
+          .option-text {
+            color: #ffffff;
+          }
         }
 
         .option-text {
           font-size: 14px;
           color: #666666;
         }
-
-        &.active {
-          background-color: #3b82f6;
-
-          .option-text {
-            font-weight: 500;
-            color: #ffffff;
-          }
-        }
       }
     }
   }
 
+  /* 区域类型容器样式 */
   .zone-type-container {
+    padding: 16px;
+    margin-bottom: 8px;
+    background-color: #ffffff;
+
     .zone-type-title {
       margin-bottom: 12px;
 
@@ -264,54 +256,48 @@ const handleZoneTypeChange = (type: string) => {
 
     .zone-type-options {
       display: flex;
+      gap: 12px;
 
       .zone-option {
-        display: flex;
         flex: 1;
-        align-items: center;
-        justify-content: center;
-        height: 40px;
-        margin: 0 4px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        padding: 8px 0;
+        border-radius: 20px;
+        background-color: #f0f0f0;
+        text-align: center;
 
-        &:first-child {
-          margin-left: 0;
-        }
+        &.active {
+          &:first-child {
+            background-color: #ff5252; // 红球激活颜色
+          }
 
-        &:last-child {
-          margin-right: 0;
+          &:last-child {
+            background-color: #4285f4; // 蓝球激活颜色
+          }
+
+          .option-text {
+            color: #ffffff;
+          }
         }
 
         .option-text {
           font-size: 14px;
           color: #666666;
         }
-
-        &.active {
-          background-color: #3b82f6;
-
-          .option-text {
-            font-weight: 500;
-            color: #ffffff;
-          }
-        }
       }
     }
   }
 
   .trends-chart-container,
-  .frequency-chart-container {
-    padding: 16px 0;
+  .data-cards-container {
+    padding: 0;
     background-color: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     width: 100%;
     margin: 0 0 16px 0;
 
     .chart-title {
-      margin-bottom: 16px;
-      padding: 0 16px;
+      margin-bottom: 8px;
+      padding: 16px 16px 0 16px;
 
       .title-text {
         font-size: 16px;
@@ -322,15 +308,6 @@ const handleZoneTypeChange = (type: string) => {
 
     .chart-content {
       width: 100%;
-      height: 300px;
-      overflow: visible;
-    }
-
-    /* Responsive styles */
-    @media screen and (max-width: 480px) {
-      .chart-content {
-        height: 250px;
-      }
     }
   }
 }

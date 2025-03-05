@@ -15,6 +15,9 @@
       paddingBottom: safeAreaInsets?.bottom + 'px',
     }"
   >
+    <!-- 顶部导航栏 -->
+    <lottery-header title="我的" @back="handleBack" @history="handleHistory" />
+
     <!-- 用户信息区域 -->
     <view class="user-info-container">
       <view class="avatar-container">
