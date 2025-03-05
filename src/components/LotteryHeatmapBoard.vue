@@ -1,40 +1,39 @@
 <template>
   <view class="lottery-heatmap-board">
-    <view class="heatmap-grid" :class="{ 'blue-zone': zoneType === 'blue', 'red-zone': zoneType === 'red' }">
-      <view
-        v-for="stat in numberStats"
-        :key="stat.number"
-        class="number-cell"
-        :class="{
-          'number-cell-blue': zoneType === 'blue',
-          'number-cell-red': zoneType === 'red',
-          'selected': selectedNumbers.includes(stat.number)
-        }"
-        :style="getCellStyle(stat)"
-        @click="toggleNumberSelection(stat.number)"
-      >
-        <text class="number-text">{{ stat.number }}</text>
-        <text class="stat-text">{{ displayValue === 'interval' ? stat.currentInterval : stat.frequency }}</text>
-      </view>
-    </view>
-    
-    <view class="display-controls">
-      <view class="control-label">显示数据：</view>
-      <view class="control-options">
+    <view class="board-header">
+      <view class="display-toggle">
         <view 
-          class="control-option" 
+          class="toggle-option" 
           :class="{ active: displayValue === 'frequency' }"
           @click="displayValue = 'frequency'"
         >
           <text class="option-text">出现频率</text>
         </view>
         <view 
-          class="control-option" 
+          class="toggle-option" 
           :class="{ active: displayValue === 'interval' }"
           @click="displayValue = 'interval'"
         >
           <text class="option-text">当前间隔</text>
         </view>
+      </view>
+    </view>
+    
+    <view class="board-grid" :class="{ 'blue-grid': zoneType === 'blue', 'red-grid': zoneType === 'red' }">
+      <view
+        v-for="stat in numberStats"
+        :key="stat.number"
+        class="grid-item"
+        :class="{
+          'blue-item': zoneType === 'blue',
+          'red-item': zoneType === 'red',
+          'selected': selectedNumbers.includes(stat.number)
+        }"
+        :style="getCellStyle(stat)"
+        @click="toggleNumberSelection(stat.number)"
+      >
+        <text class="number">{{ stat.number }}</text>
+        <text class="value">{{ displayValue === 'interval' ? stat.currentInterval : stat.frequency }}</text>
       </view>
     </view>
     
@@ -196,122 +195,117 @@ const clearSelection = () => {
 <style lang="scss" scoped>
 .lottery-heatmap-board {
   width: 100%;
-  padding: 16px;
-  background-color: #ffffff;
-  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 0 16px 16px;
+  overflow-x: hidden; // 防止内容溢出
 
-  .heatmap-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+  .board-header {
     margin-bottom: 16px;
-    
-    // 响应式网格布局
-    @media screen and (min-width: 480px) {
-      grid-template-columns: repeat(5, 1fr);
-    }
-    
-    @media screen and (min-width: 768px) {
-      grid-template-columns: repeat(6, 1fr);
-    }
-    
-    &.blue-zone {
-      .number-cell {
-        border: 1px solid rgba(66, 133, 244, 0.3);
-      }
-    }
-    
-    &.red-zone {
-      .number-cell {
-        border: 1px solid rgba(255, 82, 82, 0.3);
-      }
-    }
-  }
-  
-  .number-cell {
-    aspect-ratio: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow: hidden;
-    min-width: 60px;
-    min-height: 60px;
-    
-    // 确保移动端有足够大的触摸区域
-    @media screen and (max-width: 320px) {
-      min-width: 50px;
-      min-height: 50px;
-    }
-    
-    &.selected {
-      box-shadow: 0 0 0 2px #333;
-      transform: scale(1.05);
-      z-index: 1;
-    }
-    
-    &.number-cell-blue {
-      &.selected {
-        box-shadow: 0 0 0 2px #4285f4;
-      }
-    }
-    
-    &.number-cell-red {
-      &.selected {
-        box-shadow: 0 0 0 2px #ff5252;
-      }
-    }
-    
-    .number-text {
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-    }
-    
-    .stat-text {
-      font-size: 12px;
-      margin-top: 4px;
-      color: #666;
-    }
-  }
-  
-  .display-controls {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-    
-    .control-label {
-      margin-right: 12px;
-      font-size: 14px;
-      color: #333;
-    }
-    
-    .control-options {
+
+    .display-toggle {
       display: flex;
-      flex-direction: row;
-      
-      .control-option {
+      background-color: #f0f0f0;
+      border-radius: 20px;
+      overflow: hidden;
+
+      .toggle-option {
         padding: 6px 12px;
-        margin-right: 8px;
-        border-radius: 16px;
-        background-color: #f5f5f5;
-        
+        font-size: 14px;
+        color: #666;
+
         &.active {
           background-color: #333;
-          
-          .option-text {
-            color: #fff;
-          }
+          color: #fff;
         }
+      }
+    }
+  }
+
+  .board-grid {
+    display: grid;
+    width: 100%;
+    gap: 8px;
+    justify-content: center;
+    
+    // 确保网格容器不会超出视口宽度
+    max-width: 100%;
+    
+    &.blue-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      
+      @media (max-width: 340px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    &.red-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      
+      @media (max-width: 400px) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      
+      @media (max-width: 340px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .grid-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1/1;
+      border-radius: 8px;
+      padding: 8px 4px;
+      box-sizing: border-box;
+      text-align: center;
+      min-width: 0; // 确保子元素可以缩小
+
+      &.blue-item {
+        background-color: rgba(66, 133, 244, 0.1);
+        border: 1px solid rgba(66, 133, 244, 0.2);
+      }
+
+      &.red-item {
+        background-color: rgba(255, 82, 82, 0.1);
+        border: 1px solid rgba(255, 82, 82, 0.2);
+      }
+
+      &.selected {
+        box-shadow: 0 0 0 2px #333;
+        transform: scale(1.05);
+        z-index: 1;
+      }
+
+      &.blue-item.selected {
+        box-shadow: 0 0 0 2px #4285f4;
+      }
+
+      &.red-item.selected {
+        box-shadow: 0 0 0 2px #ff5252;
+      }
+
+      .number {
+        font-size: 18px;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 4px;
         
-        .option-text {
+        @media (max-width: 400px) {
+          font-size: 16px;
+        }
+      }
+
+      .value {
+        font-size: 14px;
+        color: #666;
+        
+        @media (max-width: 400px) {
           font-size: 12px;
-          color: #666;
         }
       }
     }

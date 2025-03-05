@@ -318,8 +318,10 @@ const getIntervalPercentage = (interval: number) => {
 <style lang="scss" scoped>
 .lottery-data-cards {
   width: 100%;
+  box-sizing: border-box;
   padding: 16px;
   background-color: #ffffff;
+  overflow-x: hidden; // 防止内容溢出
   
   .cards-container {
     display: flex;
@@ -329,11 +331,12 @@ const getIntervalPercentage = (interval: number) => {
   }
   
   .data-card {
-    width: 100%;
+    width: calc(100% - 2px); // 修正边界溢出问题
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     overflow: hidden;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
     
     // 响应式卡片宽度
     @media screen and (min-width: 480px) {

@@ -195,6 +195,7 @@ const handleZoneTypeChange = (type: string) => {
 .trends-page {
   min-height: 100vh;
   background-color: #f5f5f7;
+  overflow-x: hidden; // 防止页面内容溢出视口
 
   /* 时间范围容器样式 */
   .time-range-container {
