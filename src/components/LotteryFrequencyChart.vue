@@ -52,9 +52,13 @@ const chartData = ref({
 
 // 图表配置
 const opts = computed(() => {
+  // 获取窗口宽度来确定是移动端还是网页
+  const windowWidth = uni.getSystemInfoSync().windowWidth
+  const isMobile = windowWidth <= 480
+
   return {
     color: [props.zoneType === 'red' ? '#ff5252' : '#4285f4'],
-    padding: [15, 15, 0, 5],
+    padding: [15, isMobile ? 10 : 5, 0, isMobile ? 10 : 5],
     enableScroll: true,
     legend: {
       show: false,
@@ -62,8 +66,8 @@ const opts = computed(() => {
     xAxis: {
       disableGrid: true,
       scrollShow: true,
-      itemCount: 20,
-      fontSize: 10,
+      itemCount: isMobile ? 6 : 20,
+      fontSize: isMobile ? 9 : 10,
     },
     yAxis: {
       gridType: 'dash',
@@ -75,14 +79,17 @@ const opts = computed(() => {
           format: (val) => val.toFixed(2),
         },
       ],
+      fontSize: isMobile ? 9 : 10,
     },
     extra: {
       column: {
-        width: 15,
+        width: isMobile ? 12 : 15,
         activeBgColor: '#000000',
         activeBgOpacity: 0.08,
       },
     },
+    width: isMobile ? windowWidth - 20 : windowWidth,
+    height: isMobile ? 250 : 300,
   }
 })
 

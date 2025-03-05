@@ -13,6 +13,7 @@
     :style="{
       paddingTop: safeAreaInsets?.top + 'px',
       paddingBottom: safeAreaInsets?.bottom + 'px',
+      width: '100%',
     }"
   >
     <!-- 顶部导航栏 -->
@@ -197,9 +198,13 @@ const handleZoneTypeChange = (type: string) => {
   min-height: 100vh;
   background-color: #f5f7fa;
 
-  .time-range-container {
+  .time-range-container,
+  .zone-type-container {
     padding: 16px;
+    width: 100%;
+  }
 
+  .time-range-container {
     .time-range-title {
       margin-bottom: 12px;
 
@@ -250,8 +255,6 @@ const handleZoneTypeChange = (type: string) => {
   }
 
   .zone-type-container {
-    padding: 16px;
-
     .zone-type-title {
       margin-bottom: 12px;
 
@@ -303,14 +306,15 @@ const handleZoneTypeChange = (type: string) => {
 
   .trends-chart-container,
   .frequency-chart-container {
-    padding: 16px;
-    margin: 0 16px 16px;
+    padding: 16px 0;
     background-color: #ffffff;
-    border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    margin: 0 0 16px 0;
 
     .chart-title {
       margin-bottom: 16px;
+      padding: 0 16px;
 
       .title-text {
         font-size: 16px;
@@ -322,6 +326,14 @@ const handleZoneTypeChange = (type: string) => {
     .chart-content {
       width: 100%;
       height: 300px;
+      overflow: visible;
+    }
+    
+    /* Responsive styles */
+    @media screen and (max-width: 480px) {
+      .chart-content {
+        height: 250px;
+      }
     }
   }
 }

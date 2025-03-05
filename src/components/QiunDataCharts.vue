@@ -4,7 +4,7 @@
       class="charts"
       :id="canvasId"
       :canvas-id="canvasId"
-      :style="{ width: cWidth + 'px', height: cHeight + 'px' }"
+      :style="{ width: '100%', height: cHeight + 'px' }"
       @touchstart="touchStart"
       @touchmove="touchMove"
       @touchend="touchEnd"
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick, computed } from 'vue'
 import uCharts from '@qiun/ucharts'
 
 defineOptions({
@@ -30,36 +30,40 @@ const props = defineProps<{
 
 const cWidth = ref(375)
 const cHeight = ref(250)
+const windowWidth = ref(375)
 let uChartsInstance: any = null
 
 // 初始化图表
 const initCharts = () => {
   nextTick(() => {
-    cWidth.value = uni.upx2px(750)
-    cHeight.value = 250
-
-    // #ifdef H5 || APP-PLUS || MP-ALIPAY || MP-BAIDU || MP-QQ || MP-TOUTIAO
+    // Get the actual window width
+    const systemInfo = uni.getSystemInfoSync()
+    windowWidth.value = systemInfo.windowWidth
+    
+    // Use a different approach for different platforms
+    // #ifdef H5
     uni
       .createSelectorQuery()
       .select(`#${props.canvasId}`)
       .boundingClientRect((res: any) => {
         if (res) {
-          cWidth.value = res.width || cWidth.value
-          cHeight.value = res.height || cHeight.value
+          cWidth.value = res.width || windowWidth.value
+          cHeight.value = res.height || 250
           drawCharts()
         }
       })
       .exec()
     // #endif
-
-    // #ifdef MP-WEIXIN
-    const query = uni.createSelectorQuery()
-    query
+    
+    // #ifdef MP || APP-PLUS
+    uni
+      .createSelectorQuery()
       .select(`#${props.canvasId}`)
       .boundingClientRect((res: any) => {
         if (res) {
-          cWidth.value = res.width || cWidth.value
-          cHeight.value = res.height || cHeight.value
+          // For mobile apps and mini programs, use the container width
+          cWidth.value = res.width
+          cHeight.value = res.height || 250
           drawCharts()
         }
       })
@@ -75,19 +79,43 @@ const drawCharts = () => {
   }
 
   const ctx = uni.createCanvasContext(props.canvasId)
+  
+  // For mobile app and H5, use different approaches
+  let chartWidth = cWidth.value
+  let chartPadding = [15, 10, 0, 10]  // Default padding
+  
+  // #ifdef H5
+  // For H5, ensure the full width with minimal side padding
+  chartWidth = windowWidth.value
+  chartPadding = [15, 0, 0, 0]
+  // #endif
+  
+  // Get the device pixel ratio for better rendering
+  const pixelRatio = uni.getSystemInfoSync().pixelRatio || 1
+  
+  // Get chart height from props or default
+  const chartHeight = props.opts?.height || cHeight.value
 
+  // Create chart with appropriate settings
   // eslint-disable-next-line new-cap
   uChartsInstance = new uCharts({
     type: props.type,
     context: ctx,
-    width: cWidth.value,
-    height: cHeight.value,
+    width: chartWidth,
+    height: chartHeight,
     categories: props.chartData.categories,
     series: props.chartData.series,
     animation: true,
     background: '#FFFFFF',
-    pixelRatio: 1,
+    pixelRatio: pixelRatio,
     ...props.opts,
+    padding: chartPadding,
+    enableScroll: true,  // Enable scrolling for long charts
+    xAxis: {
+      ...(props.opts?.xAxis || {}),
+      scrollShow: true,  // Show scroll bar
+      itemCount: props.type === 'line' ? 7 : 6,  // Show fewer items on mobile
+    },
   })
 
   uChartsInstance.addEventListener('renderComplete', () => {
