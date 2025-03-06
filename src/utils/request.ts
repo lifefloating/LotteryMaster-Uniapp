@@ -16,9 +16,10 @@ const http = <T>(options: CustomRequestOptions) => {
   // #endif
 
   // 在开发环境下打印请求信息，帮助调试
-  if (isDev
+  if (
+    isDev ||
     // #ifdef H5
-    || isH5Dev
+    isH5Dev
     // #endif
   ) {
     console.log(`[Request] ${options.method || 'GET'} ${options.url}`)
@@ -62,9 +63,11 @@ const http = <T>(options: CustomRequestOptions) => {
           errorMsg.includes('CORS') ||
           errorMsg.includes('Access-Control-Allow-Origin')
 
-        if (import.meta.env?.MODE === 'development' || import.meta.env?.DEV === true
+        if (
+          import.meta.env?.MODE === 'development' ||
+          import.meta.env?.DEV === true ||
           // #ifdef H5
-          || (typeof window !== 'undefined' && (window as any).__UNI_DEVELOPMENT__)
+          (typeof window !== 'undefined' && (window as any).__UNI_DEVELOPMENT__)
           // #endif
         ) {
           console.error('[Request Error]', err)

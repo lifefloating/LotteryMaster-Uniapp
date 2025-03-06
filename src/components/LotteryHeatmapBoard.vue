@@ -2,15 +2,15 @@
   <view class="lottery-heatmap-board">
     <view class="board-header">
       <view class="display-toggle">
-        <view 
-          class="toggle-option" 
+        <view
+          class="toggle-option"
           :class="{ active: displayValue === 'frequency' }"
           @click="displayValue = 'frequency'"
         >
           <text class="option-text">出现频率</text>
         </view>
-        <view 
-          class="toggle-option" 
+        <view
+          class="toggle-option"
           :class="{ active: displayValue === 'interval' }"
           @click="displayValue = 'interval'"
         >
@@ -18,8 +18,11 @@
         </view>
       </view>
     </view>
-    
-    <view class="board-grid" :class="{ 'blue-grid': zoneType === 'blue', 'red-grid': zoneType === 'red' }">
+
+    <view
+      class="board-grid"
+      :class="{ 'blue-grid': zoneType === 'blue', 'red-grid': zoneType === 'red' }"
+    >
       <view
         v-for="stat in numberStats"
         :key="stat.number"
@@ -27,16 +30,18 @@
         :class="{
           'blue-item': zoneType === 'blue',
           'red-item': zoneType === 'red',
-          'selected': selectedNumbers.includes(stat.number)
+          selected: selectedNumbers.includes(stat.number),
         }"
         :style="getCellStyle(stat)"
         @click="toggleNumberSelection(stat.number)"
       >
         <text class="number">{{ stat.number }}</text>
-        <text class="value">{{ displayValue === 'interval' ? stat.currentInterval : stat.frequency }}</text>
+        <text class="value">
+          {{ displayValue === 'interval' ? stat.currentInterval : stat.frequency }}
+        </text>
       </view>
     </view>
-    
+
     <view v-if="selectedNumbers.length > 0" class="selected-details">
       <view class="details-header">
         <text class="details-title">所选号码详情</text>
@@ -45,9 +50,9 @@
         </view>
       </view>
       <view class="details-content">
-        <view 
-          v-for="number in selectedNumbers" 
-          :key="number" 
+        <view
+          v-for="number in selectedNumbers"
+          :key="number"
           class="detail-item"
           :class="{ 'detail-blue': zoneType === 'blue', 'detail-red': zoneType === 'red' }"
         >
@@ -63,7 +68,9 @@
             </view>
             <view class="stat-item">
               <text class="stat-label">平均间隔:</text>
-              <text class="stat-value">{{ getStatByNumber(number).averageInterval.toFixed(1) }}</text>
+              <text class="stat-value">
+                {{ getStatByNumber(number).averageInterval.toFixed(1) }}
+              </text>
             </view>
             <view class="stat-item">
               <text class="stat-label">最大间隔:</text>
@@ -71,7 +78,9 @@
             </view>
             <view class="stat-item">
               <text class="stat-label">概率:</text>
-              <text class="stat-value">{{ (getStatByNumber(number).probability * 100).toFixed(1) }}%</text>
+              <text class="stat-value">
+                {{ (getStatByNumber(number).probability * 100).toFixed(1) }}%
+              </text>
             </view>
           </view>
         </view>
@@ -89,8 +98,8 @@ defineOptions({
 
 // 定义属性
 const props = defineProps<{
-  lotteryType: string,
-  zoneType: string,
+  lotteryType: string
+  zoneType: string
   periodCount: number
 }>()
 
@@ -105,21 +114,21 @@ const selectedNumbers = ref<number[]>([])
 const fetchNumberStats = async () => {
   loading.value = true
   error.value = ''
-  
+
   try {
     const url = `http://127.0.0.1:3008/api/chart/trend?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}&includeChartData=false`
     let responseData = null
-    
+
     try {
       const response = await uni.request({
         url,
-        method: 'GET'
+        method: 'GET',
       })
-      
+
       // 正确处理响应数据
       if (response && typeof response === 'object' && 'data' in response) {
         const data = response.data
-        
+
         if (typeof data === 'object' && data !== null && 'success' in data) {
           responseData = data
         } else {
@@ -129,7 +138,7 @@ const fetchNumberStats = async () => {
     } catch (apiError) {
       console.error('Error fetching trend data:', apiError)
     }
-    
+
     // 处理数据，确保即使API失败也有默认数据显示
     if (responseData && responseData.success && responseData.data?.statistics) {
       numberStats.value = responseData.data.statistics.numberStats
@@ -151,17 +160,17 @@ const fetchNumberStats = async () => {
 // 生成默认的号码统计数据
 const generateDefaultNumberStats = (zoneType: string) => {
   const count = zoneType === 'blue' ? 12 : 33
-  
+
   return Array.from({ length: count }, (_, i) => {
     const num = i + 1
     return {
       number: num,
       frequency: Math.floor(Math.random() * 30) + 10,
-      probability: (Math.random() * 0.1) + 0.05,
+      probability: Math.random() * 0.1 + 0.05,
       currentInterval: Math.floor(Math.random() * 10) + 1,
       lastInterval: Math.floor(Math.random() * 20) + 5,
       maxInterval: Math.floor(Math.random() * 40) + 15,
-      averageInterval: Math.floor(Math.random() * 10) + 5
+      averageInterval: Math.floor(Math.random() * 10) + 5,
     }
   })
 }
@@ -178,36 +187,38 @@ onMounted(() => {
 
 // 获取单个号码的统计数据
 const getStatByNumber = (number: number) => {
-  return numberStats.value.find((stat) => stat.number === number) || {
-    frequency: 0,
-    currentInterval: 0,
-    averageInterval: 0,
-    maxInterval: 0,
-    probability: 0
-  }
+  return (
+    numberStats.value.find((stat) => stat.number === number) || {
+      frequency: 0,
+      currentInterval: 0,
+      averageInterval: 0,
+      maxInterval: 0,
+      probability: 0,
+    }
+  )
 }
 
 // 计算单元格样式
 const getCellStyle = (stat: any) => {
   // 根据显示类型决定颜色深浅
   let intensity = 0
-  
+
   if (displayValue.value === 'frequency') {
     // 找出最高频率用作标准化
-    const maxFreq = Math.max(...numberStats.value.map(s => s.frequency))
+    const maxFreq = Math.max(...numberStats.value.map((s) => s.frequency))
     intensity = maxFreq > 0 ? stat.frequency / maxFreq : 0
   } else {
     // 间隔越大，颜色越浅（反向）
-    const maxInterval = Math.max(...numberStats.value.map(s => s.currentInterval))
-    intensity = maxInterval > 0 ? 1 - (stat.currentInterval / maxInterval) : 0
+    const maxInterval = Math.max(...numberStats.value.map((s) => s.currentInterval))
+    intensity = maxInterval > 0 ? 1 - stat.currentInterval / maxInterval : 0
   }
-  
+
   // 根据球种类型选择颜色
   const baseColor = props.zoneType === 'blue' ? '66, 133, 244' : '255, 82, 82'
-  
+
   // 计算颜色深浅（0.1-0.9范围，确保有基本颜色）
-  const alpha = 0.1 + (intensity * 0.8)
-  
+  const alpha = 0.1 + intensity * 0.8
+
   return {
     backgroundColor: `rgba(${baseColor}, ${alpha})`,
   }
@@ -266,13 +277,13 @@ const clearSelection = () => {
     width: 100%;
     gap: 8px;
     justify-content: center;
-    
+
     // 确保网格容器不会超出视口宽度
     max-width: 100%;
-    
+
     &.blue-grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      
+
       @media (max-width: 340px) {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
@@ -280,11 +291,11 @@ const clearSelection = () => {
 
     &.red-grid {
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      
+
       @media (max-width: 400px) {
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
-      
+
       @media (max-width: 340px) {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
@@ -331,7 +342,7 @@ const clearSelection = () => {
         font-weight: 500;
         color: #333;
         margin-bottom: 4px;
-        
+
         @media (max-width: 400px) {
           font-size: 16px;
         }
@@ -340,44 +351,44 @@ const clearSelection = () => {
       .value {
         font-size: 14px;
         color: #666;
-        
+
         @media (max-width: 400px) {
           font-size: 12px;
         }
       }
     }
   }
-  
+
   .selected-details {
     margin-top: 16px;
     padding: 16px;
     border-radius: 8px;
     background-color: #f9f9f9;
-    
+
     .details-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
-      
+
       .details-title {
         font-size: 16px;
         font-weight: 500;
         color: #333;
       }
-      
+
       .clear-button {
         padding: 4px 10px;
         border-radius: 4px;
         background-color: #f1f1f1;
-        
+
         .clear-text {
           font-size: 12px;
           color: #666;
         }
       }
     }
-    
+
     .details-content {
       .detail-item {
         display: flex;
@@ -387,15 +398,15 @@ const clearSelection = () => {
         border-radius: 8px;
         background-color: #fff;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        
+
         &.detail-blue {
           border-left: 4px solid #4285f4;
         }
-        
+
         &.detail-red {
           border-left: 4px solid #ff5252;
         }
-        
+
         .detail-number {
           width: 40px;
           height: 40px;
@@ -409,28 +420,28 @@ const clearSelection = () => {
           margin-right: 12px;
           background-color: #4285f4;
         }
-        
+
         &.detail-blue .detail-number {
           background-color: #4285f4;
         }
-        
+
         &.detail-red .detail-number {
           background-color: #ff5252;
         }
-        
+
         .detail-stats {
           flex: 1;
-          
+
           .stat-item {
             display: flex;
             justify-content: space-between;
             margin-bottom: 6px;
-            
+
             .stat-label {
               font-size: 12px;
               color: #666;
             }
-            
+
             .stat-value {
               font-size: 12px;
               font-weight: 500;

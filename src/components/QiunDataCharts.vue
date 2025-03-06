@@ -39,7 +39,7 @@ const initCharts = () => {
     // Get the actual window width
     const systemInfo = uni.getSystemInfoSync()
     windowWidth.value = systemInfo.windowWidth
-    
+
     // Use a different approach for different platforms
     // #ifdef H5
     uni
@@ -54,7 +54,7 @@ const initCharts = () => {
       })
       .exec()
     // #endif
-    
+
     // #ifdef MP || APP-PLUS
     uni
       .createSelectorQuery()
@@ -79,20 +79,20 @@ const drawCharts = () => {
   }
 
   const ctx = uni.createCanvasContext(props.canvasId)
-  
+
   // For mobile app and H5, use different approaches
   let chartWidth = cWidth.value
-  let chartPadding = [15, 10, 0, 10]  // Default padding
-  
+  let chartPadding = [15, 10, 0, 10] // Default padding
+
   // #ifdef H5
   // For H5, ensure the full width with minimal side padding
   chartWidth = windowWidth.value
   chartPadding = [15, 0, 0, 0]
   // #endif
-  
+
   // Get the device pixel ratio for better rendering
   const pixelRatio = uni.getSystemInfoSync().pixelRatio || 1
-  
+
   // Get chart height from props or default
   const chartHeight = props.opts?.height || cHeight.value
 
@@ -107,14 +107,14 @@ const drawCharts = () => {
     series: props.chartData.series,
     animation: true,
     background: '#FFFFFF',
-    pixelRatio: pixelRatio,
+    pixelRatio,
     ...props.opts,
     padding: chartPadding,
-    enableScroll: true,  // Enable scrolling for long charts
+    enableScroll: true, // Enable scrolling for long charts
     xAxis: {
       ...(props.opts?.xAxis || {}),
-      scrollShow: true,  // Show scroll bar
-      itemCount: props.type === 'line' ? 7 : 6,  // Show fewer items on mobile
+      scrollShow: true, // Show scroll bar
+      itemCount: props.type === 'line' ? 7 : 6, // Show fewer items on mobile
     },
   })
 
