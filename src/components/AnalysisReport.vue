@@ -313,16 +313,25 @@
             <h3 class="section-title">六、推荐号码组合</h3>
           </div>
           <div class="section-content">
-            <div v-for="(rec, index) in reportData.recommendations" :key="index" class="list-item">
-              <span class="list-number">{{ index + 1 }}.</span>
-              <span class="list-content">
-                前区:
-                <span v-for="num in rec.frontZone" :key="num" class="ball front-ball">
-                  {{ num }}
+            <div v-for="(rec, index) in reportData.recommendations" :key="index" class="recommendation-item">
+              <div class="recommendation-header">
+                <span class="list-number">{{ index + 1 }}.</span>
+                <span class="recommendation-strategy">{{ rec.strategy || '推荐组合' }}</span>
+              </div>
+              <div class="recommendation-numbers">
+                <span class="list-content">
+                  前区:
+                  <span v-for="num in rec.frontZone" :key="num" class="ball front-ball">
+                    {{ num }}
+                  </span>
+                  | 后区:
+                  <span v-for="num in rec.backZone" :key="num" class="ball back-ball">{{ num }}</span>
                 </span>
-                | 后区:
-                <span v-for="num in rec.backZone" :key="num" class="ball back-ball">{{ num }}</span>
-              </span>
+              </div>
+              <div v-if="rec.rationale" class="recommendation-rationale">
+                <span class="rationale-label">推荐理由:</span>
+                <span class="rationale-content">{{ rec.rationale }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -641,5 +650,51 @@ p {
 strong {
   font-weight: 500;
   color: #3b82f6;
+}
+
+/* 推荐组合样式 */
+.recommendation-item {
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.recommendation-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.recommendation-strategy {
+  margin-left: 8px;
+  font-weight: 600;
+  color: #b45309;
+  background-color: #fef3c7;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.recommendation-numbers {
+  margin-bottom: 8px;
+}
+
+.recommendation-rationale {
+  font-size: 13px;
+  color: #64748b;
+  padding: 6px 0 0 20px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.rationale-label {
+  font-weight: 500;
+  color: #475569;
+  margin-right: 6px;
+}
+
+.rationale-content {
+  font-style: italic;
 }
 </style>
