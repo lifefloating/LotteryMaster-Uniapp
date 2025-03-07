@@ -2,13 +2,21 @@
 
 彩票大师是一款现代化的彩票分析应用，支持双色球和大乐透两种彩票类型的数据分析和预测。应用提供了直观的用户界面，包括历史趋势分析和与中奖号码的比较功能。
 
+## 一键部署
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flifefloating%2FLotteryMaster-Uniapp)
+
+## 项目演示
+
+在线演示地址：[https://lottery-master.vercel.app/#/](https://lottery-master.vercel.app/#/)
+
 ## 功能特点
 
 - 支持双色球和大乐透两种彩票类型
 - 智能预测号码功能
 - 历史走势分析
+- 数据报告分析
 - 冷热号分析
-- 历史记录查看
 
 ## 技术栈
 
