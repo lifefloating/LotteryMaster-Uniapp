@@ -313,7 +313,11 @@
             <h3 class="section-title">六、推荐号码组合</h3>
           </div>
           <div class="section-content">
-            <div v-for="(rec, index) in reportData.recommendations" :key="index" class="recommendation-item">
+            <div
+              v-for="(rec, index) in reportData.recommendations"
+              :key="index"
+              class="recommendation-item"
+            >
               <div class="recommendation-header">
                 <span class="list-number">{{ index + 1 }}.</span>
                 <span class="recommendation-strategy">{{ rec.strategy || '推荐组合' }}</span>
@@ -325,7 +329,9 @@
                     {{ num }}
                   </span>
                   | 后区:
-                  <span v-for="num in rec.backZone" :key="num" class="ball back-ball">{{ num }}</span>
+                  <span v-for="num in rec.backZone" :key="num" class="ball back-ball">
+                    {{ num }}
+                  </span>
                 </span>
               </div>
               <div v-if="rec.rationale" class="recommendation-rationale">

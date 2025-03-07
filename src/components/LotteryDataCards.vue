@@ -157,8 +157,11 @@ const fetchNumberStats = async () => {
   error.value = ''
 
   try {
+    // 获取API基础URL
+    const baseUrl = import.meta.env.VITE_SERVER_BASEURL || 'http://localhost:3008'
+
     // 获取趋势数据
-    const trendUrl = `http://127.0.0.1:3008/api/chart/trend?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}&includeChartData=false`
+    const trendUrl = `${baseUrl}/api/chart/trend?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}&includeChartData=false`
     let trendData = null
 
     try {
@@ -195,7 +198,7 @@ const fetchNumberStats = async () => {
     }
 
     // 获取频率数据
-    const frequencyUrl = `http://127.0.0.1:3008/api/chart/frequency?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}`
+    const frequencyUrl = `${baseUrl}/api/chart/frequency?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}`
     let frequencyResult = null
 
     try {

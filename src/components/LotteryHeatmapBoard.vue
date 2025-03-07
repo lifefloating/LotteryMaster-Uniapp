@@ -116,7 +116,8 @@ const fetchNumberStats = async () => {
   error.value = ''
 
   try {
-    const url = `http://127.0.0.1:3008/api/chart/trend?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}&includeChartData=false`
+    const baseUrl = import.meta.env.VITE_SERVER_BASEURL || 'http://localhost:3008'
+    const url = `${baseUrl}/api/chart/trend?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}&includeChartData=false`
     let responseData = null
 
     try {
