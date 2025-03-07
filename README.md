@@ -8,7 +8,7 @@
 
 ## 项目演示
 
-在线演示地址：[https://lottery-master.vercel.app/#/](https://lottery-master.vercel.app/#/)
+在线演示地址：[![Vercel](https://img.shields.io/badge/Vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://lottery-master.vercel.app/#/)
 
 ## 功能特点
 
@@ -27,48 +27,36 @@
 - UnoCss 原子化 CSS
 - Wot Design Uni UI 组件库
 
-## 功能预览
-
-### 预测功能
-
-![预测功能](examples/imgs/predict_example.jpg)
-
-### 走势分析
-
-![走势分析](examples/imgs/trends_example.jpg)
-
-### 分析报告
-
-![分析报告](examples/imgs/report_example.png)
-
-### 个人中心
-
-![个人中心](examples/imgs/my_example.jpg)
-
 ## 项目结构
 
 ```
-src/
-├── components/         # 组件目录
-│   ├── BottomNavBar.vue       # 底部导航栏组件
-│   ├── LotteryHeader.vue      # 顶部导航栏组件
-│   ├── LotteryNumberBall.vue  # 号码球组件
-│   ├── LotteryPredictionSet.vue # 预测号码组件
-│   └── LotteryTypeSwitch.vue  # 彩票类型切换组件
-├── pages/              # 页面目录
-│   ├── index/          # 首页 (预测页面)
-│   ├── trends/         # 走势分析页面
-│   └── my/             # 个人设置页面
-├── pages-sub/          # 子页面目录
-│   └── history/        # 历史记录页面
-├── store/              # 状态管理
-│   ├── index.ts        # Store 入口
-│   ├── lottery.ts      # 彩票数据 Store
-│   ├── theme.ts        # 主题 Store
-│   └── user.ts         # 用户 Store
-├── style/              # 样式目录
-├── utils/              # 工具函数
-└── App.vue             # 应用入口
+.
+├── src                   # 源代码目录
+│   ├── components        # 组件目录
+│   │   ├── AnalysisReport.vue     # 分析报告组件
+│   │   ├── BottomNavBar.vue       # 底部导航栏组件
+│   │   ├── LotteryDataCards.vue   # 数据卡片组件
+│   │   ├── LotteryHeatmapBoard.vue # 热力图组件
+│   │   ├── LotteryNumberBall.vue  # 号码球组件
+│   │   ├── LotteryPredictionSet.vue # 预测号码组件
+│   │   ├── LotteryTypeSwitch.vue  # 彩票类型切换组件
+│   │   └── QiunDataCharts.vue     # 数据图表组件
+│   ├── constants         # 常量目录
+│   │   └── mockData.ts   # 模拟数据
+│   ├── pages             # 页面目录
+│   │   ├── index/        # 预测主页
+│   │   ├── profile/      # 个人中心页面
+│   │   └── trends/       # 走势分析页面
+│   ├── static            # 静态资源
+│   ├── store             # 状态管理
+│   │   ├── lottery.ts    # 彩票数据状态
+│   │   └── user.ts       # 用户状态
+│   ├── styles            # 全局样式
+│   └── utils             # 工具函数
+│       ├── request.ts    # 网络请求封装
+│       └── timeUtils.ts  # 时间工具函数
+├── public               # 公共资源目录
+└── vite.config.ts      # Vite配置文件
 ```
 
 ## API 集成点
