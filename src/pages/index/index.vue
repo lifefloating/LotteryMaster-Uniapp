@@ -22,23 +22,29 @@
       @switch="handleLotteryTypeSwitch"
     />
 
-    <!-- 期号和日期信息 -->
-    <view class="lottery-info-container">
-      <view class="lottery-info-item">
-        <text class="info-label">购买日期</text>
-        <text class="info-value">{{ lotteryData.date }}</text>
-      </view>
-      <view class="lottery-info-item">
-        <text class="info-label">期号</text>
-        <text class="info-value">{{ lotteryData.period }}</text>
-      </view>
-    </view>
-
     <!-- 预测号码展示区 -->
     <view class="prediction-title-container">
       <view class="report-button" @click="showReport = true">
         <wd-icon name="data-analysis" size="14px" color="#FFFFFF" />
         <text class="report-button-text">查看分析报告</text>
+      </view>
+    </view>
+
+    <!-- 今日概率最高号码 -->
+    <view class="top-recommendation-container">
+      <view class="top-recommendation-header">
+        <view class="top-recommendation-title">
+          <wd-icon name="hot" size="16px" color="#EF4444" />
+          <text>今日概率最高号码</text>
+        </view>
+        <view class="top-recommendation-subtitle">根据历史数据分析，这组号码中奖概率最高</view>
+      </view>
+      <view class="top-recommendation-numbers">
+        <lottery-prediction-set
+          :primary-numbers="lotteryData.topRecommendation.primaryNumbers"
+          :special-numbers="lotteryData.topRecommendation.specialNumbers"
+          :lottery-type="lotteryStore.currentLotteryType"
+        />
       </view>
     </view>
 
@@ -86,7 +92,6 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
 // 获取彩票数据
 const lotteryStore = useLotteryStore()
 const lotteryData = computed(() => lotteryStore.getCurrentLotteryData)
-const topPrediction = computed(() => lotteryData.value.predictions[0])
 
 // 控制分析报告显示
 const showReport = ref(false)
@@ -114,29 +119,6 @@ const handleLotteryTypeSwitch = (type: LotteryType) => {
   min-height: 100vh;
   background-color: #f5f7fa;
 
-  .lottery-info-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px;
-
-    .lottery-info-item {
-      display: flex;
-      flex-direction: column;
-
-      .info-label {
-        margin-bottom: 4px;
-        font-size: 14px;
-        color: #666666;
-      }
-
-      .info-value {
-        font-size: 16px;
-        font-weight: 500;
-        color: #333333;
-      }
-    }
-  }
-
   .prediction-title-container {
     display: flex;
     justify-content: flex-end;
@@ -162,6 +144,46 @@ const handleLotteryTypeSwitch = (type: LotteryType) => {
         font-size: 14px;
         font-weight: 500;
         color: #ffffff;
+      }
+    }
+  }
+
+  .top-recommendation-container {
+    margin: 0 16px 16px;
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #fcd34d;
+
+    .top-recommendation-header {
+      margin-bottom: 12px;
+
+      .top-recommendation-title {
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #b45309;
+
+        text {
+          margin-left: 6px;
+        }
+      }
+
+      .top-recommendation-subtitle {
+        font-size: 12px;
+        color: #6b7280;
+      }
+    }
+
+    .top-recommendation-numbers {
+      :deep(.prediction-set-container) {
+        padding: 8px;
+        margin-bottom: 0;
+        background-color: #fef3c7;
+        box-shadow: none;
       }
     }
   }

@@ -12,6 +12,7 @@ export interface LotteryData {
   period: string
   date: string
   predictions: LotteryPrediction[]
+  topRecommendation?: LotteryPrediction
 }
 
 interface LotteryState {
@@ -91,6 +92,15 @@ export const useLotteryStore = defineStore('lottery', {
             console.log('Analyze API response successful')
 
             const recommendations = analyzeRes.data.analysis?.structured?.recommendations
+            const topRecommendation = analyzeRes.data.analysis?.structured?.topRecommendation
+
+            console.log('API response structured topRecommendation:', topRecommendation)
+
+            // 确保总是有一个顶部推荐，如果API没有返回，则使用第一个推荐
+            const effectiveTopRecommendation =
+              topRecommendation ||
+              (recommendations && recommendations.length > 0 ? recommendations[0] : null)
+
             if (recommendations && Array.isArray(recommendations)) {
               // 更新对应彩票类型的数据
               this.lotteryData[this.currentLotteryType] = {
@@ -100,6 +110,12 @@ export const useLotteryStore = defineStore('lottery', {
                   primaryNumbers: rec.frontZone || [],
                   specialNumbers: rec.backZone || [],
                 })),
+                topRecommendation: effectiveTopRecommendation
+                  ? {
+                      primaryNumbers: effectiveTopRecommendation.frontZone || [],
+                      specialNumbers: effectiveTopRecommendation.backZone || [],
+                    }
+                  : undefined,
               }
 
               console.log(
@@ -151,6 +167,10 @@ export const useLotteryStore = defineStore('lottery', {
           primaryNumbers: rec.frontZone,
           specialNumbers: rec.backZone,
         })),
+        topRecommendation: {
+          primaryNumbers: mockRecommendations[0].frontZone,
+          specialNumbers: mockRecommendations[0].backZone,
+        },
       }
     },
   },
