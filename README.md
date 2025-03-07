@@ -65,6 +65,10 @@
 - 大乐透数据抓取: `/api/scrape/dlt`
 - 双色球预测分析: `/api/analyze/ssq`
 - 大乐透预测分析: `/api/analyze/dlt`
+- 双色球趋势图数据: `/api/trends/ssq`
+- 大乐透趋势图数据: `/api/trends/dlt`
+- 双色球频率(热力图)数据: `/api/frequency/ssq`
+- 大乐透频率(热力图)数据: `/api/frequency/dlt`
 
 ## 安装与运行
 
