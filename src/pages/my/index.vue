@@ -32,36 +32,6 @@
     <view class="settings-container">
       <view class="settings-group">
         <view class="settings-title">
-          <text class="title-text">应用设置</text>
-        </view>
-
-        <view class="settings-item">
-          <view class="item-left">
-            <text class="iconfont icon-notification">&#xe6ba;</text>
-            <text class="item-text">开奖提醒</text>
-          </view>
-          <view class="item-right">
-            <switch
-              :checked="notificationEnabled"
-              @change="handleNotificationChange"
-              color="#3B82F6"
-            />
-          </view>
-        </view>
-
-        <view class="settings-item">
-          <view class="item-left">
-            <text class="iconfont icon-clear">&#xe6a9;</text>
-            <text class="item-text">清除缓存</text>
-          </view>
-          <view class="item-right">
-            <text class="iconfont icon-arrow">&#xe6a3;</text>
-          </view>
-        </view>
-      </view>
-
-      <view class="settings-group">
-        <view class="settings-title">
           <text class="title-text">关于应用</text>
         </view>
 
