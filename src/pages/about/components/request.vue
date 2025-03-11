@@ -22,7 +22,7 @@
     <view class="my-2 text-left text-sm">{{ recommendUrl }}</view>
     <!-- #endif -->
 
-    <!-- http://localhost:9000/#/pages/index/request -->
+    <!-- http://localhost:9008/#/pages/index/request -->
     <wd-button @click="run" class="my-6">发送请求</wd-button>
     <view class="h-16">
       <view v-if="loading">loading...</view>
