@@ -104,6 +104,10 @@ pnpm build:mp-weixin
 pnpm build:app
 ```
 
+## TODO
+- 下拉刷新 下拉后才调用预测接口
+- loading
+
 ## 设计规范
 
 应用遵循现代化的设计规范，包括：
