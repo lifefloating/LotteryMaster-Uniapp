@@ -107,6 +107,7 @@ pnpm build:app
 ## TODO
 - 下拉刷新 下拉后才调用预测接口
 - loading
+- fc3d 增加新类型
 
 ## 设计规范
 
