@@ -24,7 +24,7 @@
 
     <!-- 预测号码展示区 -->
     <view class="prediction-title-container">
-      <view class="report-button" @click="showReport = true">
+      <view class="report-button" v-if="lotteryStore.currentLotteryType !== 'fc3d'" @click="showReport = true">
         <wd-icon name="data-analysis" size="14px" color="#FFFFFF" />
         <text class="report-button-text">查看分析报告</text>
       </view>
@@ -65,7 +65,11 @@
     </view>
 
     <!-- 分析报告组件 -->
-    <analysis-report v-if="showReport" :visible="showReport" @close="showReport = false" />
+    <analysis-report 
+      v-if="showReport && lotteryStore.currentLotteryType !== 'fc3d'" 
+      :visible="showReport" 
+      @close="showReport = false" 
+    />
   </view>
 </template>
 
