@@ -2,7 +2,7 @@
   <view class="prediction-set-container">
     <view class="numbers-container">
       <view class="primary-numbers">
-        <view class="zone-label">前区</view>
+        <view class="zone-label">{{ getPrimaryZoneLabel }}</view>
         <lottery-number-ball
           v-for="(num, index) in primaryNumbers"
           :key="index"
@@ -12,7 +12,7 @@
         />
       </view>
 
-      <view class="special-numbers">
+      <view class="special-numbers" v-if="lotteryType !== 'fc3d'">
         <view class="zone-label">后区</view>
         <lottery-number-ball
           v-for="(num, index) in specialNumbers"
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, defineAsyncComponent } from 'vue'
+import { PropType, defineAsyncComponent, computed } from 'vue'
 
 const LotteryNumberBall = defineAsyncComponent(() => import('@/components/LotteryNumberBall.vue'))
 
@@ -48,6 +48,13 @@ const props = defineProps({
     type: Array as PropType<(string | number)[]>,
     required: true,
   },
+})
+
+const getPrimaryZoneLabel = computed(() => {
+  if (props.lotteryType === 'fc3d') {
+    return '号码'
+  }
+  return '前区'
 })
 </script>
 

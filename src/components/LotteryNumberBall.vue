@@ -6,6 +6,7 @@
       'ssq-special-ball': lotteryType === 'ssq' && type === 'special',
       'dlt-primary-ball': lotteryType === 'dlt' && type === 'primary',
       'dlt-special-ball': lotteryType === 'dlt' && type === 'special',
+      'fc3d-ball': lotteryType === 'fc3d',
     }"
   >
     <text class="number-text">{{ number }}</text>
@@ -81,6 +82,17 @@ const props = defineProps({
 
   &.dlt-special-ball {
     background-color: #e74c3c; /* 红色 */
+
+    .number-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+  }
+
+  /* 福彩3D：3位数字橙色 */
+  &.fc3d-ball {
+    background-color: #f59e0b; /* 橙色 */
 
     .number-text {
       font-size: 16px;
