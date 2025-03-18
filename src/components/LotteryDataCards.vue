@@ -1,5 +1,22 @@
 <template>
   <view class="lottery-data-cards">
+    <view class="page-header">
+      <text class="page-title">号码数据分析</text>
+      <wd-popover content="" placement="bottom" width="280px" @change="handlePopoverChange">
+        <view class="help-icon">?</view>
+        <template #content>
+          <view class="custom-popover-content">
+            <text class="popover-title">基于历史开奖数据的统计分析，包含：</text>
+            <view class="popover-items">
+              <text>• 热门号码：近期高频出现的号码</text>
+              <text>• 冷门号码：长期未开出的号码</text>
+              <text>• 间隔分析：号码出现间隔统计</text>
+              <text>• 概率分布：历史开奖概率分布</text>
+            </view>
+          </view>
+        </template>
+      </wd-popover>
+    </view>
     <view class="cards-container">
       <!-- 热门号码卡片 -->
       <view
@@ -7,7 +24,21 @@
         :class="{ 'blue-theme': zoneType === 'blue', 'red-theme': zoneType === 'red' }"
       >
         <view class="card-header">
-          <text class="card-title">热门号码</text>
+          <view class="header-left">
+            <text class="card-title">热门号码</text>
+            <wd-popover content="" placement="bottom" width="240px" @change="handlePopoverChange">
+              <view class="help-icon small">?</view>
+              <template #content>
+                <view class="custom-popover-content">
+                  <text class="popover-title">展示近期开奖中出现频率最高的5个号码</text>
+                  <view class="popover-items">
+                    <text>频率：在统计期内出现的次数</text>
+                    <text>概率：出现次数/统计期数</text>
+                  </view>
+                </view>
+              </template>
+            </wd-popover>
+          </view>
         </view>
         <view class="card-content">
           <view class="hot-numbers-list">
@@ -40,7 +71,19 @@
         :class="{ 'blue-theme': zoneType === 'blue', 'red-theme': zoneType === 'red' }"
       >
         <view class="card-header">
-          <text class="card-title">冷门号码</text>
+          <view class="header-left">
+            <text class="card-title">冷门号码</text>
+            <wd-popover content="" placement="right" width="200px" @change="handlePopoverChange">
+              <view class="help-icon small">?</view>
+              <template #content>
+                <view class="custom-popover-content">
+                  <text>展示当前未开出期数最长的5个号码</text>
+                  <text>当前间隔：距离上次开出的期数</text>
+                  <text>上次出现：上次开出时的期数</text>
+                </view>
+              </template>
+            </wd-popover>
+          </view>
         </view>
         <view class="card-content">
           <view class="cold-numbers-list">
@@ -73,7 +116,21 @@
         :class="{ 'blue-theme': zoneType === 'blue', 'red-theme': zoneType === 'red' }"
       >
         <view class="card-header">
-          <text class="card-title">间隔分析</text>
+          <view class="header-left">
+            <text class="card-title">间隔分析</text>
+            <wd-popover content="" placement="right" width="220px" @change="handlePopoverChange">
+              <view class="help-icon small">?</view>
+              <template #content>
+                <view class="custom-popover-content">
+                  <text>分析号码出现间隔的统计数据</text>
+                  <text>平均最大间隔：所有号码最大间隔的平均值</text>
+                  <text>平均间隔：所有号码平均间隔的平均值</text>
+                  <text>最大间隔号码：间隔期数最大的号码</text>
+                  <text>最大间隔值：最大的间隔期数</text>
+                </view>
+              </template>
+            </wd-popover>
+          </view>
         </view>
         <view class="card-content">
           <view class="interval-stats">
@@ -105,7 +162,20 @@
         :class="{ 'blue-theme': zoneType === 'blue', 'red-theme': zoneType === 'red' }"
       >
         <view class="card-header">
-          <text class="card-title">概率分布</text>
+          <view class="header-left">
+            <text class="card-title">概率分布</text>
+            <wd-popover content="" placement="right" width="200px" @change="handlePopoverChange">
+              <view class="help-icon small">?</view>
+              <template #content>
+                <view class="custom-popover-content">
+                  <text>展示号码在历史数据中的出现概率</text>
+                  <text>柱高：表示该号码的相对出现概率</text>
+                  <text>百分比：实际出现概率</text>
+                  <text>仅显示概率最高的前10个号码</text>
+                </view>
+              </template>
+            </wd-popover>
+          </view>
         </view>
         <view class="card-content">
           <view class="probability-visualization">
@@ -118,21 +188,27 @@
                 class="probability-bar"
                 :class="{ 'blue-bar': zoneType === 'blue', 'red-bar': zoneType === 'red' }"
                 :style="{ height: bar.height + '%' }"
-              ></view>
+              >
+                <text class="probability-value">{{ (bar.probability * 100).toFixed(1) }}%</text>
+              </view>
               <text class="probability-number">{{ bar.number }}</text>
             </view>
           </view>
           <view class="probability-legend">
-            <text class="legend-text">数字越高表示历史概率越大</text>
+            <text class="legend-text">柱高表示该号码在历史数据中的出现概率</text>
           </view>
         </view>
       </view>
     </view>
   </view>
+  <wd-popup></wd-popup>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { useQueue } from 'wot-design-uni'
+
+const { closeOutside } = useQueue()
 
 defineOptions({
   name: 'LotteryDataCards',
@@ -150,6 +226,28 @@ const numberStats = ref<any[]>([])
 const frequencyData = ref<any>({ datasets: [] })
 const loading = ref(false)
 const error = ref('')
+
+// 添加移动端点击显示逻辑
+const isTooltipActive = ref(false)
+const activeTooltip = ref<string | null>(null)
+
+const toggleTooltip = (tooltipId: string) => {
+  if (window.innerWidth <= 768) {
+    if (activeTooltip.value === tooltipId) {
+      activeTooltip.value = null
+      isTooltipActive.value = false
+    } else {
+      activeTooltip.value = tooltipId
+      isTooltipActive.value = true
+    }
+  }
+}
+
+// 点击外部关闭提示
+const closeTooltip = () => {
+  activeTooltip.value = null
+  isTooltipActive.value = false
+}
 
 // 获取号码统计数据
 const fetchNumberStats = async () => {
@@ -290,6 +388,14 @@ watch([() => props.lotteryType, () => props.zoneType, () => props.periodCount], 
 // 组件挂载时获取数据
 onMounted(() => {
   fetchNumberStats()
+
+  // 添加页面点击监听
+  document.addEventListener('click', handlePageClick)
+})
+
+onUnmounted(() => {
+  // 移除页面点击监听
+  document.removeEventListener('click', handlePageClick)
 })
 
 // 计算热门号码 (频率最高的5个)
@@ -360,15 +466,24 @@ const maxIntervalValue = computed(() => {
 const probabilityBars = computed(() => {
   if (!numberStats.value.length) return []
 
-  // 按概率排序，取前10个
-  const topProbabilities = [...numberStats.value]
-    .sort((a, b) => b.probability - a.probability)
-    .slice(0, 10)
+  // 获取所有号码的概率数据
+  const allProbabilities = [...numberStats.value].sort((a, b) => b.probability - a.probability)
 
-  // 最大概率值
+  // 计算概率总和
+  const totalProbability = allProbabilities.reduce((sum, stat) => sum + stat.probability, 0)
+
+  // 标准化概率值（确保总和为1）
+  const normalizedProbabilities = allProbabilities.map((stat) => ({
+    ...stat,
+    probability: totalProbability > 0 ? stat.probability / totalProbability : 0,
+  }))
+
+  // 取前10个号码
+  const topProbabilities = normalizedProbabilities.slice(0, 10)
+
+  // 计算相对高度（20%-100%）
   const maxProb = Math.max(...topProbabilities.map((s) => s.probability))
 
-  // 为每个号码计算相对高度 (20%-100%)
   return topProbabilities.map((stat) => ({
     number: stat.number,
     probability: stat.probability,
@@ -390,6 +505,16 @@ const getIntervalPercentage = (interval: number) => {
 
   const maxInterval = Math.max(...coldNumbers.value.map((n) => n.currentInterval))
   return maxInterval > 0 ? (interval / maxInterval) * 100 : 0
+}
+
+// 处理气泡显示状态变化
+const handlePopoverChange = (event: { show: boolean }) => {
+  console.log('Popover visibility changed:', event.show)
+}
+
+// 监听页面点击，关闭所有气泡
+function handlePageClick() {
+  closeOutside()
 }
 </script>
 
@@ -448,6 +573,13 @@ const getIntervalPercentage = (interval: number) => {
         font-size: 16px;
         font-weight: 500;
         color: #ffffff;
+        margin-bottom: 4px;
+      }
+
+      .card-description {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        display: block;
       }
     }
 
@@ -599,7 +731,7 @@ const getIntervalPercentage = (interval: number) => {
 
           .stat-item {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             padding: 12px;
             background-color: #f9f9f9;
@@ -624,48 +756,173 @@ const getIntervalPercentage = (interval: number) => {
       // 概率分布卡片内容
       .probability-visualization {
         display: flex;
-        height: 150px;
-        align-items: flex-end;
         justify-content: space-between;
-        margin-bottom: 8px;
+        align-items: flex-end;
+        height: 200px;
+        padding: 20px 10px;
 
         .probability-bar-wrapper {
+          flex: 1;
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
           align-items: center;
-          width: 8%;
+          margin: 0 2px;
 
           .probability-bar {
             width: 100%;
-            min-height: 4px;
-            border-radius: 2px 2px 0 0;
+            min-width: 20px;
+            max-width: 40px;
+            position: relative;
+            transition: height 0.3s ease;
+            border-radius: 4px 4px 0 0;
 
             &.blue-bar {
-              background-color: #4285f4;
+              background-color: rgba(66, 133, 244, 0.8);
             }
 
             &.red-bar {
-              background-color: #ff5252;
+              background-color: rgba(255, 82, 82, 0.8);
+            }
+
+            .probability-value {
+              position: absolute;
+              top: -20px;
+              left: 50%;
+              transform: translateX(-50%);
+              font-size: 10px;
+              color: #666;
             }
           }
 
           .probability-number {
-            font-size: 10px;
-            color: #666;
-            margin-top: 4px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #333;
           }
         }
       }
 
       .probability-legend {
         text-align: center;
-        margin-top: 8px;
+        margin-top: 16px;
 
         .legend-text {
-          font-size: 10px;
-          color: #999;
+          font-size: 12px;
+          color: #666;
         }
       }
+    }
+  }
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 4px;
+
+  .page-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-right: 8px;
+  }
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.help-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.15);
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+
+  &.small {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.custom-popover-content {
+  padding: 12px;
+  text-align: center;
+
+  .popover-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .popover-items {
+    text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #666;
+      display: block;
+      margin-bottom: 4px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// 为 WOT Popover 组件添加自定义样式
+:deep(.wd-popover__content) {
+  background: #fff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+  max-width: 90vw !important;
+  z-index: 999 !important;
+}
+
+:deep(.wd-popover__arrow) {
+  background: #fff !important;
+}
+
+// 为移动端优化 popover 显示
+@media screen and (max-width: 768px) {
+  :deep(.wd-popover__content) {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 16px !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 320px !important;
+  }
+
+  .custom-popover-content {
+    padding: 16px;
+
+    .popover-title {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .popover-items text {
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 6px;
     }
   }
 }
