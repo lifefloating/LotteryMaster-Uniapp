@@ -2,20 +2,7 @@
   <view class="lottery-data-cards">
     <view class="page-header">
       <text class="page-title">号码数据分析</text>
-      <wd-popover content="" placement="bottom" width="280px" @change="handlePopoverChange">
-        <view class="help-icon">?</view>
-        <template #content>
-          <view class="custom-popover-content">
-            <text class="popover-title">基于历史开奖数据的统计分析，包含：</text>
-            <view class="popover-items">
-              <text>• 热门号码：近期高频出现的号码</text>
-              <text>• 冷门号码：长期未开出的号码</text>
-              <text>• 间隔分析：号码出现间隔统计</text>
-              <text>• 概率分布：历史开奖概率分布</text>
-            </view>
-          </view>
-        </template>
-      </wd-popover>
+      <view class="help-icon" @click="showPopup('overview')">?</view>
     </view>
     <view class="cards-container">
       <!-- 热门号码卡片 -->
@@ -26,18 +13,7 @@
         <view class="card-header">
           <view class="header-left">
             <text class="card-title">热门号码</text>
-            <wd-popover content="" placement="bottom" width="240px" @change="handlePopoverChange">
-              <view class="help-icon small">?</view>
-              <template #content>
-                <view class="custom-popover-content">
-                  <text class="popover-title">展示近期开奖中出现频率最高的5个号码</text>
-                  <view class="popover-items">
-                    <text>频率：在统计期内出现的次数</text>
-                    <text>概率：出现次数/统计期数</text>
-                  </view>
-                </view>
-              </template>
-            </wd-popover>
+            <view class="help-icon small" @click="showPopup('hotNumbers')">?</view>
           </view>
         </view>
         <view class="card-content">
@@ -73,16 +49,7 @@
         <view class="card-header">
           <view class="header-left">
             <text class="card-title">冷门号码</text>
-            <wd-popover content="" placement="right" width="200px" @change="handlePopoverChange">
-              <view class="help-icon small">?</view>
-              <template #content>
-                <view class="custom-popover-content">
-                  <text>展示当前未开出期数最长的5个号码</text>
-                  <text>当前间隔：距离上次开出的期数</text>
-                  <text>上次出现：上次开出时的期数</text>
-                </view>
-              </template>
-            </wd-popover>
+            <view class="help-icon small" @click="showPopup('coldNumbers')">?</view>
           </view>
         </view>
         <view class="card-content">
@@ -118,18 +85,7 @@
         <view class="card-header">
           <view class="header-left">
             <text class="card-title">间隔分析</text>
-            <wd-popover content="" placement="right" width="220px" @change="handlePopoverChange">
-              <view class="help-icon small">?</view>
-              <template #content>
-                <view class="custom-popover-content">
-                  <text>分析号码出现间隔的统计数据</text>
-                  <text>平均最大间隔：所有号码最大间隔的平均值</text>
-                  <text>平均间隔：所有号码平均间隔的平均值</text>
-                  <text>最大间隔号码：间隔期数最大的号码</text>
-                  <text>最大间隔值：最大的间隔期数</text>
-                </view>
-              </template>
-            </wd-popover>
+            <view class="help-icon small" @click="showPopup('intervalAnalysis')">?</view>
           </view>
         </view>
         <view class="card-content">
@@ -164,17 +120,7 @@
         <view class="card-header">
           <view class="header-left">
             <text class="card-title">概率分布</text>
-            <wd-popover content="" placement="right" width="200px" @change="handlePopoverChange">
-              <view class="help-icon small">?</view>
-              <template #content>
-                <view class="custom-popover-content">
-                  <text>展示号码在历史数据中的出现概率</text>
-                  <text>柱高：表示该号码的相对出现概率</text>
-                  <text>百分比：实际出现概率</text>
-                  <text>仅显示概率最高的前10个号码</text>
-                </view>
-              </template>
-            </wd-popover>
+            <view class="help-icon small" @click="showPopup('probabilityDistribution')">?</view>
           </view>
         </view>
         <view class="card-content">
@@ -201,14 +147,17 @@
       </view>
     </view>
   </view>
-  <wd-popup></wd-popup>
+
+  <!-- 使用 MessageBox 组件替代 Popup -->
+  <wd-message-box></wd-message-box>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
-import { useQueue } from 'wot-design-uni'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useQueue, useMessage } from 'wot-design-uni'
 
 const { closeOutside } = useQueue()
+const message = useMessage()
 
 defineOptions({
   name: 'LotteryDataCards',
@@ -227,26 +176,62 @@ const frequencyData = ref<any>({ datasets: [] })
 const loading = ref(false)
 const error = ref('')
 
-// 添加移动端点击显示逻辑
-const isTooltipActive = ref(false)
-const activeTooltip = ref<string | null>(null)
+// 显示弹窗函数
+const showPopup = (type: string) => {
+  let title = '提示信息'
+  let msg = ''
 
-const toggleTooltip = (tooltipId: string) => {
-  if (window.innerWidth <= 768) {
-    if (activeTooltip.value === tooltipId) {
-      activeTooltip.value = null
-      isTooltipActive.value = false
-    } else {
-      activeTooltip.value = tooltipId
-      isTooltipActive.value = true
-    }
+  // 根据类型设置标题和内容
+  switch (type) {
+    case 'overview':
+      title = '数据分析说明'
+      msg = `基于历史开奖数据的统计分析，包含：
+      • 热门号码：近期高频出现的号码
+      • 冷门号码：长期未开出的号码
+      • 间隔分析：号码出现间隔统计
+      • 概率分布：历史开奖概率分布`
+      break
+    case 'hotNumbers':
+      title = '热门号码说明'
+      msg = `展示近期开奖中出现频率最高的5个号码
+      
+      频率：在统计期内出现的次数
+      概率：出现次数/统计期数`
+      break
+    case 'coldNumbers':
+      title = '冷门号码说明'
+      msg = `展示当前未开出期数最长的5个号码
+      
+      当前间隔：距离上次开出的期数
+      上次出现：上次开出时的期数`
+      break
+    case 'intervalAnalysis':
+      title = '间隔分析说明'
+      msg = `分析号码出现间隔的统计数据
+      
+      平均最大间隔：所有号码最大间隔的平均值
+      平均间隔：所有号码平均间隔的平均值
+      最大间隔号码：间隔期数最大的号码
+      最大间隔值：最大的间隔期数`
+      break
+    case 'probabilityDistribution':
+      title = '概率分布说明'
+      msg = `展示号码在历史数据中的出现概率
+      
+      柱高：表示该号码的相对出现概率
+      百分比：实际出现概率
+      仅显示概率最高的前10个号码`
+      break
+    default:
+      title = '提示信息'
   }
-}
 
-// 点击外部关闭提示
-const closeTooltip = () => {
-  activeTooltip.value = null
-  isTooltipActive.value = false
+  // 使用 MessageBox 显示内容
+  message.alert({
+    title,
+    msg,
+    confirmButtonText: '我知道了',
+  })
 }
 
 // 获取号码统计数据
@@ -390,14 +375,6 @@ watch([() => props.lotteryType, () => props.zoneType, () => props.periodCount], 
 // 组件挂载时获取数据
 onMounted(() => {
   fetchNumberStats()
-
-  // 添加页面点击监听
-  document.addEventListener('click', handlePageClick)
-})
-
-onUnmounted(() => {
-  // 移除页面点击监听
-  document.removeEventListener('click', handlePageClick)
 })
 
 // 计算热门号码 (频率最高的5个)
@@ -507,16 +484,6 @@ const getIntervalPercentage = (interval: number) => {
 
   const maxInterval = Math.max(...coldNumbers.value.map((n) => n.currentInterval))
   return maxInterval > 0 ? (interval / maxInterval) * 100 : 0
-}
-
-// 处理气泡显示状态变化
-const handlePopoverChange = (event: { show: boolean }) => {
-  console.log('Popover visibility changed:', event.show)
-}
-
-// 监听页面点击，关闭所有气泡
-function handlePageClick() {
-  closeOutside()
 }
 </script>
 
@@ -848,7 +815,7 @@ function handlePageClick() {
   height: 20px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.15);
-  color: #666;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -867,71 +834,39 @@ function handlePageClick() {
   }
 }
 
-.custom-popover-content {
-  padding: 10px;
-  text-align: left;
+.popup-content {
+  padding: 20rpx 30rpx;
 
-  .popover-title {
-    font-size: 14px;
+  .popup-title {
+    font-size: 30rpx;
     font-weight: 500;
     color: #333;
-    margin-bottom: 6px;
+    margin-bottom: 16rpx;
     display: block;
   }
 
-  .popover-items {
+  .popup-items {
+    margin-bottom: 10rpx;
+
     text {
-      font-size: 12px;
-      line-height: 1.4;
+      font-size: 28rpx;
+      line-height: 1.6;
       color: #666;
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 10rpx;
 
       &:last-child {
         margin-bottom: 0;
       }
     }
   }
-}
 
-// 为 WOT Popover 组件添加自定义样式
-:deep(.wd-popover__content) {
-  background: #fff !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
-  max-width: 80vw !important;
-  z-index: 999 !important;
-}
-
-:deep(.wd-popover__arrow) {
-  background: #fff !important;
-}
-
-// 为移动端优化 popover 显示
-@media screen and (max-width: 768px) {
-  :deep(.wd-popover__content) {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    margin: 0 16px !important;
-    width: calc(100vw - 32px) !important;
-    max-width: 300px !important;
-  }
-
-  .custom-popover-content {
-    padding: 14px;
-
-    .popover-title {
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-
-    .popover-items text {
-      font-size: 13px;
-      line-height: 1.6;
-      margin-bottom: 4px;
-    }
+  .popup-text {
+    font-size: 28rpx;
+    line-height: 1.6;
+    color: #666;
+    display: block;
+    margin-bottom: 10rpx;
   }
 }
 </style>
