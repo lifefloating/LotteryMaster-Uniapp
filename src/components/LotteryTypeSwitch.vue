@@ -21,16 +21,6 @@
       >
         <text class="lottery-switch-text">大乐透</text>
       </view>
-      <view
-        class="lottery-switch-item"
-        :class="{
-          active: activeType === 'fc3d',
-          fc3d: activeType === 'fc3d',
-        }"
-        @click="handleSwitch('fc3d')"
-      >
-        <text class="lottery-switch-text">福彩3D</text>
-      </view>
     </view>
   </view>
 </template>
@@ -89,10 +79,6 @@ const handleSwitch = (type: string) => {
 
         &.dlt {
           background-color: #10b981;
-        }
-
-        &.fc3d {
-          background-color: #f59e0b;
         }
 
         .lottery-switch-text {

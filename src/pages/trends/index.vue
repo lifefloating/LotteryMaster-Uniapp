@@ -113,7 +113,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent, computed } from 'vue'
+import { ref, defineAsyncComponent, computed, onMounted } from 'vue'
 import { useLotteryStore, type LotteryType } from '@/store/lottery'
 
 const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
@@ -132,6 +132,14 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
 
 // 获取彩票数据
 const lotteryStore = useLotteryStore()
+
+// 确保不再使用已经移除的彩票类型
+onMounted(() => {
+  // 使用类型断言检查存储的值，因为fc3d已从LotteryType中移除
+  if ((lotteryStore.currentLotteryType as string) === 'fc3d') {
+    lotteryStore.setLotteryType('ssq')
+  }
+})
 
 // 时间范围
 const timeRange = ref('100')
