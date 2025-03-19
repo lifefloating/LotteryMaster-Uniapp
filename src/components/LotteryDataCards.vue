@@ -250,100 +250,102 @@ const closeTooltip = () => {
 }
 
 // 获取号码统计数据
-const fetchNumberStats = async () => {
+const fetchNumberStats = () => {
   loading.value = true
   error.value = ''
 
-  try {
-    // 获取API基础URL
-    const baseUrl = import.meta.env.VITE_SERVER_BASEURL || 'http://localhost:3008'
-
-    // 获取趋势数据
-    const trendUrl = `${baseUrl}/api/chart/trend?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}&includeChartData=false`
-    let trendData = null
-
+  Promise.resolve().then(async () => {
     try {
-      const trendResponse = await uni.request({
-        url: trendUrl,
-        method: 'GET',
-      })
+      // 获取API基础URL
+      const baseUrl = import.meta.env.VITE_SERVER_BASEURL || 'http://localhost:3008'
 
-      // 正确处理响应数据
-      if (trendResponse && typeof trendResponse === 'object' && 'data' in trendResponse) {
-        const responseData = trendResponse.data
+      // 获取趋势数据
+      const trendUrl = `${baseUrl}/api/chart/trend?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}&includeChartData=false`
+      let trendData = null
 
-        if (
-          typeof responseData === 'object' &&
-          responseData !== null &&
-          'success' in responseData
-        ) {
-          trendData = responseData
-        } else {
-          console.warn('Trend API response format unexpected:', responseData)
+      try {
+        const trendResponse = await uni.request({
+          url: trendUrl,
+          method: 'GET',
+        })
+
+        // 正确处理响应数据
+        if (trendResponse && typeof trendResponse === 'object' && 'data' in trendResponse) {
+          const responseData = trendResponse.data
+
+          if (
+            typeof responseData === 'object' &&
+            responseData !== null &&
+            'success' in responseData
+          ) {
+            trendData = responseData
+          } else {
+            console.warn('Trend API response format unexpected:', responseData)
+          }
         }
+      } catch (trendError) {
+        console.error('Error fetching trend data:', trendError)
       }
-    } catch (trendError) {
-      console.error('Error fetching trend data:', trendError)
-    }
 
-    // 处理趋势数据，确保即使API失败也有默认数据显示
-    if (trendData && trendData.success && trendData.data?.statistics) {
-      numberStats.value = trendData.data.statistics.numberStats
-    } else {
-      console.warn('Using default number stats data')
-      // 使用默认数据
+      // 处理趋势数据，确保即使API失败也有默认数据显示
+      if (trendData && trendData.success && trendData.data?.statistics) {
+        numberStats.value = trendData.data.statistics.numberStats
+      } else {
+        console.warn('Using default number stats data')
+        // 使用默认数据
+        numberStats.value = generateDefaultNumberStats(props.zoneType)
+      }
+
+      // 获取频率数据
+      const frequencyUrl = `${baseUrl}/api/chart/frequency?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}`
+      let frequencyResult = null
+
+      try {
+        const frequencyResponse = await uni.request({
+          url: frequencyUrl,
+          method: 'GET',
+        })
+
+        // 正确处理响应数据
+        if (
+          frequencyResponse &&
+          typeof frequencyResponse === 'object' &&
+          'data' in frequencyResponse
+        ) {
+          const responseData = frequencyResponse.data
+
+          if (
+            typeof responseData === 'object' &&
+            responseData !== null &&
+            'success' in responseData
+          ) {
+            frequencyResult = responseData
+          } else {
+            console.warn('Frequency API response format unexpected:', responseData)
+          }
+        }
+      } catch (frequencyError) {
+        console.error('Error fetching frequency data:', frequencyError)
+      }
+
+      // 处理频率数据，确保即使API失败也有默认数据显示
+      if (frequencyResult && frequencyResult.success && frequencyResult.data) {
+        frequencyData.value = frequencyResult.data
+      } else {
+        console.warn('Using default frequency data')
+        // 使用默认数据
+        frequencyData.value = generateDefaultFrequencyData(props.zoneType)
+      }
+    } catch (e) {
+      error.value = '请求出错'
+      console.error('Global error in fetchNumberStats:', e)
+      // 确保有默认数据显示
       numberStats.value = generateDefaultNumberStats(props.zoneType)
-    }
-
-    // 获取频率数据
-    const frequencyUrl = `${baseUrl}/api/chart/frequency?type=${props.lotteryType}&zoneType=${props.zoneType}&periodCount=${props.periodCount}`
-    let frequencyResult = null
-
-    try {
-      const frequencyResponse = await uni.request({
-        url: frequencyUrl,
-        method: 'GET',
-      })
-
-      // 正确处理响应数据
-      if (
-        frequencyResponse &&
-        typeof frequencyResponse === 'object' &&
-        'data' in frequencyResponse
-      ) {
-        const responseData = frequencyResponse.data
-
-        if (
-          typeof responseData === 'object' &&
-          responseData !== null &&
-          'success' in responseData
-        ) {
-          frequencyResult = responseData
-        } else {
-          console.warn('Frequency API response format unexpected:', responseData)
-        }
-      }
-    } catch (frequencyError) {
-      console.error('Error fetching frequency data:', frequencyError)
-    }
-
-    // 处理频率数据，确保即使API失败也有默认数据显示
-    if (frequencyResult && frequencyResult.success && frequencyResult.data) {
-      frequencyData.value = frequencyResult.data
-    } else {
-      console.warn('Using default frequency data')
-      // 使用默认数据
       frequencyData.value = generateDefaultFrequencyData(props.zoneType)
+    } finally {
+      loading.value = false
     }
-  } catch (e) {
-    error.value = '请求出错'
-    console.error('Global error in fetchNumberStats:', e)
-    // 确保有默认数据显示
-    numberStats.value = generateDefaultNumberStats(props.zoneType)
-    frequencyData.value = generateDefaultFrequencyData(props.zoneType)
-  } finally {
-    loading.value = false
-  }
+  })
 }
 
 // 生成默认的号码统计数据
@@ -529,12 +531,12 @@ function handlePageClick() {
   .cards-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 12px;
     justify-content: space-between;
   }
 
   .data-card {
-    width: calc(100% - 2px); // 修正边界溢出问题
+    width: 100%; // 默认一行一个卡片
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     overflow: hidden;
@@ -542,16 +544,12 @@ function handlePageClick() {
     box-sizing: border-box;
 
     // 响应式卡片宽度
-    @media screen and (min-width: 480px) {
-      width: calc(50% - 8px); // 一行两个，考虑间距
-    }
-
     @media screen and (min-width: 768px) {
-      width: calc(50% - 8px); // 平板上也是一行两个
+      width: calc(50% - 6px); // 平板上一行两个
     }
 
     @media screen and (min-width: 1024px) {
-      width: calc(25% - 12px); // 电脑上一行四个
+      width: calc(50% - 6px); // 桌面上也是一行两个
     }
 
     &.blue-theme {
@@ -584,7 +582,7 @@ function handlePageClick() {
     }
 
     .card-content {
-      padding: 16px;
+      padding: 12px;
 
       // 热门号码卡片内容
       .hot-numbers-list {
@@ -601,13 +599,13 @@ function handlePageClick() {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 18px;
+            width: 32px;
+            height: 32px;
+            border-radius: 16px;
             font-weight: 500;
             font-size: 14px;
             color: #ffffff;
-            margin-right: 12px;
+            margin-right: 10px;
             flex-shrink: 0;
 
             &.blue-badge {
@@ -621,12 +619,16 @@ function handlePageClick() {
 
           .number-stats {
             flex: 1;
+            overflow: hidden;
 
             .stats-label {
               font-size: 12px;
               color: #666;
               display: block;
               margin-bottom: 4px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
             }
 
             .frequency-bar-container {
@@ -669,13 +671,13 @@ function handlePageClick() {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 18px;
+            width: 32px;
+            height: 32px;
+            border-radius: 16px;
             font-weight: 500;
             font-size: 14px;
             color: #ffffff;
-            margin-right: 12px;
+            margin-right: 10px;
             flex-shrink: 0;
 
             &.blue-badge {
@@ -689,12 +691,16 @@ function handlePageClick() {
 
           .number-stats {
             flex: 1;
+            overflow: hidden;
 
             .stats-label {
               font-size: 12px;
               color: #666;
               display: block;
               margin-bottom: 4px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
             }
 
             .interval-bar-container {
@@ -727,13 +733,14 @@ function handlePageClick() {
         .interval-summary {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 16px;
+          gap: 12px;
 
           .stat-item {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
-            padding: 12px;
+            justify-content: center;
+            padding: 12px 8px;
             background-color: #f9f9f9;
             border-radius: 8px;
 
@@ -758,20 +765,20 @@ function handlePageClick() {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        height: 200px;
-        padding: 20px 10px;
+        height: 180px;
+        padding: 20px 4px;
 
         .probability-bar-wrapper {
           flex: 1;
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
           align-items: center;
-          margin: 0 2px;
+          margin: 0 1px;
 
           .probability-bar {
-            width: 100%;
-            min-width: 20px;
-            max-width: 40px;
+            width: 80%;
+            min-width: 12px;
+            max-width: 24px;
             position: relative;
             transition: height 0.3s ease;
             border-radius: 4px 4px 0 0;
@@ -786,17 +793,18 @@ function handlePageClick() {
 
             .probability-value {
               position: absolute;
-              top: -20px;
+              top: -16px;
               left: 50%;
               transform: translateX(-50%);
-              font-size: 10px;
+              font-size: 9px;
               color: #666;
+              white-space: nowrap;
             }
           }
 
           .probability-number {
-            margin-top: 8px;
-            font-size: 12px;
+            margin-top: 6px;
+            font-size: 11px;
             color: #333;
           }
         }
@@ -860,21 +868,21 @@ function handlePageClick() {
 }
 
 .custom-popover-content {
-  padding: 12px;
-  text-align: center;
+  padding: 10px;
+  text-align: left;
 
   .popover-title {
     font-size: 14px;
     font-weight: 500;
     color: #333;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: block;
   }
 
   .popover-items {
     text {
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 12px;
+      line-height: 1.4;
       color: #666;
       display: block;
       margin-bottom: 4px;
@@ -891,7 +899,7 @@ function handlePageClick() {
   background: #fff !important;
   border-radius: 8px !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
-  max-width: 90vw !important;
+  max-width: 80vw !important;
   z-index: 999 !important;
 }
 
@@ -908,21 +916,21 @@ function handlePageClick() {
     transform: translate(-50%, -50%) !important;
     margin: 0 16px !important;
     width: calc(100vw - 32px) !important;
-    max-width: 320px !important;
+    max-width: 300px !important;
   }
 
   .custom-popover-content {
-    padding: 16px;
+    padding: 14px;
 
     .popover-title {
-      font-size: 15px;
-      margin-bottom: 10px;
+      font-size: 14px;
+      margin-bottom: 8px;
     }
 
     .popover-items text {
-      font-size: 14px;
-      line-height: 1.8;
-      margin-bottom: 6px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 4px;
     }
   }
 }
