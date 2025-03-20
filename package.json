@@ -65,7 +65,7 @@
     "bin-wrapper": "npm:bin-wrapper-china"
   },
   "dependencies": {
-    "@dcloudio/uni-app": "3.0.0-4020920240930001",
+    "@dcloudio/uni-app": "3.0.0-alpha-4060120250318001",
     "@dcloudio/uni-app-harmony": "3.0.0-4020920240930001",
     "@dcloudio/uni-app-plus": "3.0.0-4020920240930001",
     "@dcloudio/uni-components": "3.0.0-4020920240930001",
