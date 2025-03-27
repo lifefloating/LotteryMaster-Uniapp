@@ -16,12 +16,7 @@ const http = <T>(options: CustomRequestOptions) => {
   // #endif
 
   // 在开发环境下打印请求信息，帮助调试
-  if (
-    isDev ||
-    // #ifdef H5
-    isH5Dev
-    // #endif
-  ) {
+  if (isDev || isH5Dev) {
     console.log(`[Request] ${options.method || 'GET'} ${options.url}`)
   }
 
@@ -66,9 +61,7 @@ const http = <T>(options: CustomRequestOptions) => {
         if (
           import.meta.env?.MODE === 'development' ||
           import.meta.env?.DEV === true ||
-          // #ifdef H5
           (typeof window !== 'undefined' && (window as any).__UNI_DEVELOPMENT__)
-          // #endif
         ) {
           console.error('[Request Error]', err)
 
