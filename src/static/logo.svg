@@ -1,33 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 113.39 113.39">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- 背景和圆角矩形 -->
   <defs>
-    <style>
-      .cls-1 {
-        fill: none;
-      }
-
-      .cls-2 {
-        fill: #d14328;
-      }
-
-      .cls-3 {
-        fill: #2c8d3a;
-      }
-    </style>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EF4444" />
+      <stop offset="100%" stop-color="#B91C1C" />
+    </linearGradient>
+    <pattern id="circuitPattern" patternUnits="userSpaceOnUse" width="160" height="160" patternTransform="scale(1)">
+      <circle cx="32" cy="32" r="2" fill="white" opacity="0.15" />
+      <circle cx="128" cy="32" r="2" fill="white" opacity="0.15" />
+      <circle cx="32" cy="128" r="2" fill="white" opacity="0.15" />
+      <circle cx="128" cy="128" r="2" fill="white" opacity="0.15" />
+    </pattern>
   </defs>
-  <g id="_图层_1-2" data-name="图层 1">
-    <g>
-      <rect class="cls-1" width="113.39" height="113.39" />
-      <g>
-        <path class="cls-3"
-          d="M86.31,11.34H25.08c-8.14,0-14.74,6.6-14.74,14.74v61.23c0,8.14,6.6,14.74,14.74,14.74h61.23c.12,0,.24-.02,.37-.02-9.76-.2-17.64-8.18-17.64-17.99,0-.56,.03-1.12,.08-1.67H34.1c-1.57,0-2.83-1.27-2.83-2.83V32.43c0-.78,.63-1.42,1.42-1.42h9.17c.78,0,1.42,.63,1.42,1.42v36.52c0,.78,.63,1.42,1.42,1.42h22.02c.78,0,1.42-.63,1.42-1.42V32.43c0-.78,.63-1.42,1.42-1.42h9.17c.78,0,1.42,.63,1.42,1.42v34.99c2.13-.89,4.47-1.39,6.92-1.39,5.66,0,10.7,2.63,14.01,6.72V26.08c0-8.14-6.6-14.74-14.74-14.74Z" />
-        <g>
-          <path class="cls-2"
-            d="M87.04,68.03c-8.83,0-16.01,7.18-16.01,16.01s7.18,16.01,16.01,16.01,16.01-7.18,16.01-16.01-7.18-16.01-16.01-16.01Zm-.27,24.84h-7.2v-3h1.18v-10.48h4.58v2.81h1.42c.84,0,1.46-.16,1.88-.48s.62-.87,.62-1.64c0-.69-.25-1.17-.74-1.45s-1.19-.42-2.09-.42h-6.84v-3h7.2c2.38,0,4.15,.38,5.31,1.15,1.16,.77,1.74,1.93,1.74,3.48,0,1.71-.83,2.93-2.5,3.64,1.07,.4,1.87,.95,2.39,1.65s.79,1.56,.79,2.58c0,3.44-2.58,5.16-7.73,5.16Z" />
-          <path class="cls-2"
-            d="M86.49,85.17h-1.16v4.7h1.8c.81,0,1.46-.18,1.94-.55s.72-.95,.72-1.73c0-.86-.25-1.48-.74-1.85s-1.35-.56-2.56-.56Z" />
-        </g>
-      </g>
-    </g>
+  
+  <!-- 圆角背景 -->
+  <rect width="512" height="512" rx="100" ry="100" fill="url(#bgGradient)" />
+  
+  <!-- AI 电路图案 -->
+  <rect width="512" height="512" fill="url(#circuitPattern)" opacity="0.15" />
+  <line x1="256" y1="0" x2="256" y2="512" stroke="white" stroke-width="8" opacity="0.15" />
+  <line x1="0" y1="256" x2="512" y2="256" stroke="white" stroke-width="8" opacity="0.15" />
+  
+  <!-- 彩票球 1（黄色） -->
+  <circle cx="180" cy="180" r="80" fill="#FBBF24" filter="drop-shadow(0 8px 30px rgba(0, 0, 0, 0.2))" />
+  <text x="180" y="210" font-size="80" font-weight="bold" fill="white" text-anchor="middle">6</text>
+  
+  <!-- 彩票球 2（蓝色） -->
+  <circle cx="332" cy="332" r="80" fill="#3B82F6" filter="drop-shadow(0 8px 30px rgba(0, 0, 0, 0.2))" />
+  <text x="332" y="362" font-size="80" font-weight="bold" fill="white" text-anchor="middle">8</text>
+  
+  <!-- 中心图标（白色圆形背景） -->
+  <circle cx="256" cy="256" r="120" fill="white" filter="drop-shadow(0 8px 30px rgba(0, 0, 0, 0.2))" />
+  
+  <!-- 中心SVG图标 -->
+  <g transform="translate(186, 186) scale(5.83)">
+    <path d="M21.3333 14.6667C21.3333 18.3486 18.3486 21.3333 14.6667 21.3333C10.9848 21.3333 8 18.3486 8 14.6667C8 10.9848 10.9848 8 14.6667 8C18.3486 8 21.3333 10.9848 21.3333 14.6667Z" fill="#EF4444"/>
+    <path d="M16 14.6667C16 15.4031 15.4031 16 14.6667 16C13.9303 16 13.3333 15.4031 13.3333 14.6667C13.3333 13.9303 13.9303 13.3333 14.6667 13.3333C15.4031 13.3333 16 13.9303 16 14.6667Z" fill="white"/>
+    <path d="M2.66667 9.33333C2.66667 13.0152 5.65143 16 9.33333 16C13.0152 16 16 13.0152 16 9.33333C16 5.65143 13.0152 2.66667 9.33333 2.66667C5.65143 2.66667 2.66667 5.65143 2.66667 9.33333Z" fill="#B91C1C"/>
+    <path d="M10.6667 9.33333C10.6667 10.0697 10.0697 10.6667 9.33333 10.6667C8.59695 10.6667 8 10.0697 8 9.33333C8 8.59695 8.59695 8 9.33333 8C10.0697 8 10.6667 8.59695 10.6667 9.33333Z" fill="white"/>
   </g>
+  
+  <!-- AI 徽章 -->
+  <rect x="372" y="432" width="100" height="50" rx="20" ry="20" fill="white" filter="drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2))" />
+  <text x="422" y="467" font-size="36" font-weight="bold" fill="#B91C1C" text-anchor="middle">AI</text>
 </svg>
