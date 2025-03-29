@@ -42,9 +42,9 @@ export const useLotteryStore = defineStore('lottery', {
   actions: {
     setLotteryType(type: LotteryType) {
       this.currentLotteryType = type
-      // 如果当前类型的数据为空，则获取数据
+      // 不再自动获取数据，而是使用本地模拟数据
       if (!this.lotteryData[type]) {
-        this.fetchLotteryData()
+        this.useMockData()
       }
     },
 

@@ -4,6 +4,8 @@
   style: {
     navigationStyle: 'custom',
     navigationBarTitleText: '彩票大师',
+    enablePullDownRefresh: true,
+    backgroundTextStyle: 'dark',
   },
 }
 </route>
@@ -16,6 +18,12 @@
       paddingBottom: safeAreaInsets?.bottom + 'px',
     }"
   >
+    <!-- Loading 遮罩层 -->
+    <view class="loading-overlay" v-if="isRefreshing">
+      <wd-loading color="#3B82F6" />
+      <text class="loading-text">数据分析中...</text>
+    </view>
+
     <!-- 彩票类型切换 -->
     <lottery-type-switch
       :active-type="lotteryStore.currentLotteryType"
@@ -50,7 +58,16 @@
 
     <!-- 多组预测号码列表 -->
     <view class="prediction-sets-container">
-      <scroll-view class="prediction-sets-scroll" scroll-y>
+      <scroll-view 
+        class="prediction-sets-scroll" 
+        scroll-y
+        refresher-enabled
+        :refresher-triggered="isRefreshing"
+        @refresherrefresh="handleRefresh"
+        :refresher-threshold="45"
+        refresher-default-style="black"
+        refresher-background="#f5f7fa"
+      >
         <view class="prediction-sets-list">
           <lottery-prediction-set
             v-for="(prediction, index) in lotteryData.predictions"
@@ -75,7 +92,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app'
 import { useLotteryStore, type LotteryType } from '@/store/lottery'
 import LotteryHeader from '@/components/LotteryHeader.vue'
 import LotteryTypeSwitch from '@/components/LotteryTypeSwitch.vue'
@@ -96,10 +113,41 @@ const lotteryData = computed(() => lotteryStore.getCurrentLotteryData)
 
 // 控制分析报告显示
 const showReport = ref(false)
+// 控制刷新状态
+const isRefreshing = ref(false)
 
 // 页面加载时获取数据
 onLoad(() => {
-  lotteryStore.fetchLotteryData()
+  // 不自动刷新数据，但确保有初始数据以便组件能正确渲染
+  if (!lotteryData.value || !lotteryData.value.predictions) {
+    lotteryStore.useMockData()
+  }
+  isRefreshing.value = false
+})
+
+// 刷新数据
+const refreshData = async () => {
+  isRefreshing.value = true
+  try {
+    await lotteryStore.fetchLotteryData()
+  } catch (error) {
+    console.error('刷新数据失败:', error)
+  } finally {
+    isRefreshing.value = false
+    // 停止下拉刷新动画
+    uni.stopPullDownRefresh()
+  }
+}
+
+// 下拉刷新处理
+const handleRefresh = () => {
+  console.log('用户手动下拉刷新')
+  refreshData()
+}
+
+// 监听系统下拉刷新事件
+onPullDownRefresh(() => {
+  refreshData()
 })
 
 // 页面行为
@@ -116,7 +164,7 @@ const isFc3dType = computed(() => {
 // 彩种类型切换处理
 const handleLotteryTypeSwitch = (type: LotteryType) => {
   lotteryStore.setLotteryType(type)
-  lotteryStore.fetchLotteryData()
+  // 不要自动刷新数据，只有在用户手动下拉时才刷新
 }
 </script>
 
@@ -124,6 +172,27 @@ const handleLotteryTypeSwitch = (type: LotteryType) => {
 .prediction-page {
   min-height: 100vh;
   background-color: #f5f7fa;
+  position: relative;
+
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+
+    .loading-text {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #3B82F6;
+    }
+  }
 
   .prediction-title-container {
     display: flex;
