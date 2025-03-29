@@ -18,7 +18,6 @@
       paddingBottom: safeAreaInsets?.bottom + 'px',
     }"
   >
-    <!-- Loading 遮罩层 -->
     <view class="loading-overlay" v-if="isRefreshing">
       <wd-loading color="#3B82F6" size="36px" />
       <text class="loading-title">数据分析中</text>
