@@ -42,8 +42,10 @@ const httpInterceptor = {
       // #endif
       // TIPS: 如果需要对接多个后端服务，也可以在这里处理，拼接成所需要的地址
     }
-    // 1. 请求超时
-    options.timeout = 10000 // 10s
+    // 1. 请求超时 - 只有当未设置超时时间时才使用默认值
+    if (!options.timeout) {
+      options.timeout = 10000 // 默认10s
+    }
     // 2. （可选）添加小程序端请求头标识
     options.header = {
       platform, // 可选，与 uniapp 定义的平台一致，告诉后台来源

@@ -82,7 +82,7 @@ export const useLotteryStore = defineStore('lottery', {
             uni.request({
               url: analyzeEndpoint,
               method: 'GET',
-              timeout: 120000, // 120秒超时
+              timeout: 180000, // 3分钟超时
               success: resolve,
               fail: reject,
             })
@@ -133,6 +133,7 @@ export const useLotteryStore = defineStore('lottery', {
           }
         } catch (analyzeErr) {
           console.error('Error calling analyze API:', analyzeErr)
+          this.error = '请求超时，未能获取最新数据'
           this.useMockData()
         }
       } catch (err) {
