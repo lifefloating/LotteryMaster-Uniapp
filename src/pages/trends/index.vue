@@ -113,15 +113,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useLotteryStore, type LotteryType } from '@/store/lottery'
-
-const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
-const LotteryTypeSwitch = defineAsyncComponent(() => import('@/components/LotteryTypeSwitch.vue'))
-const LotteryHeatmapBoard = defineAsyncComponent(
-  () => import('@/components/LotteryHeatmapBoard.vue'),
-)
-const LotteryDataCards = defineAsyncComponent(() => import('@/components/LotteryDataCards.vue'))
+import LotteryHeader from '@/components/LotteryHeader.vue'
+import LotteryTypeSwitch from '@/components/LotteryTypeSwitch.vue'
+import LotteryHeatmapBoard from '@/components/LotteryHeatmapBoard.vue'
+import LotteryDataCards from '@/components/LotteryDataCards.vue'
 
 defineOptions({
   name: 'TrendsPage',

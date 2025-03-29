@@ -13,10 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watchEffect, defineAsyncComponent, unref } from 'vue'
+import { ref, computed, watchEffect, unref } from 'vue'
 import { useTrendDataQuery } from '@/service/app/chart.vuequery'
-
-const QiunDataCharts = defineAsyncComponent(() => import('@/components/QiunDataCharts.vue'))
+import QiunDataCharts from '@/components/QiunDataCharts.vue'
 
 defineOptions({
   name: 'LotteryTrendChart',

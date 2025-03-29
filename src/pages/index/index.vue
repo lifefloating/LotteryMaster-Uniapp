@@ -24,11 +24,7 @@
 
     <!-- 预测号码展示区 -->
     <view class="prediction-title-container">
-      <view
-        class="report-button"
-        v-if="lotteryStore.currentLotteryType !== 'fc3d'"
-        @click="showReport = true"
-      >
+      <view class="report-button" v-if="!isFc3dType" @click="showReport = true">
         <wd-icon name="data-analysis" size="14px" color="#FFFFFF" />
         <text class="report-button-text">查看分析报告</text>
       </view>
@@ -70,7 +66,7 @@
 
     <!-- 分析报告组件 -->
     <analysis-report
-      v-if="showReport && lotteryStore.currentLotteryType !== 'fc3d'"
+      v-if="showReport && !isFc3dType"
       :visible="showReport"
       @close="showReport = false"
     />
@@ -78,17 +74,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useLotteryStore, type LotteryType } from '@/store/lottery'
-
-const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
-const LotteryTypeSwitch = defineAsyncComponent(() => import('@/components/LotteryTypeSwitch.vue'))
-const LotteryNumberBall = defineAsyncComponent(() => import('@/components/LotteryNumberBall.vue'))
-const LotteryPredictionSet = defineAsyncComponent(
-  () => import('@/components/LotteryPredictionSet.vue'),
-)
-const AnalysisReport = defineAsyncComponent(() => import('@/components/AnalysisReport.vue'))
+import LotteryHeader from '@/components/LotteryHeader.vue'
+import LotteryTypeSwitch from '@/components/LotteryTypeSwitch.vue'
+import LotteryNumberBall from '@/components/LotteryNumberBall.vue'
+import LotteryPredictionSet from '@/components/LotteryPredictionSet.vue'
+import AnalysisReport from '@/components/AnalysisReport.vue'
 
 defineOptions({
   name: 'PredictionPage',
@@ -114,6 +107,11 @@ onLoad(() => {
 const handleBack = () => {
   uni.navigateBack()
 }
+
+// 检查是否是fc3d类型
+const isFc3dType = computed(() => {
+  return lotteryStore.currentLotteryType === ('fc3d' as unknown as LotteryType)
+})
 
 // 彩种类型切换处理
 const handleLotteryTypeSwitch = (type: LotteryType) => {

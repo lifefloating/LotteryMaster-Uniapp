@@ -12,7 +12,7 @@
         />
       </view>
 
-      <view class="special-numbers" v-if="lotteryType !== 'fc3d'">
+      <view class="special-numbers" v-if="!isFc3dType">
         <view class="zone-label">后区</view>
         <lottery-number-ball
           v-for="(num, index) in specialNumbers"
@@ -27,9 +27,8 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, defineAsyncComponent, computed } from 'vue'
-
-const LotteryNumberBall = defineAsyncComponent(() => import('@/components/LotteryNumberBall.vue'))
+import { PropType, computed } from 'vue'
+import LotteryNumberBall from '@/components/LotteryNumberBall.vue'
 
 defineOptions({
   name: 'LotteryPredictionSet',
@@ -50,8 +49,13 @@ const props = defineProps({
   },
 })
 
+// 检查是否是fc3d类型
+const isFc3dType = computed(() => {
+  return props.lotteryType === 'fc3d'
+})
+
 const getPrimaryZoneLabel = computed(() => {
-  if (props.lotteryType === 'fc3d') {
+  if (isFc3dType.value) {
     return '号码'
   }
   return '前区'

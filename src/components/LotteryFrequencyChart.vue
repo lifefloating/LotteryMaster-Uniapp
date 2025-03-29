@@ -13,11 +13,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, defineAsyncComponent, watchEffect, unref } from 'vue'
+import { ref, computed, watch, onMounted, watchEffect, unref } from 'vue'
 import { useFrequencyDataQuery, ApiResponse } from '@/service/app/chart.vuequery'
 // import type { ApiResponse } from '@/service/app/chart.vuequery'
-
-const QiunDataCharts = defineAsyncComponent(() => import('@/components/QiunDataCharts.vue'))
+import QiunDataCharts from '@/components/QiunDataCharts.vue'
 
 defineOptions({
   name: 'LotteryFrequencyChart',

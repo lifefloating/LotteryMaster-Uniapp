@@ -70,9 +70,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent } from 'vue'
-
-const LotteryHeader = defineAsyncComponent(() => import('@/components/LotteryHeader.vue'))
+import { ref } from 'vue'
+import LotteryHeader from '@/components/LotteryHeader.vue'
 
 defineOptions({
   name: 'MyPage',
