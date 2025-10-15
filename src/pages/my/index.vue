@@ -32,6 +32,22 @@
     <view class="settings-container">
       <view class="settings-group">
         <view class="settings-title">
+          <text class="title-text">功能设置</text>
+        </view>
+
+        <view class="settings-item" @tap="navigateToSubscription">
+          <view class="item-left">
+            <text class="iconfont icon-email">&#xe6c7;</text>
+            <text class="item-text">邮件订阅</text>
+          </view>
+          <view class="item-right">
+            <text class="iconfont icon-arrow">&#xe6a3;</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="settings-group">
+        <view class="settings-title">
           <text class="title-text">关于应用</text>
         </view>
 
@@ -91,6 +107,13 @@ const handleBack = () => {
 // 处理通知开关
 const handleNotificationChange = (e: any) => {
   notificationEnabled.value = e.detail.value
+}
+
+// 导航到订阅页面
+const navigateToSubscription = () => {
+  uni.navigateTo({
+    url: '/pages/subscription/index',
+  })
 }
 </script>
 
